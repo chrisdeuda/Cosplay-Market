@@ -7,3 +7,7 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
+
+CNPH Sublime/*
+!CNPH Sublime/*.sublime-project
+!CNPH Sublime/*sublime-workspace
