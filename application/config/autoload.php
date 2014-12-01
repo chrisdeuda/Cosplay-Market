@@ -60,11 +60,11 @@ $autoload['libraries'] = array('database');
 |  Auto-load Helper Files
 | -------------------------------------------------------------------
 | Prototype:
-|
+|	
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array("url", "MainNavigation");
+$autoload['helper'] = array("url");
 
 
 /*

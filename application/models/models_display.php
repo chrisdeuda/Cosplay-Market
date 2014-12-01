@@ -12,7 +12,7 @@ class Models_Display extends CI_Model{
 	public function displayAbout(){
 		$this->load->view('include/site_header');
 		$this->load->view('include/site_nav');
-		$this->load->view('about_us');
+		//$this->load->view('about_us');
 		$this->load->view('include/site_footer');
 	}
 
