@@ -63,7 +63,7 @@
                                 <input type="password" name="password" id="password" "" /></td>
                             </tr>
                               <tr>
-                                <td><a href="membership.php">Register ?</a></td>
+                                <td><a href="<?php echo base_url().'site/register';?>">Register ?</a></td>
                                 <td align="center"><input class="button" type="submit" name="login" id="login" value="Login" /></td>
                             </tr>
                       	</table>

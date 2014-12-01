@@ -17,8 +17,6 @@ class Site extends CI_Controller {
 		$this->models_display->displayContactUs();
 	}
 
-
-
 	public function register(){
 		$this->load->model("models_display");
 		$this->models_display->displayRegister();

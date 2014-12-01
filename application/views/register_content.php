@@ -11,7 +11,17 @@
 
           <div class="reg-form">
           
-          <form id="form1" method="post" action="membership.php">
+          <?php
+          $this->load->helper("form");
+          $attribute = array("id" => "form1");
+          $action = base_url(). 'user/registerValidation';
+
+          echo form_open($action, $attribute);
+
+          echo "fuck u";
+          ?>
+
+
             <table width="100%" border="0">
                       <tr>
                         <td width="13%" id="email"><label for="email">Email:</label></td>

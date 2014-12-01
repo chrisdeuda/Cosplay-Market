@@ -19,30 +19,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "/C/xampp/htdocs/citestsite/application/config/hooks.php",
-			"settings":
-			{
-				"buffer_size": 498,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/C/xampp/htdocs/citestsite/index.php",
-			"settings":
-			{
-				"buffer_size": 6357,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/C/xampp/htdocs/citestsite/.htaccess",
-			"settings":
-			{
-				"buffer_size": 1172,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -84,15 +60,12 @@
 	},
 	"expanded_folders":
 	[
-		"/C/xampp/htdocs/citestsite",
-		"/C/xampp/htdocs/citestsite/application",
-		"/C/xampp/htdocs/citestsite/application/cache",
-		"/C/xampp/htdocs/citestsite/application/config",
-		"/C/xampp/htdocs/ci_tutorial/application",
-		"/C/xampp/htdocs/ci_tutorial/application/config"
+		"/C/xampp/htdocs/citestsite"
 	],
 	"file_history":
 	[
+		"/C/xampp/htdocs/citestsite/index.php",
+		"/C/xampp/htdocs/citestsite/application/config/hooks.php",
 		"/C/xampp/htdocs/citestsite/application/config/autoload.php",
 		"/C/xampp/htdocs/citestsite/application/config/config.php",
 		"/C/xampp/htdocs/citestsite/application/index.html",
@@ -208,96 +181,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/C/xampp/htdocs/citestsite/application/config/hooks.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 498,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/xampp/htdocs/citestsite/index.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6357,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								767,
-								767
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2610.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/xampp/htdocs/citestsite/.htaccess",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 1172,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1029,
-								1029
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				}
 			]
 		}
 	],
