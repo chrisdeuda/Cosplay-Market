@@ -134,26 +134,6 @@ class User extends CI_Controller {
 
 
 		}
-
-
-
-
-
-/*
-		//$query = $this->db->query( $SQL);
-		if ( $query == FALSE ) {
-			echo "Error in Query" ;
-
-		} else {
-			echo "Success adding value";
-
-		}*/
-
-
-
-
-
-
 		//check similary of retyPassword [X]
 		//convert to md5 					[x]
 		//CheckEmailExist;					[x]
@@ -189,11 +169,6 @@ class User extends CI_Controller {
 
 
 	}
-
-
-
-
-
 }
 
 
