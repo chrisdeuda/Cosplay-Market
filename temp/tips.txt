@@ -1,0 +1,8 @@
+Create a table of contents of CSS
+
+Uses CSS Coloring Section
+User LoveHate in a Link
+Used TRrouBLed order - Top Right Bottom Left
+Use 1.4em – 1.6em for line-height. “line-height:1.4” for readable lines, 
+
+

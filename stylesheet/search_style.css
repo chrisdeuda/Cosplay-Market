@@ -1,0 +1,113 @@
+@charset "utf-8";
+
+
+/*------------------------------------------------right panel--------------------*/
+
+/*------------------------------------------------bodyBottom--------------------*/
+#items-container{
+	width:auto;
+	float:left;
+	margin-right: 0;
+	margin-bottom: 0;
+	margin-left: 0;
+}
+#items-container ul{
+	background-color:#F1F1F1;
+	color:#000;
+	float:left;
+	display:block;
+	padding-top: 5px;
+	padding-right: 5;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	font-size: 14px;
+}
+#items-container ul li.one{
+	font:normal 12px/20px Arial, Helvetica, sans-serif;
+	color:#131313;
+	background-color:#fff;
+	float:left;
+	display:block;
+	width:180px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-top-color: #F1F1F1;
+	border-right-color: #F1F1F1;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-bottom-color: #F1F1F1;
+	border-left-color: #F1F1F1;
+	padding: 10px;
+	margin: 10px;
+}
+#items-container ul .one p {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 14px;
+	line-height: 5px;
+}
+#items-container img  {
+	height: 150px;
+	width: 100%;
+}
+#img-details {
+	border: thick solid #960;
+	width: 600px;
+	font-family: Tahoma, Geneva, sans-serif;
+}
+#img-details p {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 24px;
+	color: #333;
+}
+
+#img-container {
+	width: 200px;
+}
+#img-container .img-small {
+	height: 100px;
+	width: 100px;
+}
+#img-container .img-big {
+	height: 250px;
+	width: 250px;
+}
+.pos-left {
+	float: left;
+}
+.pos-right {
+	float: right;
+}
+
+
+#items-container ul .sp-emphasis  {
+	font-size: 14px;
+	font-weight: bold;
+	color: #069;
+}
+#items-container ul .sp-text {
+	line-height: 15px;
+}
+
+/* spacer */
+.spacer{
+	clear:both; 
+	font-size:0; 
+	line-height:0;
+}
+
+
+#items-container ul li.one a:hover{
+	color:#528B00;
+	background-color:#fff;
+	text-decoration:none;
+}
+.margin5 {
+	margin: 5px;
+}
+.padding5 {
+	padding: 5px;
+}

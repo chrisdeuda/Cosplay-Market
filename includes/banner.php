@@ -1,0 +1,1 @@
+<img src="<?php echo LinkPath('images/header.png')?>" name="banner" width="300" height="100" id="banner" />	

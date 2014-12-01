@@ -1,0 +1,22 @@
+===============================
+NEEDED VIEW OF THE WEBSITE
+===============================
+
+1. Sellers
+	a. Uploading of items ()
+	b. Managing Account
+	c. Viewing of all of the items
+	c. Upgrading to Premium Account
+	d. Registration
+2. Visitors 
+	a. Searching of items
+	b. Login
+	c. Reservation of items
+	d. Viewing details
+	e. 
+
+3. Admin Side
+	a. editing of front page
+	b. adding slide show pictures
+	c. managing the content of the front page
+	

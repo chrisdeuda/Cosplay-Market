@@ -1,0 +1,42 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+/* This style the over all sub-container*/
+.div-custom-container{
+	width: 100%;
+	padding-left: -1px;
+	padding-top: -1px;
+	padding-right: -1px;
+	padding-bottom: -1px;
+	left: -1px;
+	top: auto;
+	}
+.div-custom-title {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 16px;
+	color: #00436E;
+	background-color: #089FFF;  /*blue*/
+	height: 15px;
+	font-weight: bold;
+	text-align: left;
+	padding: 10px;
+}
+.div-sub-content 
+{
+	width: 500px;
+	height: 500px;
+	float: left;
+	padding: 0px;
+	margin: 0px;
+}
+#div-custom-bg {
+}
+
+/* end of sub containers*/
+.div-sub-content h3 {
+	background-color: #089FFF;
+	position: relative;
+	left: 0px;
+	top: 0px;
+}

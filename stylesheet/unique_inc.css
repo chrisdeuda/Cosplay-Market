@@ -1,0 +1,93 @@
+@charset "utf-8";
+
+/*This style for unique header naviation style*/
+
+#container_unique {
+
+}
+body {
+
+
+}
+
+/* CSS Document */
+
+/* body unique  contains navigation design*/
+.body_unique {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 18px;
+	color: #FFF;
+}
+
+
+/* Navigation Design*/
+.nav_unique {
+	position: relative;
+
+
+}
+.nav_unique a:hover {
+
+}
+
+.nav_unique td {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+	width: auto;
+	height: 35px;
+	padding-right: 5px;
+	padding-left: 5px;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #666;
+}
+.nav_unique td a{
+	text-decoration: none;
+	color: #000;
+}
+.nav_unique td:hover{
+	background-color: #333;
+	color: #FFF;
+}
+#table_unique {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+}
+.nav_unique td a:hover{
+	color: #999;
+}
+/* right align - aligns the object to right*/
+.align_left {
+	float: left;
+	padding-right: 10px;
+}
+.align_right {
+	float: right;
+	margin: 5px;
+}
+.align_center {
+	width: 80%;
+	margin-left: 20%;
+}
+.align_center td {
+	text-align: left;
+}
+
+
+
+/* LINK provides decoartion for every link*/
+a:link, a:visited{
+	color: #000;
+	font-family: Verdana, Geneva, sans-serif;
+}
+a:active{
+	color:red;
+
+}
+
+/*nav_unique td  Gives the design in the header*/
+a {
+	color: #FFF;
+}

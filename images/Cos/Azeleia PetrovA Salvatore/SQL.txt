@@ -1,0 +1,4 @@
+SELECT DISTINCT `item_image`.`USER_ID`, `users_information`.`USER_ID`, `item_list`.`NAME`
+FROM `item_image`,`users_information`
+LEFT JOIN `item_list` ON  `users_information`.`USER_ID` = `item_list`.`USER_ID`
+WHERE `item_image`.`ITEM_ID` = '001'

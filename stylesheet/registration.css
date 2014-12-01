@@ -1,0 +1,42 @@
+@charset "utf-8";
+/* CSS Document */
+
+.reg-text-fields {
+	width: 280px;
+	float: left;
+	height: 30px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.reg-form td label {
+	text-align: left;
+	float: left;
+}
+
+/* Post */
+
+.reg-form {
+	margin-bottom: 20px;
+	padding: 20px;
+	background: #FFFFFF;
+	position: relative;
+}
+.pos-ap {
+
+}
+
+.reg-form  label {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+.guidelines {
+	background-color: #0CF;
+	border: thin dashed #03F;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: #666;
+	margin: 5px;
+	padding: 5px;
+	width: inherit;
+}
