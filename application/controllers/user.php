@@ -55,11 +55,22 @@ class User extends CI_Controller {
 	*/
 
 	public function registerValidation() {
-		global $DEFAULT_PROFILE;
+		echo "<pre>";
+		print_r( $this->session->all_userdata());
+		echo "</pre>";
+
+		if ( $this->session->userdata('is_logged_in')) {
+			echo "I am already logged in:". $this->session->userdata('username');
+			$this->newUser();
+		} else {
+			echo "Processing New User";
+		}
+
+
 		$this->load->library("form_validation");
 
-		$email 				= "test11@gmail.com";
-		$username 			= "test11";
+		$email 				= "test17@gmail.com";
+		$username 			= "test17";
 		$password   		= "test1";
 		$reTypePassword 	= "test1";
 
@@ -78,7 +89,6 @@ class User extends CI_Controller {
 		$mem_type        = "sdf";
 		$invalid_mes     = "";
 
-
 		if ( $password != $reTypePassword) {
 			echo "Not The Same";
 		} else {
@@ -94,24 +104,24 @@ class User extends CI_Controller {
 		$SQL = $SQL . " VALUES(NULL, '$user_id' , '$fname' , '$lname' , '$mi' , '$rdoGender' , {$age} , '$email' , '$address' , '$contactno' , '$profile_pic' , {$date_joined} , '{$mem_type}')";*/
 
 		$data_register = array('ID' => NULL,
-			'USER_ID' => $user_id,
-			'FIRST_NAME' => $fname,
-			'LAST_NAME' => $lname,
-			'MI' => $mi,
-			'GENDER' => $rdoGender,
-			'AGE'=> $age, 
+			'USER_ID' 		=> $user_id,
+			'FIRST_NAME' 	=> $fname,
+			'LAST_NAME' 	=> $lname,
+			'MI' 			=> $mi,
+			'GENDER' 		=> $rdoGender,
+			'AGE'			=> $age, 
 			'EMAIL_ADDRESS' => $email,
-			'ADDRESS' => $address,
+			'ADDRESS' 		=> $address,
 			'PROFILE_PICTURE' => $profile_pic,
-			'CONTACT_NO' => $contactno,
-			'DATE_JOINED' => $date_joined,
+			'CONTACT_NO' 	=> $contactno,
+			'DATE_JOINED' 	=> $date_joined,
 			'MEMBERSHIP_TYPE' => $mem_type);
 
 		$data_user = array('ID' => NULL,
-			'USER_ID' => $user_id,
-			'USERNAME' => $username,
-			'PASSWORD' => $password_md5,
-			'POSITION' => $mem_type);
+			'USER_ID' 	=> $user_id,
+			'USERNAME' 	=> $username,
+			'PASSWORD' 	=> $password_md5,
+			'POSITION' 	=> $mem_type);
 
 
 		//check email exists
@@ -128,11 +138,19 @@ class User extends CI_Controller {
 		} else {
 			$query = $this->db->insert('users_information', $data_register);
 			if ($query == 1 ){
-				$query = $this->db->insert('users', $data_user);
-				echo "<img src='". base_url().DEFAULT_IMAGE ."' />";
+				$query_users = $this->db->insert('users', $data_user);
+				if ( $query_users == 1) {
+					$data = array(
+						'username' => $username,
+						'is_logged_in' => 1
+					);
+
+					echo "New User created";
+					$this->session->set_userdata( $data );
+					$this->newUser();
+					
+				}
 			}
-
-
 		}
 		//check similary of retyPassword [X]
 		//convert to md5 					[x]
@@ -161,10 +179,34 @@ class User extends CI_Controller {
 		$mem_type        = "";
 		$invalid_mes     = "";*/
 
+		
+
 	}
 
 
 	private function checkEmailExist( $email = "" ){
+
+
+
+	}
+
+	public function newUser(){
+		echo "<pre>";
+		print_r($this->session->all_userdata());
+		echo "</pre>";
+
+		echo "<a href=logout> Logout</a>";
+
+	}
+
+	public function logout(){
+		$this->session->sess_destroy();
+
+		echo "<pre>";
+		print_r($this->session->all_userdata());
+		echo "</pre";
+
+
 
 
 

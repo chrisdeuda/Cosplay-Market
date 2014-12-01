@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"passwo",
+				"password_md5"
+			],
+			[
 				"chan",
 				"change-name-function"
 			],
@@ -23,7 +27,7 @@
 			"file": "/C/xampp/htdocs/CosplayMarket/application/controllers/user.php",
 			"settings":
 			{
-				"buffer_size": 2946,
+				"buffer_size": 5077,
 				"line_ending": "Windows"
 			}
 		},
@@ -88,6 +92,7 @@
 	],
 	"file_history":
 	[
+		"/C/xampp/htdocs/CosplayMarket/.git/COMMIT_EDITMSG",
 		"/C/xampp/htdocs/citestsite/application/controllers/site.php",
 		"/C/xampp/htdocs/citestsite/application/controllers/login.php",
 		"/C/xampp/htdocs/citestsite/application/models/models_home.php",
@@ -209,23 +214,24 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2946,
+						"buffer_size": 5077,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1944,
-								1944
+								5070,
+								5070
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1548.0,
+						"translation.y": 1413.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -273,8 +279,8 @@
 						"selection":
 						[
 							[
-								591,
-								591
+								816,
+								816
 							]
 						],
 						"settings":

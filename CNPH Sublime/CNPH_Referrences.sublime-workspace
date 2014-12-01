@@ -29,6 +29,22 @@
 				"buffer_size": 14341,
 				"line_ending": "Windows"
 			}
+		},
+		{
+			"file": "/C/xampp/htdocs/CosplayMarket/application/config/constants.php",
+			"settings":
+			{
+				"buffer_size": 1836,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/xampp/htdocs/CosplayMarket/.gitignore",
+			"settings":
+			{
+				"buffer_size": 247,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
@@ -71,18 +87,16 @@
 	},
 	"expanded_folders":
 	[
-		"/C/xampp/htdocs/CNPHCosplayMarket",
-		"/C/xampp/htdocs/ci_tutorial/application",
 		"/C/xampp/htdocs/CosplayMarket",
-		"/C/xampp/htdocs/CosplayMarket/application",
-		"/C/xampp/htdocs/CosplayMarket/application/config",
 		"/C/xampp/htdocs/CosplayMarket/application/controllers",
 		"/C/xampp/htdocs/CosplayMarket/application/models",
 		"/C/xampp/htdocs/CosplayMarket/application/views",
-		"/C/xampp/htdocs/CosplayMarket/application/views/include"
+		"/C/xampp/htdocs/CosplayMarket/application/views/include",
+		"/C/xampp/htdocs/CosplayMarket/CNPH Sublime"
 	],
 	"file_history":
 	[
+		"/C/xampp/htdocs/CosplayMarket/.git/COMMIT_EDITMSG",
 		"/C/xampp/htdocs/ci_tutorial/application/config/config.php",
 		"/C/xampp/htdocs/CosplayMarket/application/config/autoload.php",
 		"/C/xampp/htdocs/CosplayMarket/application/config/config.php",
@@ -90,7 +104,6 @@
 		"/C/xampp/htdocs/CosplayMarket/application/models/models_display.php",
 		"/C/xampp/htdocs/CosplayMarket/application/views/include/site_nav.php",
 		"/C/xampp/htdocs/cosplaymarket/.git/COMMIT_EDITMSG",
-		"/C/xampp/htdocs/CosplayMarket/.git/COMMIT_EDITMSG",
 		"/C/xampp/htdocs/ci_tutorial/application/controllers/login_receive.php",
 		"/C/xampp/htdocs/CNPHCosplayMarket/login/login_check.php",
 		"/C/xampp/htdocs/CNPHCosplayMarket/error_catcher.php",
@@ -215,7 +228,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -231,8 +244,8 @@
 						"selection":
 						[
 							[
-								4173,
-								3528
+								5266,
+								5712
 							]
 						],
 						"settings":
@@ -242,7 +255,63 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1620.0,
+						"translation.y": 2340.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/xampp/htdocs/CosplayMarket/application/config/constants.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1836,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1720,
+								1707
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 360.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/xampp/htdocs/CosplayMarket/.gitignore",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 247,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								247,
+								247
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
