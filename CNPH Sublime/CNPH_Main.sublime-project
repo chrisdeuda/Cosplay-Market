@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "C:\\xampp\\htdocs\\citestsite"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "C:\\xampp\\htdocs\\ci_tutorial"
+		}
+	]
+}

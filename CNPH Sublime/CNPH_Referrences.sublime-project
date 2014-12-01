@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "C:\\xampp\\htdocs\\CNPHCosplayMarket"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "C:\\xampp\\htdocs\\ci_tutorial"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "C:\\xampp\\htdocs\\CosplayMarket"
+		}
+	]
+}
