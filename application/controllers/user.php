@@ -3,210 +3,146 @@
 class User extends CI_Controller {
 
 	private $DEFAULT_PROFILE = 'image/fuck.jpg';
+	private $error_message = "";
 
-	private function GenerateId(){
+	private function _generateId(){
 		//sample 2013-random - seconds
 		$time = time();
 		$year =  date('Y', $time);
 		$actual_time = date('s', $time); 
 		
 		$random = rand(1, 500);
-		$user_id = $year. '-'. $random. $actual_time;
+		$user_id = $year. '-'. $this->_getTimeNow();
 		
 		return $user_id;
 	}
 	
 
-	private function GetDateNow(){
+	private function _getDateNow(){
 		$date = date ('Y-m-d');
 		return $date;
 	}
 
-	private function GetTimeNow(){
+	private function _getTimeNow(){
 		$time = time();
-		$actual_time = date('h-i-s', $time);
+		$actual_time = date('his', $time);
 		
 		return $actual_time;
 	
 	}
 
-	/*
-			$username        = $_POST['username'];
-			$email           = $_POST['email'];
-			$password        = $_POST['password'];
-			$retypepassword  = $_POST['reTypePassword'];
-			
-			$password_md5    = md5($password);
-			$fname           = $_POST['fname'];
-			$lname           = $_POST['lname'];
-			$mi              = $_POST['mi'];
-			$rdoGender       = $_POST['cboGender'];
-			$contactno       = "+639". $_POST['contactno'];
-			$address         = $_POST['address'];
-			
-			$user_id         = GenerateId();
-			$age             = 18;
-			$profile_pic     = "";
-			$date_joined     = GetDateNow();
-			$mem_type        = "";
-			
-			$invalid_mes     = "";
 
-	*/
 
 	public function registerValidation() {
-		echo "<pre>";
-		print_r( $this->session->all_userdata());
-		echo "</pre>";
 
-		if ( $this->session->userdata('is_logged_in')) {
-			echo "I am already logged in:". $this->session->userdata('username');
-			$this->newUser();
-		} else {
-			echo "Processing New User";
+		$email_exist = true;
+		$user_exist = true;
+		$success_validation 	= false;
+		$tbl_user_info = "users_information";
+		$tbl_user = "users";
+		$error_message = "";
+
+		$user_id 	= $this->_generateId();
+		$email 		= $this->input->post("email");
+		$username 	= $this->input->post("username");
+		$password 	= $this->input->post("password");
+		$reTypePassword = $this->input->post("reTypePassword");
+		$fname 		= $this->input->post("fname");
+		$lname 		= $this->input->post("lname");
+		$mi 		= $this->input->post("mi");
+		$gender 	= $this->input->post("cboGender");
+		$address 	= $this->input->post("address");
+		$contactno 	= $this->input->post("contactno"); 
+		$date_joined = $this->_getDateNow();
+		$profile_pic = "". DEFAULT_IMAGE;
+		$membership_type = "Regular";
+		$position = "0";
+
+		$data = array( "ID" => NULL,
+			"USER_ID"		=> $user_id,
+			"EMAIL_ADDRESS"	=> $email,
+			"FIRST_NAME"   	=> $fname,
+			"LAST_NAME"		=> $lname,
+			"MI"			=> $mi,
+			"GENDER"		=> $gender,
+			"ADDRESS"		=> $address,
+			"CONTACT_NO"	=> $contactno,
+			"DATE_JOINED"	=> $date_joined,
+			"PROFILE_PICTURE"	=> $profile_pic,
+			"MEMBERSHIP_TYPE"	=> $membership_type
+		);
+
+		$data_users =	array("ID" => NULL,
+			"USER_ID" => $user_id,
+			"USERNAME" => $username,
+			"PASSWORD" => $password,
+			"POSITION" => $position
+		);
+
+		//$email_exist =  $this->checkDataExist( $tbl_user_info, "EMAIL_ADDRESS", $email);
+		//$user_exist =  $this->checkDataExist( $tbl_user, "USERNAME", $username);
+
+		if ( $password != $reTypePassword ) {
+			$success_validation= false;
+			$error_message  = "Please Type your password correctly.<br>";
+		} 
+		if ( $email_exist == false ) {
+			$success_validation = true;
+			$error_message = $error_message . "Email Already Used.<br>";
+
+		}
+		if ($user_exist == false) {
+			$success_validation = true;
+			$error_message = $error_message . "Username` Already Used.<br>";
 		}
 
 
-		$this->load->library("form_validation");
+		if ( $success_validation == FALSE ) {
+			$data['error_message'] = $error_message;
 
-		$email 				= "test17@gmail.com";
-		$username 			= "test17";
-		$password   		= "test1";
-		$reTypePassword 	= "test1";
-
-		$password_md5    = md5($password);
-		$fname           = "michael" ;
-		$lname           = "fariscal";
-		$mi              = "x";
-		$rdoGender       = "Male";
-		$contactno       = "32321313123";
-		$address         = "Imusc";
-			
-		$user_id         = $this->GenerateId();
-		$age             = 18;
-		$profile_pic     = DEFAULT_IMAGE;
-		$date_joined     = $this->GetDateNow();
-		$mem_type        = "sdf";
-		$invalid_mes     = "";
-
-		if ( $password != $reTypePassword) {
-			echo "Not The Same";
-		} else {
-			//echo $password_md5;	
-
-		}
-		
-		/*$sql = "INSERT INTO  `users_information` (`ID` ,`USER_ID` ,`FIRST_NAME` ,`LAST_NAME` ,`MI` ,`GENDER` ,`AGE` ,`EMAIL_ADDRESS` ,`ADDRESS` ,`CONTACT_NO` ,`PROFILE_PICTURE` ,`DATE_JOINED` ,`MEMBERSHIP_TYPE`) ";
-				$sql = $sql. " VALUES (NULL ,'". $user_id ."',  '". $fname."',  '".$lname."',  '".$mi."',  '". $rdoGender."',  ". $age .",  '".$email."',  '".$address."',  '".$contactno."',  '".$profile_pic."',  '".$date_joined."',  '".$mem_type."')";*/
-
-
-		/*$SQL = "INSERT INTO `user_information` values(`ID`, `USER_ID`, `FIRST_NAME` , `LAST_NAME` , `MI` , `GENDER` , `AGE` , `EMAIL_ADDRESS` , `ADDRESS`, `CONTACT_NO`, `PROFILE_PICTURE` , `DATE_JOINED` , `MEMBERSHIP_TYPE`)";
-		$SQL = $SQL . " VALUES(NULL, '$user_id' , '$fname' , '$lname' , '$mi' , '$rdoGender' , {$age} , '$email' , '$address' , '$contactno' , '$profile_pic' , {$date_joined} , '{$mem_type}')";*/
-
-		$data_register = array('ID' => NULL,
-			'USER_ID' 		=> $user_id,
-			'FIRST_NAME' 	=> $fname,
-			'LAST_NAME' 	=> $lname,
-			'MI' 			=> $mi,
-			'GENDER' 		=> $rdoGender,
-			'AGE'			=> $age, 
-			'EMAIL_ADDRESS' => $email,
-			'ADDRESS' 		=> $address,
-			'PROFILE_PICTURE' => $profile_pic,
-			'CONTACT_NO' 	=> $contactno,
-			'DATE_JOINED' 	=> $date_joined,
-			'MEMBERSHIP_TYPE' => $mem_type);
-
-		$data_user = array('ID' => NULL,
-			'USER_ID' 	=> $user_id,
-			'USERNAME' 	=> $username,
-			'PASSWORD' 	=> $password_md5,
-			'POSITION' 	=> $mem_type);
-
-
-		//check email exists
-		$SQL = "SELECT `ID` FROM `users_information` WHERE `EMAIL_ADDRESS` = '{$email}'";
-		$query = $this->db->query($SQL);
-
-		$SQL_USERS = "SELECT `ID` FROM `users` WHERE `USERNAME` = '{$username}'";
-		$query_users = $this->db->query($SQL_USERS);
-		if ( $query->num_rows() >= 1) {
-			echo "Email already exists";
-		} else if( $query_users->num_rows() >= 1 ) {
-			echo "Username already exists";
+			echo $error_message;
+			//redirect( base_url().'site/register');
 			
 		} else {
-			$query = $this->db->insert('users_information', $data_register);
-			if ($query == 1 ){
-				$query_users = $this->db->insert('users', $data_user);
-				if ( $query_users == 1) {
-					$data = array(
-						'username' => $username,
-						'is_logged_in' => 1
-					);
+			$query = $this->db->insert("users_information", $data);
+			if ( $query != 1) {
+				echo "error";
 
-					echo "New User created";
-					$this->session->set_userdata( $data );
-					$this->newUser();
-					
+			} else {
+				$query_user = $this->db->insert("users", $data_users);
+				if ( $query_user != 1) {
+					echo "Eror";
+				} else {
+					$this->load->model("models_users");
+					$this->models_users->saveUserSession( $username, $user_id);
+					redirect("". base_url(). "site/index");
 				}
 			}
 		}
-		//check similary of retyPassword [X]
-		//convert to md5 					[x]
-		//CheckEmailExist;					[x]
-		//Insert new register user in user_information [x]
-		//directly login the user//
-
-
-			/*$email 				= $this->input->post("email");
-		$username 			= $this->input->post("username");
-		$password   		= $this->input->post("password");
-		$reTypePassword 	= $this->input->post("reTypePassword");
-
-		$password_md5    = md5($password);
-		$fname           = $this->input->post('fname');
-		$lname           = $this->input->post('lname');
-		$mi              = $this->input->post('mi');
-		$rdoGender       = $this->input->post('cboGender');
-		$contactno       = "+639". $this->input->post('contactno');
-		$address         = $this->input->post('address');
-			
-		$user_id         = $this->GenerateId();
-		$age             = 18;
-		$profile_pic     = DEFAULT_IMAGE;
-		$date_joined     = $this->GetDateNow();
-		$mem_type        = "";
-		$invalid_mes     = "";*/
-
-		
+		/*
+		* Added: add md5 encryption to password
+		* Error : existing email & username undetected
+		*/
 
 	}
 
 
-	private function checkEmailExist( $email = "" ){
-
-
-
+	private function checkDataExist( $table_name = "", $table_column = "", $data ="") {
+		$SQL = "SELECT `USER_ID` FROM `{$table_name}` WHERE `$table_column` = '{$data}'";
+		$query = $this->db->query( $SQL );
+		if ( $query->num_rows() <= 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public function newUser(){
-		echo "<pre>";
-		print_r($this->session->all_userdata());
-		echo "</pre>";
 
-		echo "<a href=logout> Logout</a>";
 
 	}
 
 	public function logout(){
-		$this->session->sess_destroy();
-
-		echo "<pre>";
-		print_r($this->session->all_userdata());
-		echo "</pre";
-
-
 
 
 

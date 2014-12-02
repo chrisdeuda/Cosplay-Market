@@ -19,7 +19,7 @@
                 <div style="clear: both;">&nbsp;</div>
 
                 
-                  <div id="erro" class="error_message" >
+                  <div id="error" class="error_message" >
                  <?php
                         $this->load->helper("form");
                         $attribute = array('id' => 'frmLogin');

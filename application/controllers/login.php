@@ -4,37 +4,35 @@ class Login extends CI_Controller {
 
 	public function processForm(){
 		$this->load->library("form_validation");
-		$this->form_validation->set_rules("username","Username","required|xss_clean");
-		$this->form_validation->set_rules("password","Password","required|xss_clean");
-		//$this->form_validation->set_error_delimiters('<p class="error_message">Error: ', '</p>');
 
-		if($this->form_validation->run() == FALSE ){
+		$this->form_validation->set_rules("username", "Username", "required");
+		$this->form_validation->set_rules("password", "Password", "required");
+
+		if( $this->form_validation->run() == FALSE) {
 			$this->load->model("models_display");
 			$this->models_display->displayLoginError();
 		} else {
+			$username = $this->input->post("username");
+			$password = $this->input->post("password");
 
-			$username = $_POST['username'];
-			$password =$_POST['password'];
-			$user_id  = "";
+			$SQL = "SELECT * FROM `users` WHERE `USERNAME` = ? AND PASSWORD = ?";
+			$query = $this->db->query( $SQL, array($username, $password));
 
-			$this->load->model("models_login");	
-			$user_id = $this->models_login->getUserId($username,$password);
-
-			if ( $user_id === -1) {
-
-				$message['error_message'] = "Please Check you usename and Password !";
-				$data['css_ref1'] = '<link href="'. base_url() .'stylesheet/registration.css" rel="stylesheet" type="text/css" />';
-				$this->load->view('include/site_header', $data);
-				$this->load->view('include/site_nav');
-				$this->load->view('login_error', $message);
-				$this->load->view('include/site_footer');
-
+			if ( $query->num_rows() <= 0) {
+				$data['error_message'] = "Please Check your Username/Password !";
+				$this->load->model("models_display");
+				$this->models_display->displayLoginError($data);
 			} else {
-				//echo "Savin user account:". $user_id;
-				//Save User ID in SESSION _VARIABLES
-				$this->models_login->test();
+				$row = $query->row();
+				$this->load->model("models_users");
+				$this->models_users->saveUserSession( $row->USERNAME, $row->USER_ID);
+				redirect("". base_url(). "site/index");
 			}
 		}
+	}
+	public function logout(){
+		$this->load->model("models_users");
+		$this->models_users->logoutUser();
 	}
 }
 ?>

@@ -10,18 +10,18 @@
 		</table>
 
           <div class="reg-form">
-          
+
           <?php
-          $this->load->helper("form");
-          $attribute = array("id" => "form1");
-          $action = base_url(). 'user/registerValidation';
+            $this->load->helper("form");
 
-          echo form_open($action, $attribute);
+            $attributes = array( "id" => "form1");
+            $action = base_url(). 'user/registerValidation';
 
-          echo "fuck u";
+            echo form_open( $action, $attributes);
+
           ?>
 
-
+        
             <table width="100%" border="0">
                       <tr>
                         <td width="13%" id="email"><label for="email">Email:</label></td>

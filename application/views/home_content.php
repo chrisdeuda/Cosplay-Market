@@ -42,20 +42,27 @@
 		<div id="sidebar">
 			<ul>
 				<li>
+
+        <?php
+          if ( $this->session->userdata("is_logged_in") == false) { ?>
+
                 <h2>Login</h2>
                       <center>
                       <?php
                         $this->load->helper("form");
-                        $attribute = array('id' => 'frmLogin');
-                        $action = base_url().'login/processForm';
-                        echo validation_errors();
-                        echo form_open($action, $attribute);
+                        $attributes = array(
+                          'id' => 'frmLogin'
+                        );
+
+                        $action = base_url()."login/processForm";
+                        echo form_open($action, $attributes);
                       ?>
+                      <form id="frmLogin">
                           <table width="200">
                               <tr>
                                 <td><strong>Username:</strong></td>
                                 <td><label for="username"></label>
-                                <input name="username" type="text" id="username" value="<?php echo set_value('username')?>" /></td>
+                                <input name="username" type="text" id="username" value="" /></td>
                             </tr>
                               <tr>
                                 <td><strong>Password:</strong></td>
@@ -66,11 +73,24 @@
                                 <td><a href="<?php echo base_url().'site/register';?>">Register ?</a></td>
                                 <td align="center"><input class="button" type="submit" name="login" id="login" value="Login" /></td>
                             </tr>
-                      	</table>
-                      <?php echo form_close();?>
+                        </table>
+                      </form>
                       </center>
                 </li> 
-               <li>
+               <li> 
+          ?>
+
+          <?php
+          } else { ?>
+
+                <h2>Welcome <?php echo $this->session->userdata("username"); ?></h2>
+                <ul style="align-text:center;">
+                  <li><a href="<?php echo "#"?>">  Profile</a></li>
+                  <li><a href="<?php echo base_url().'login/logout';?>"> Logout</a></li>
+                </ul>
+                
+       <?php   } ?>
+
                     <h2>Post your Feed Back here</h2>
                     <form action="" method="POST">
                           <fieldset><legend>Send Us Feedback</legend>

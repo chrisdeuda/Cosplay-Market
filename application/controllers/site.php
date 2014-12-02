@@ -26,7 +26,6 @@ class Site extends CI_Controller {
 		$this->load->model("models_display");
 		$this->models_display->displayLoginError();
 	}
-
 }
 
 ?>
