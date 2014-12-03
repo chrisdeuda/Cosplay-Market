@@ -40,7 +40,7 @@
               <td ><a href="#">Reserved Item(0)</a></td>
             </tr>
             <tr> 
-              <td ><a href="">Add New Item</a></td>
+              <td ><a href="<?php echo base_url(). 'user/seller_add_item';?>">Add New Item</a></td>
             </tr>
           </table>
           <p></p>

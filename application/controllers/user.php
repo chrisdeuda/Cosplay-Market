@@ -17,7 +17,6 @@ class User extends CI_Controller {
 		return $user_id;
 	}
 	
-
 	private function _getDateNow(){
 		$date = date ('Y-m-d');
 		return $date;
@@ -30,7 +29,6 @@ class User extends CI_Controller {
 		return $actual_time;
 	
 	}
-
 
 
 	public function registerValidation() {
@@ -125,7 +123,6 @@ class User extends CI_Controller {
 		*/
 	}
 
-
 	private function checkDataExist( $table_name = "", $table_column = "", $data ="") {
 		$SQL = "SELECT `USER_ID` FROM `{$table_name}` WHERE `$table_column` = '{$data}'";
 		$query = $this->db->query( $SQL );
@@ -146,7 +143,8 @@ class User extends CI_Controller {
 
 
 	}
-	public function seller_profile() {
+	
+        public function seller_profile() {
 		$this->load->model("models_display");
 		$this->load->model("models_users");
 		
@@ -161,9 +159,46 @@ class User extends CI_Controller {
 			$this->models_display->displayLoginError($data);
 		}
 		
-
-		//$this->load->view("test", $query_data);
-		//$this->load->view("test", $query_data);
 	}
+
+	public function seller_add_item() {
+		$this->load->model("models_display");
+		$this->models_display->displayAddItem();
+
+	}
+        
+        public function do_upload(){
+            
+            //ERROR; THe file seems not writable
+            
+            $upload_path = "D:\\";
+            
+            echo "path ".$upload_path;
+            //if (chmod( $upload_path, 755)){
+                
+              //  echo "change something";
+            //}
+            
+            $config['upload_path'] = $upload_path;
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size'] ='100';
+            $config['max_width'] = '1024';
+            $config['max_height'] = '768';
+            $config['encrypt_name'] = TRUE;
+            
+
+            $this->load->library("upload", $config);
+
+            if (! $this->upload->do_upload()) {
+                    $error = array("error" => $this->upload->display_errors());
+                    print_r($error);
+                    //$this->load->view("upload_add_item_error", $error);
+            } else {
+                    $data = array('upload_data' => $this->upload->data());
+                    $this->load->view("user_add_item_success", $data);
+            }
+        }
+        
+        
 }
 ?>

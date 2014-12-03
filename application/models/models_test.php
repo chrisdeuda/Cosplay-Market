@@ -2,19 +2,13 @@
 
 class Models_Test extends CI_Model{
 
-
-
-	public function get_user_profile( $table_name = "", $user_id = "") {
-		$SQL = "SELECT * FROM `{$table_name}` WHERE `USER_ID` = '{$user_id}'";
-		$data =  array();
-		$query = $this->db->query( $SQL );
-		if ( $query->num_rows() <= 0) {
-			return $data;
-		} else {
-			$data = $query->row_array();
-			return $data;
-		}
+	public function test() {
+		$this->load->view('include/site_header');
+		$this->load->view('include/site_nav');
+		$this->load->view('user_add_item');
+		$this->load->view('include/site_footer');
 	}
+
 }
 
 ?>
