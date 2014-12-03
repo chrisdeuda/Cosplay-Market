@@ -1,8 +1,21 @@
 SMALLER TASK
+[] Email Vaildation
+[] Login User
+[] Registration User
 
 
 
-LARGET TASK
+LARGER TASK
+
+[] Admin Account
+[] Uploading of Images
+	[] User Profile Picture
+	[] User Items
+[] Search Engine
+	[] Creating Queries
+	[] Display Result of Queries (Graphically)
+[] Viewing of items after search
+[] Reservation of Items
 
 
 
