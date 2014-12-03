@@ -48,6 +48,14 @@ class Models_Display extends CI_Model{
 		$this->load->view('login_error', $message);
 		$this->load->view('include/site_footer');
 	}
+
+	public function displayProfile( $data ){
+		$this->load->view('include/site_header');
+		$this->load->view('include/site_nav');
+		$this->load->view('user_profile', $data);
+		$this->load->view('include/site_footer');
+	}
+
 }
 
 ?>

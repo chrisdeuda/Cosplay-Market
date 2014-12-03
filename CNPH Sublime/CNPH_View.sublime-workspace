@@ -23,24 +23,36 @@
 			"file": "/C/xampp/htdocs/CosplayMarket/application/views/home_content.php",
 			"settings":
 			{
-				"buffer_size": 5261,
+				"buffer_size": 5748,
 				"line_ending": "Windows"
 			}
 		},
 		{
+			"contents": "<div id=\"page\">\n      <div id=\"whole-content\"> \n        	<table width=\"100%\" border=\"0\">\n              <tr>\n                <td width=\"230\">\n                   <p><img src=\"<?php echo base_url().'images/anime/haruhi.png'; ?> \" alt=\"\" width=\"210\" height=\"140\" /></p></td>\n                <td width=\"666\"><h2>Membership</h2>\n                      <p>Note: Please use only a valid information upon registration . All of the details you will provide here will be very helpful for every transaction that you will be engage in.</p></td>\n              </tr>\n		</table>\n\n          <div class=\"reg-form\">\n\n          <?php\n            $this->load->helper(\"form\");\n\n            $attributes = array( \"id\" => \"form1\");\n            $action = base_url(). 'user/registerValidation';\n\n            echo form_open( $action, $attributes);\n\n          ?>\n\n        \n            <table width=\"100%\" border=\"0\">\n                      <tr>\n                        <td width=\"13%\" id=\"email\"><label for=\"email\">Email:</label></td>\n                        <td width=\"5%\" id=\"email\">&nbsp;</td>\n                        <td width=\"33%\"><span id=\"sprytextfield1\">\n                          <input name=\"email\" type=\"text\" class=\"reg-text-fields\" id=\"email\" value=\"<?php echo @$email;?>\"/>\n                          <span class=\"textfieldRequiredMsg\"> Email is required</span></span></td>\n                        <td width=\"49%\"><div class=\"guidelines\"> Please add you a valid email <br /> \n                        because it will be used to authenticate your account</div></td>\n                        \n                      </tr>\n                      <tr>\n                        <td><label for=\"username\">Username:</label></td>\n                        <td>&nbsp;</td>\n                        <td><span id=\"sprytextfield2\">\n                          <input name=\"username\" type=\"text\" class=\"reg-text-fields\" id=\"username\" value=\"\" />\n                          <span class=\"textfieldRequiredMsg\">A value is required.</span></span></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td><label for=\"password\">Pick Password:</label></td>\n                        <td>&nbsp;</td>\n                        <td><span id=\"sprytextfield3\">\n                          <input name=\"password\" type=\"password\" class=\"reg-text-fields\" id=\"password\"  value=\"\"/>\n                          <span class=\"textfieldRequiredMsg\">A value is required.</span></span></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td><label for=\"reTypePassword\">Retype Password</label></td>\n                        <td>&nbsp;</td>\n                        <td><span id=\"sprytextfield4\">\n                          <input name=\"reTypePassword\" type=\"password\" class=\"reg-text-fields\" id=\"reTypePassword\" />\n                          <span class=\"textfieldRequiredMsg\">A value is required.</span></span></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td>&nbsp;</td>\n                        <td>&nbsp;</td>\n                        <td>&nbsp;</td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>  \n                        <td><h2><strong>Personal Information</strong></h2></td>\n                        <td>&nbsp; </td>\n                        <td colspan=\"2\"><div class=\"guidelines\"> Please Include your Personal Information that will be displayed every item you have a transaction </div></td>\n                        \n                      </tr>\n                      <tr>\n                        <td><label for=\"fname\">First Name:</label></td>\n                        <td>&nbsp;</td>\n                        <td><span id=\"sprytextfield5\">\n                        <input name=\"fname\" type=\"text\" class=\"reg-text-fields\" id=\"fname\" value=\"<?php echo @$fname;?>\" />\n                        <span class=\"textfieldRequiredMsg\">A value is required.</span></span></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td><label for=\"lname\">Last Name:</label></td>\n                        <td>&nbsp;</td>\n                        <td><span id=\"sprytextfield6\">\n                          <input name=\"lname\" type=\"text\" class=\"reg-text-fields\" id=\"lname\" value=\"<?php echo @$lname;?>\"/>\n                          <span class=\"textfieldRequiredMsg\">A value is required.</span></span></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td><label for=\"mi\">Middle Initial:</label></td>\n                        <td>&nbsp;</td>\n                        <td><span id=\"sprytextfield7\">\n                          <input name=\"mi\" type=\"text\" class=\"reg-text-fields\" id=\"mi\" value=\"<?php echo @$mi?>\"/>\n                          <span class=\"textfieldRequiredMsg\">A value is required.</span></span></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td><label for=\"cboGender\">Gender:</label></td>\n                        <td>&nbsp;</td>\n                        <td align=\"center\"><p>\n                          \n                          <span id=\"spryselect1\">\n                          <select class=\"reg-text-fields\" name=\"cboGender\" id=\"cboGender\" value=\"<?php echo @$rdoGender;?>\">\n                            <option>----SELECT GENDER ----</option>\n                            <option value=\"Male\">Male</option>\n                            <option value=\"Female\">Female</option>\n                          </select>\n                          <span class=\"selectRequiredMsg\">Please select an item.</span></span></p></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td><label for=\"address\">Address</label>\n                          :</td>\n                        <td>&nbsp;</td>\n                        <td><span id=\"sprytextfield10\">\n                          <input name=\"address\" type=\"text\" class=\"reg-text-fields\" id=\"address\"  value=\"<?php echo @$address;?>\"/>\n                          <span class=\"textfieldRequiredMsg\">A value is required.</span></span></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td><label for=\"contactno\">Contact Number</label></td>\n                        <td>+639</td>\n                        <td><span id=\"sprytextfield9\">\n                        <input name=\"contactno\" type=\"text\" class=\"reg-text-fields\" id=\"contactno\" value=\"<?php echo @$contactno;?>\"/>\n                        <span class=\"textfieldRequiredMsg\">A value is required.</span><span class=\"textfieldInvalidFormatMsg\">Invalid format.</span><span class=\"textfieldMaxCharsMsg\">Exceeded maximum number of characters.</span></span></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                        <td><p>&nbsp;</p></td>\n                        <td>&nbsp;</td>\n                        <td align=\"center\"><input class=\"button\" type=\"submit\" name=\"register\" id=\"register\" value=\"Register Account\" /></td>\n                        <td>&nbsp;</td>\n                      </tr>\n                      <tr>\n                          <td><p><?php $txt = \"hello wordl\"; echo \"<br> $txt\"?> </p> </td>\n                      </tr>\n            </table>\n		</form>\n	</div>\n              <!-- end div-->\n      </div>\n          <p>&nbsp;</p>\n      	  <p>&nbsp;</p>\n      	  <p>&nbsp;</p>\n      	  <p>&nbsp;</p>\n	 </div>\n    \n      </div>\n      <!--end of #big-content-->\n		<div style=\"clear: both;\">&nbsp;</div>\n	</div>\n	<!-- end #page -->\n\n<script type=\"text/javascript\">\n  var sprytextfield9 = new Spry.Widget.ValidationTextField(\"sprytextfield9\", \"integer\", {useCharacterMasking:true, maxChars:9});\n  var sprytextfield10 = new Spry.Widget.ValidationTextField(\"sprytextfield10\");\n  var sprytextfield7 = new Spry.Widget.ValidationTextField(\"sprytextfield7\");\n  var sprytextfield6 = new Spry.Widget.ValidationTextField(\"sprytextfield6\");\n  var sprytextfield5 = new Spry.Widget.ValidationTextField(\"sprytextfield5\", \"none\");\n  var sprytextfield4 = new Spry.Widget.ValidationTextField(\"sprytextfield4\");\n  var sprytextfield3 = new Spry.Widget.ValidationTextField(\"sprytextfield3\");\n  var sprytextfield2 = new Spry.Widget.ValidationTextField(\"sprytextfield2\");\n  var sprytextfield1 = new Spry.Widget.ValidationTextField(\"sprytextfield1\");\n  var spryselect1 = new Spry.Widget.ValidationSelect(\"spryselect1\");\n</script>",
 			"file": "/C/xampp/htdocs/CosplayMarket/application/views/register_content.php",
+			"file_size": 8869,
+			"file_write_time": 130619744743594407,
 			"settings":
 			{
-				"buffer_size": 8572,
+				"buffer_size": 8704,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/xampp/htdocs/CosplayMarket/application/views/register.php",
+			"file": "/C/xampp/htdocs/CosplayMarket/application/views/login_error.php",
 			"settings":
 			{
-				"buffer_size": 13806,
+				"buffer_size": 2615,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php echo \"something\"; ?>",
+			"settings":
+			{
+				"buffer_size": 26,
+				"line_ending": "Windows",
+				"name": "<?php echo \"something\"; ?>"
 			}
 		}
 	],
@@ -89,6 +101,7 @@
 	],
 	"file_history":
 	[
+		"/C/xampp/htdocs/CosplayMarket/.git/COMMIT_EDITMSG",
 		"/C/xampp/htdocs/citestsite/application/views/login_error.php",
 		"/C/xampp/htdocs/citestsite/application/views/include/site_header.php",
 		"/C/xampp/htdocs/citestsite/application/views/register_content.php",
@@ -176,7 +189,7 @@
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -220,45 +233,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5261,
+						"buffer_size": 5748,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2860,
-								2516
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 585.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/xampp/htdocs/CosplayMarket/application/views/register_content.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8572,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								841,
-								841
+								4412,
+								4412
 							]
 						],
 						"settings":
@@ -271,24 +254,24 @@
 						"translation.y": 180.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "/C/xampp/htdocs/CosplayMarket/application/views/register.php",
-					"semi_transient": true,
+					"buffer": 1,
+					"file": "/C/xampp/htdocs/CosplayMarket/application/views/register_content.php",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13806,
+						"buffer_size": 8704,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5732,
-								5732
+								7497,
+								7497
 							]
 						],
 						"settings":
@@ -298,7 +281,65 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1963.0,
+						"translation.y": 1575.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/xampp/htdocs/CosplayMarket/application/views/login_error.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2615,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1123,
+								1123
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 360.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 26,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								24,
+								24
+							]
+						],
+						"settings":
+						{
+							"auto_name": "<?php echo \"something\"; ?>",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,

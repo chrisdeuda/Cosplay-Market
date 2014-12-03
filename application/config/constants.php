@@ -48,6 +48,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 |
 */
 define('DEFAULT_IMAGE',					'images/default.jpg');
+define('TBL_USER_PROFILE',					'users_information');
 
 
 

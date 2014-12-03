@@ -120,10 +120,9 @@ class User extends CI_Controller {
 			}
 		}
 		/*
-		* Added: add md5 encryption to password
+		* NOTE: add md5 encryption to password
 		* Error : existing email & username undetected
 		*/
-
 	}
 
 
@@ -147,7 +146,24 @@ class User extends CI_Controller {
 
 
 	}
+	public function seller_profile() {
+		$this->load->model("models_display");
+		$this->load->model("models_users");
+		
+		if ($this->session->userdata('is_logged_in') == TRUE ) {
+			$user_id = $this->session->userdata("user_id");
+			$this->load->model("models_users");
+			$query_data = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
+			$this->models_display->displayProfile($query_data);
+		} else {
+			$data['error_message'] = "You must logged first to view your Profile !";
+			$this->load->model("models_display");
+			$this->models_display->displayLoginError($data);
+		}
+		
+
+		//$this->load->view("test", $query_data);
+		//$this->load->view("test", $query_data);
+	}
 }
-
-
 ?>

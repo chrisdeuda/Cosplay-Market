@@ -130,6 +130,9 @@
                         <td align="center"><input class="button" type="submit" name="register" id="register" value="Register Account" /></td>
                         <td>&nbsp;</td>
                       </tr>
+                      <tr>
+                          <td><p><?php $txt = "hello wordl"; echo "<br> $txt"?> </p> </td>
+                      </tr>
             </table>
 		</form>
 	</div>

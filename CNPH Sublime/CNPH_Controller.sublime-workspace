@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"err",
+				"error_message"
+			],
+			[
+				"user",
+				"user_exist"
+			],
+			[
+				"save",
+				"saveUserSession"
+			],
+			[
+				"new",
+				"newUser"
+			],
+			[
 				"passwo",
 				"password_md5"
 			],
@@ -27,7 +43,7 @@
 			"file": "/C/xampp/htdocs/CosplayMarket/application/controllers/user.php",
 			"settings":
 			{
-				"buffer_size": 5077,
+				"buffer_size": 3592,
 				"line_ending": "Windows"
 			}
 		},
@@ -35,7 +51,7 @@
 			"file": "/C/xampp/htdocs/CosplayMarket/application/controllers/site.php",
 			"settings":
 			{
-				"buffer_size": 700,
+				"buffer_size": 699,
 				"line_ending": "Unix"
 			}
 		},
@@ -43,7 +59,7 @@
 			"file": "/C/xampp/htdocs/CosplayMarket/application/controllers/login.php",
 			"settings":
 			{
-				"buffer_size": 1349,
+				"buffer_size": 1235,
 				"line_ending": "Windows"
 			}
 		}
@@ -214,15 +230,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5077,
+						"buffer_size": 3592,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5070,
-								5070
+								1465,
+								1465
 							]
 						],
 						"settings":
@@ -231,7 +247,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1413.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -243,15 +259,44 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 700,
+						"buffer_size": 699,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								453,
-								453
+								691,
+								691
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/xampp/htdocs/CosplayMarket/application/controllers/login.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1235,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1230,
+								1230
 							]
 						],
 						"settings":
@@ -264,35 +309,6 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/xampp/htdocs/CosplayMarket/application/controllers/login.php",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 1349,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								816,
-								816
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				}
 			]

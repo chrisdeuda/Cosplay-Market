@@ -20,10 +20,26 @@
 	"buffers":
 	[
 		{
+			"file": "/C/xampp/htdocs/CosplayMarket/application/models/models_display.php",
+			"settings":
+			{
+				"buffer_size": 1888,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "/C/xampp/htdocs/CosplayMarket/application/models/models_login.php",
 			"settings":
 			{
 				"buffer_size": 580,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/xampp/htdocs/CosplayMarket/application/models/models_users.php",
+			"settings":
+			{
+				"buffer_size": 368,
 				"line_ending": "Windows"
 			}
 		}
@@ -195,19 +211,19 @@
 			[
 				{
 					"buffer": 0,
-					"file": "/C/xampp/htdocs/CosplayMarket/application/models/models_login.php",
-					"semi_transient": true,
+					"file": "/C/xampp/htdocs/CosplayMarket/application/models/models_display.php",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 580,
+						"buffer_size": 1888,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								408,
-								408
+								655,
+								655
 							]
 						],
 						"settings":
@@ -220,6 +236,63 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/xampp/htdocs/CosplayMarket/application/models/models_login.php",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 580,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								44,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/xampp/htdocs/CosplayMarket/application/models/models_users.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 368,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								282,
+								272
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]

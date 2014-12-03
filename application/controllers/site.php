@@ -26,6 +26,11 @@ class Site extends CI_Controller {
 		$this->load->model("models_display");
 		$this->models_display->displayLoginError();
 	}
+
+	public function profile(){
+		$this->load->model("models_display");
+		$this->models_display->displayProfile();
+	}
 }
 
 ?>

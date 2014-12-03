@@ -85,7 +85,7 @@
 
                 <h2>Welcome <?php echo $this->session->userdata("username"); ?></h2>
                 <ul style="align-text:center;">
-                  <li><a href="<?php echo "#"?>">  Profile</a></li>
+                  <li><a href="<?php echo base_url().'user/seller_profile'?>">  Profile</a></li>
                   <li><a href="<?php echo base_url().'login/logout';?>"> Logout</a></li>
                 </ul>
                 
