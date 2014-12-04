@@ -10,12 +10,38 @@
                 $action = base_url().'user/do_upload';
                 $attributes = array("id" => "form1");
                 
-                
-            
-            
             echo form_open_multipart( $action, $attributes);?>
-
-            <input type="file" name="userfile" size="20" />
+                <table border="1">
+                    <tr>
+                        <td>Item Name </td>
+                        <td><input type="input" name="item_name" value="" id="item_name" /></td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td>
+                         <select name="item_category" id="item_category">
+                            <option>-----CATEGORY-----</option>
+                            <option value="costume">Costumes</option>
+                            <option value="toy">Toys Figures</option>
+                            <option value="contact lense">Contact Lense</option>
+                            <option value="wigs">Wigs</option>
+                            </select>
+                        </td
+                    </tr>
+                      <tr>
+                        <td>Quantity </td>
+                        <td><input type="input" name="item_quantity" value="" id="item_quantity" /></td>
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td><input type="input" name="item_price" value="" id="item_quantity" /></td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td><input type="input" name="item_description" value="" id="item_quantity" /></td>
+                    </tr>
+                </table>
+                <input type="file" name="userfile" size="20" />
 
             <br /><br />
 

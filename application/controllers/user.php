@@ -30,11 +30,10 @@ class User extends CI_Controller {
 	
 	}
 
-
 	public function registerValidation() {
 
-		$email_exist = true;
-		$user_exist = true;
+		$email_exist    = true;
+		$user_exist     = true;
 		$success_validation 	= false;
 		$tbl_user_info = "users_information";
 		$tbl_user = "users";
@@ -101,11 +100,11 @@ class User extends CI_Controller {
 			echo $error_message;
 			//redirect( base_url().'site/register');
 			
+			
 		} else {
 			$query = $this->db->insert("users_information", $data);
 			if ( $query != 1) {
 				echo "error";
-
 			} else {
 				$query_user = $this->db->insert("users", $data_users);
 				if ( $query_user != 1) {
@@ -157,8 +156,7 @@ class User extends CI_Controller {
 			$data['error_message'] = "You must logged first to view your Profile !";
 			$this->load->model("models_display");
 			$this->models_display->displayLoginError($data);
-		}
-		
+		}	
 	}
 
 	public function seller_add_item() {
@@ -167,11 +165,9 @@ class User extends CI_Controller {
 
 	}
         
-        public function do_upload(){
-            
+        public function do_upload(){   
             //ERROR; THe file seems not writable
-            
-            $upload_path = "D:\\";
+            $upload_path = "./application/uploads/";
             
             echo "path ".$upload_path;
             //if (chmod( $upload_path, 755)){
@@ -195,10 +191,63 @@ class User extends CI_Controller {
                     //$this->load->view("upload_add_item_error", $error);
             } else {
                     $data = array('upload_data' => $this->upload->data());
-                    $this->load->view("user_add_item_success", $data);
+                    
+                    $info['ID']             = NULL;
+                    $info['ITEM_ID']        = $this->_generateId();
+                    $info['USER_ID']        = $this->session->userdata("user_id");
+                    $info['NAME']           = $this->input->post("item_name");
+                    $info['CATEGORY']       = $this->input->post("item_category");
+                    $info['PRICE']          = $this->input->post("item_price");
+                    $info['QUANTITY']       = $this->input->post("item_quantity");
+                    $info['DESCRIPTION']    = $this->input->post("item_description");
+                    $info['DATE_ADDED']     = $this->_getDateNow();
+                    $info['DATE_MODIFIED']  = $this->_getDateNow();
+                    $info['AVAILABILITY']   = 0;
+                    
+                    $image_info["USER_ID"]  = $info['USER_ID'];
+                    $image_info["NAME"]     = $data['upload_data']["file_name"];
+                    $image_info["ITEM_ID"]  = $info['USER_ID'];
+                    $image_info["LOCATION"] = $data['upload_data']['file_path'];
+                    $image_info['DATE_ADDED']     = $this->_getDateNow();
+                    $image_info['DATE_MODIFIED']  = $this->_getDateNow();
+                    
+                    echo "<pre>";
+                    print_r($info);
+                    print_r( $image_info );
+                    
+                    echo "<pre";
+                    
+                    
+                    echo "<p style='color:green;'> Save Success</p>";
+                    $this->_saveData( "item_list", $info);
+                    $this->_saveData( "item_image", $image_info);
+                    
+                   
+                    //$this->load->view("user_add_item_success", $data);
             }
+        }        
+        
+        //save db
+        //add validation
+        
+        
+        public function checkItemInfo(){
+            
+            
+            
+            
         }
         
+
+        public function _saveData( $table_name, $data_to_save ){
+            $query_user = $this->db->insert( $table_name, $data_to_save );
+            if ( ! $query_user ) {
+                   echo "Error";
+            } else {
+                echo "Saving Info Success";
+            }
+            
+        }
         
 }
 ?>
