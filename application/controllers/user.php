@@ -164,17 +164,19 @@ class User extends CI_Controller {
 		$this->models_display->displayAddItem();
 
 	}
-        
+        /* Unfinished:
+         *  validation of user info
+         * checking if folder name exist if not Create New folder base on user id in default directory
+         * Refactoring the Codes being used herr
+         */
         public function do_upload(){   
-            //ERROR; THe file seems not writable
-            $upload_path = "./application/uploads/";
+            $folder_name = $this->session->userdata("user_id");
+            $save_path = DEFAULT_UPLOAD. $folder_name;
+            $upload_path = UPLOAD_SIGN. $save_path;
+            
             
             echo "path ".$upload_path;
-            //if (chmod( $upload_path, 755)){
-                
-              //  echo "change something";
-            //}
-            
+
             $config['upload_path'] = $upload_path;
             $config['allowed_types'] = 'gif|jpg|png';
             $config['max_size'] ='100';
@@ -182,7 +184,6 @@ class User extends CI_Controller {
             $config['max_height'] = '768';
             $config['encrypt_name'] = TRUE;
             
-
             $this->load->library("upload", $config);
 
             if (! $this->upload->do_upload()) {
@@ -207,7 +208,7 @@ class User extends CI_Controller {
                     $image_info["USER_ID"]  = $info['USER_ID'];
                     $image_info["NAME"]     = $data['upload_data']["file_name"];
                     $image_info["ITEM_ID"]  = $info['USER_ID'];
-                    $image_info["LOCATION"] = $data['upload_data']['file_path'];
+                    $image_info["LOCATION"] = $save_path;
                     $image_info['DATE_ADDED']     = $this->_getDateNow();
                     $image_info['DATE_MODIFIED']  = $this->_getDateNow();
                     
@@ -216,8 +217,6 @@ class User extends CI_Controller {
                     print_r( $image_info );
                     
                     echo "<pre";
-                    
-                    
                     echo "<p style='color:green;'> Save Success</p>";
                     $this->_saveData( "item_list", $info);
                     $this->_saveData( "item_image", $image_info);
@@ -246,8 +245,7 @@ class User extends CI_Controller {
             } else {
                 echo "Saving Info Success";
             }
-            
         }
-        
+       
 }
 ?>
