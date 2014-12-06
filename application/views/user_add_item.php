@@ -53,15 +53,14 @@
           <!--end of #big-content-->
 
           <!--side bar will be loaded by the controller-->
-<!--
-          <?php
-            $data['DATE_JOINED']      = $DATE_JOINED;
-            $data['MEMBERSHIP_TYPE']  = $MEMBERSHIP_TYPE;
-            $data['PROFILE_PICTURE']  = $PROFILE_PICTURE;
 
-              $this->load->view('user_sidebar', $data );    
+          <?php
+            $data['DATE_JOINED']      = $User->DATE_JOINED;
+            $data['MEMBERSHIP_TYPE']  = $User->MEMBERSHIP_TYPE;
+            $data['PROFILE_PICTURE']  = $User->PROFILE_PICTURE;
+            $this->load->view('user_sidebar', $data );    
           ?>
--->
+
 
 
       

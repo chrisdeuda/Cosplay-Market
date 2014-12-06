@@ -41,8 +41,7 @@ class Models_Users extends CI_Model{
 		if ( $query->num_rows() <= 0) {
 			return $data;
 		} else {
-			$data = $query->row_array();
-			return $data;
+			return $query->row();
 		}
 	}
 

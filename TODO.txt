@@ -1,7 +1,7 @@
 SMALLER TASK
 [] Email Vaildation
-[] Login User
-[] Registration User
+[x] Login User
+[x] Registration User
 
 
 
@@ -9,11 +9,12 @@ LARGER TASK
 
 [] Admin Account
 [] Uploading of Images
-	[] Uploading the Images
-	[] Make the web pages LInk of Uploading connected to main form
-	[] Uploading of Images
-	[] Saving the Images Path
-	[] Processing the forms
+	[X] Uploading the Images
+	[X] Make the web pages LInk of Uploading connected to main form
+	[X] Saving the Images Path
+	[X] Processing the forms
+	[] Adding Validation of form
+	[] Viewing of Uploaded Items
 	[] Saving the the other Data to Item_List
 	[] User Profile Picture
 	[] User Items

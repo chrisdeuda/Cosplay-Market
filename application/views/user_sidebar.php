@@ -11,7 +11,7 @@
             </tr>
             <tr>
               <td ><span class="emphasis">Username:< </span></td>
-            </tr>
+            </tr> 
             <tr>
               <td ><span class="emphasis">Date Join: <?php echo "<b>".$DATE_JOINED.'</b>'; ?></span></td>
             </tr>
@@ -31,10 +31,10 @@
               <td ><a href="">Profile Settings</a></td>
             </tr>
             <tr>
-              <td ><a href="?>">Items Settings</a></td>
+              <td ><a href="<?=base_url().'user/seller_view_item';?>" >View Item</a></td>
             </tr>
             <tr>
-              <td ><a href="#">Account Settings</a></td>
+              <td ><a href=""<?php echo base_url(). '#';?>Account Settings</a></td>
             </tr>
             <tr> 
               <td ><a href="#">Reserved Item(0)</a></td>

@@ -13,39 +13,39 @@
                     <td height="39" style="font-size: 16px">First Name:</td>
                     <td style="font-size: 16px">&nbsp;</td>
                     <td style="font-size: 16px"><label for="prof_set_fname2"></label>
-                      <input name="prof_set_fname" type="text" class="reg-text-fields" id="prof_set_fname2" value="<?php echo $FIRST_NAME; ?>" readonly="readonly" /></td>
+                      <input name="prof_set_fname" type="text" class="reg-text-fields" id="prof_set_fname2" value="<?php echo $User->FIRST_NAME; ?>" readonly="readonly" /></td>
                   </tr>
                   <tr>
                     <td height="38" style="font-size: 16px">Middle Name:</td>
                     <td style="font-size: 16px">&nbsp;</td>
                     <td style="font-size: 16px"><label for="prof_set_mname"></label>
-                      <input name="prof_set_mname" type="text"  class="reg-text-fields" id="prof_set_mname" value="<?php echo $MI; ?>" readonly="readonly" /></td>
+                      <input name="prof_set_mname" type="text"  class="reg-text-fields" id="prof_set_mname" value="<?php echo $User->MI; ?>" readonly="readonly" /></td>
                   </tr>
                   <tr>
                     <td height="39" style="font-size: 16px">Last Name:</td>
                     <td style="font-size: 16px">&nbsp;</td>
                     <td style="font-size: 16px"><label for="prof_set_lname"></label>
-                      <input name="prof_set_lname" type="text" class="reg-text-fields" id="prof_set_lname" value="<?php echo $LAST_NAME; ?>" readonly="readonly" /></td>
+                      <input name="prof_set_lname" type="text" class="reg-text-fields" id="prof_set_lname" value="<?php echo $User->LAST_NAME; ?>" readonly="readonly" /></td>
                   </tr>
 
                   <tr>
                     <td height="38" style="font-size: 16px">Age:</td>
                     <td style="font-size: 16px">&nbsp;</td>
                     <td style="font-size: 16px"><label for="prof_set_age"></label>
-                      <input name="prof_set_age" type="text" id="prof_set_age" size="10" maxlength="2" value="<?php echo $AGE; ?>"readonly="readonly"  />
+                      <input name="prof_set_age" type="text" id="prof_set_age" size="10" maxlength="2" value="<?php echo $User->AGE; ?>"readonly="readonly"  />
                       Years Old</td>
                   </tr>
                   <tr>
                     <td height="38" style="font-size: 16px"> Address:</td>
                     <td style="font-size: 16px">&nbsp;</td>
                     <td style="font-size: 16px"><label for="prof_set_homeadd"></label>
-                      <input name="prof_set_homeadd" type="text" class="reg-text-fields" id="prof_set_homeadd" value="<?php echo $ADDRESS; ?>" readonly="readonly" /></td>
+                      <input name="prof_set_homeadd" type="text" class="reg-text-fields" id="prof_set_homeadd" value="<?php echo $User->ADDRESS; ?>" readonly="readonly" /></td>
                   </tr>
                   <tr>
                     <td height="35" style="font-size: 16px">Contact Number:</td>
                     <td style="font-size: 16px; text-align: right;">+639</td>
                     <td style="font-size: 16px"><span id="sprytextfield1">
-                      <input  name="prof_set_contact" type="text" class="reg-text-fields" id="prof_set_contact" value="<?php echo $CONTACT_NO; ?>" maxlength="9" readonly="readonly" />
+                      <input  name="prof_set_contact" type="text" class="reg-text-fields" id="prof_set_contact" value="<?php echo $User->CONTACT_NO; ?>" maxlength="9" readonly="readonly" />
                       <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldMinCharsMsg">*</span><span class="textfieldInvalidFormatMsg">Invalid format.</span><span class="textfieldMinValueMsg">*</span></span></td>
                   </tr>
                   <tr>
@@ -67,9 +67,9 @@
           <!--side bar will be loaded by the controller-->
 
           <?php
-            $data['DATE_JOINED']      = $DATE_JOINED;
-            $data['MEMBERSHIP_TYPE']  = $MEMBERSHIP_TYPE;
-            $data['PROFILE_PICTURE']  = $PROFILE_PICTURE;
+            $data['DATE_JOINED']      = $User->DATE_JOINED;
+            $data['MEMBERSHIP_TYPE']  = $User->MEMBERSHIP_TYPE;
+            $data['PROFILE_PICTURE']  = $User->PROFILE_PICTURE;
 
               $this->load->view('user_sidebar', $data );    
           ?>

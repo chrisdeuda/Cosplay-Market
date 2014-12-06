@@ -150,7 +150,7 @@ class User extends CI_Controller {
 		if ($this->session->userdata('is_logged_in') == TRUE ) {
 			$user_id = $this->session->userdata("user_id");
 			$this->load->model("models_users");
-			$query_data = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
+			$query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
 			$this->models_display->displayProfile($query_data);
 		} else {
 			$data['error_message'] = "You must logged first to view your Profile !";
@@ -158,25 +158,79 @@ class User extends CI_Controller {
 			$this->models_display->displayLoginError($data);
 		}	
 	}
+        
+        public function getItemInfo( $table_name, $user_id ){
+            /*SELECT item_list.NAME as iName, item_list.PRICE as iPrice, item_list.AVAILABILITY as avail, item_image.LOCATION as iLocation,
+users.FIRST_NAME as owner, users.ADDRESS as address, 
+item_list.ITEM_ID as itemId,
+item_image.NAME as imgName,  item_image.TYPE as imgType
+FROM users_information as users
+LEFT JOIN item_list
+USING(USER_ID)
+LEFT JOIN item_image
+USING(ITEM_ID)
+WHERE (users.USER_ID = '2')
+ORDER BY */
+            
+            
+            
+            
+            
+            
+            
+        }
+        
+        public function seller_view_item(){
+                $this->load->model("models_display");
+		$this->load->model("models_users");
+                $this->load->model("models_item");
+		
+		if ($this->session->userdata('is_logged_in') == TRUE ) {
+			$user_id = $this->session->userdata("user_id");
+			$this->load->model("models_users");
+			$query_data['User'] = $this->models_users->get_user_profile( TBL_USER_PROFILE, $user_id);
+                        $query_data['Item'] = $this->models_item->get_item_info( TBL_ITEM_LIST, $user_id);
+			$this->models_display->displayViewItem($query_data);
+		} else {
+			$data['error_message'] = "You must logged first to view your Profile !";
+			$this->load->model("models_display");
+			$this->models_display->displayLoginError($data);
+		}	
+        }
 
 	public function seller_add_item() {
-		$this->load->model("models_display");
-		$this->models_display->displayAddItem();
+                $this->load->model("models_display");
+		$this->load->model("models_users");
+		
+		if ($this->session->userdata('is_logged_in') == TRUE ) {
+			$user_id = $this->session->userdata("user_id");
+			$this->load->model("models_users");
+			$query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
+			$this->models_display->displayAddItem($query_data);
+		} else {
+			$data['error_message'] = "You must logged first to view your Profile !";
+			$this->load->model("models_display");
+			$this->models_display->displayLoginError($data);
+		}	
 
 	}
+
+        
+               //ITEM CLASS
+        
+
+        
         /* Unfinished:
          *  validation of user info
          * checking if folder name exist if not Create New folder base on user id in default directory
          * Refactoring the Codes being used herr
          */
+        
         public function do_upload(){   
             $folder_name = $this->session->userdata("user_id");
             $save_path = DEFAULT_UPLOAD. $folder_name;
-            $upload_path = UPLOAD_SIGN. $save_path;
+            $upload_path = UPLOAD_SIGN."/". $save_path ;
             
-            
-            echo "path ".$upload_path;
-
             $config['upload_path'] = $upload_path;
             $config['allowed_types'] = 'gif|jpg|png';
             $config['max_size'] ='100';
@@ -189,6 +243,9 @@ class User extends CI_Controller {
             if (! $this->upload->do_upload()) {
                     $error = array("error" => $this->upload->display_errors());
                     print_r($error);
+                    
+                    echo "Path:". $upload_path;
+                    
                     //$this->load->view("upload_add_item_error", $error);
             } else {
                     $data = array('upload_data' => $this->upload->data());
@@ -207,7 +264,7 @@ class User extends CI_Controller {
                     
                     $image_info["USER_ID"]  = $info['USER_ID'];
                     $image_info["NAME"]     = $data['upload_data']["file_name"];
-                    $image_info["ITEM_ID"]  = $info['USER_ID'];
+                    $image_info["ITEM_ID"]  = $info['ITEM_ID'];
                     $image_info["LOCATION"] = $save_path;
                     $image_info['DATE_ADDED']     = $this->_getDateNow();
                     $image_info['DATE_MODIFIED']  = $this->_getDateNow();
@@ -245,7 +302,10 @@ class User extends CI_Controller {
             } else {
                 echo "Saving Info Success";
             }
+        
         }
-       
+ 
+        
+        
 }
 ?>
