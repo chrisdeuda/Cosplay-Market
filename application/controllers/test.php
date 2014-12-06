@@ -3,15 +3,13 @@
 class Test extends CI_Controller {
     
     public function displayInfo(){
+        $data = array(
+            "value1" => "fuck you",
+            "value2" => "fuck u to"    
+        );
         
-        $this->load->model("models_test");
-        
-        $data['item_list'] = $this->models_test->getItemInfo( TBL_ITEM_LIST, "2" );
-        
-        $this->load->view("test", $data);
-        
-        
+        $this->load->model("models_console");
+        $this->models_console->debugToConsole( $data);   
     }
-
 }
 ?>

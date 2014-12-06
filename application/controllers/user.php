@@ -34,7 +34,7 @@ class User extends CI_Controller {
 
 		$email_exist    = true;
 		$user_exist     = true;
-		$success_validation 	= false;
+		$success_validation 	= true;
 		$tbl_user_info = "users_information";
 		$tbl_user = "users";
 		$error_message = "";
@@ -75,6 +75,7 @@ class User extends CI_Controller {
 			"PASSWORD" => $password,
 			"POSITION" => $position
 		);
+                
 
 		//$email_exist =  $this->checkDataExist( $tbl_user_info, "EMAIL_ADDRESS", $email);
 		//$user_exist =  $this->checkDataExist( $tbl_user, "USERNAME", $username);
@@ -92,26 +93,28 @@ class User extends CI_Controller {
 			$success_validation = true;
 			$error_message = $error_message . "Username` Already Used.<br>";
 		}
-
+                
+                
+                
 
 		if ( $success_validation == FALSE ) {
+                        
 			$data['error_message'] = $error_message;
-
-			echo $error_message;
+			echo "error". $error_message;
 			//redirect( base_url().'site/register');
-			
-			
 		} else {
-			$query = $this->db->insert("users_information", $data);
+                    echo "CREATING QUERY";
+			$query = $this->db->insert( TBL_USER_PROFILE , $data);
 			if ( $query != 1) {
 				echo "error";
 			} else {
-				$query_user = $this->db->insert("users", $data_users);
+				$query_user = $this->db->insert(TBL_USERS , $data_users);
 				if ( $query_user != 1) {
 					echo "Eror";
 				} else {
 					$this->load->model("models_users");
 					$this->models_users->saveUserSession( $username, $user_id);
+                                        echo "Save Success!";
 					redirect("". base_url(). "site/index");
 				}
 			}
@@ -161,16 +164,16 @@ class User extends CI_Controller {
         
         public function getItemInfo( $table_name, $user_id ){
             /*SELECT item_list.NAME as iName, item_list.PRICE as iPrice, item_list.AVAILABILITY as avail, item_image.LOCATION as iLocation,
-users.FIRST_NAME as owner, users.ADDRESS as address, 
-item_list.ITEM_ID as itemId,
-item_image.NAME as imgName,  item_image.TYPE as imgType
-FROM users_information as users
-LEFT JOIN item_list
-USING(USER_ID)
-LEFT JOIN item_image
-USING(ITEM_ID)
-WHERE (users.USER_ID = '2')
-ORDER BY */
+            users.FIRST_NAME as owner, users.ADDRESS as address, 
+            item_list.ITEM_ID as itemId,
+            item_image.NAME as imgName,  item_image.TYPE as imgType
+            FROM users_information as users
+            LEFT JOIN item_list
+            USING(USER_ID)
+            LEFT JOIN item_image
+            USING(ITEM_ID)
+            WHERE (users.USER_ID = '2')
+            ORDER BY */
             
             
             
@@ -238,12 +241,14 @@ ORDER BY */
             $config['max_height'] = '768';
             $config['encrypt_name'] = TRUE;
             
+            if ( $this->CheckFolderExist($save_path) == FALSE ){
+                exit("Unable to create folder Check Access Type.");
+            }
             $this->load->library("upload", $config);
 
             if (! $this->upload->do_upload()) {
                     $error = array("error" => $this->upload->display_errors());
                     print_r($error);
-                    
                     echo "Path:". $upload_path;
                     
                     //$this->load->view("upload_add_item_error", $error);
@@ -292,6 +297,22 @@ ORDER BY */
             
             
             
+        }
+        /* CheckFoldeExist
+         * @folder_name = directory to be check
+         * Create a new folder base on $folder_name if the folder doesn't exists
+         */
+        function CheckFolderExist( $folder_name){
+                        
+            if ( ! file_exists($folder_name)) {
+                if ( mkdir($folder_name)) {
+                  return true;
+                } else {
+                    return false;
+                }
+            } else { 
+                return true;
+            }
         }
         
 

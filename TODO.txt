@@ -14,8 +14,8 @@ LARGER TASK
 	[X] Saving the Images Path
 	[X] Processing the forms
 	[] Adding Validation of form
-	[] Viewing of Uploaded Items
-	[] Saving the the other Data to Item_List
+	[X] Viewing of Uploaded Items
+	[X] Saving the the other Data to Item_List
 	[] User Profile Picture
 	[] User Items
 [] Search Engine
