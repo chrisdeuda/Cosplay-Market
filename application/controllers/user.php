@@ -175,12 +175,7 @@ class User extends CI_Controller {
             WHERE (users.USER_ID = '2')
             ORDER BY */
             
-            
-            
-            
-            
-            
-            
+
         }
         
         public function seller_view_item(){
@@ -233,6 +228,31 @@ class User extends CI_Controller {
             $folder_name = $this->session->userdata("user_id");
             $save_path = DEFAULT_UPLOAD. $folder_name;
             $upload_path = UPLOAD_SIGN."/". $save_path ;
+            
+            $this->load->library("form_validation");
+            
+            $this->form_validation->set_rules("Item Name", "item_name", "required");
+            $this->form_validation->set_rules("Category", "item_category", "required");
+            $this->form_validation->set_rules("Quantity", "item_quantity", "required");
+            $this->form_validation->set_rules("Price", "item_price", "required");
+            $this->form_validation->set_rules("Description", "item_description", "required");
+            
+            
+            if ( $this->form_validation->run() == FALSE ) {
+                $this->seller_add_item();
+            } else {
+                
+                
+            }
+            if ( $_FILES['userfile']['error'] == 4) {
+                echo "No choice!";
+                
+            }
+            
+
+            
+            
+            
             
             $config['upload_path'] = $upload_path;
             $config['allowed_types'] = 'gif|jpg|png';

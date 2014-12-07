@@ -19,8 +19,7 @@
                     <tr>
                         <td>Category</td>
                         <td>
-                         <select name="item_category" id="item_category">
-                            <option>-----CATEGORY-----</option>
+                         <select style='width:150px;'name="item_category" id="item_category" >
                             <option value="costume">Costumes</option>
                             <option value="toy">Toys Figures</option>
                             <option value="contact lense">Contact Lense</option>

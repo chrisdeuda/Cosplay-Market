@@ -4,26 +4,33 @@ SMALLER TASK
 [x] Registration User
 
 
-
+**********
 LARGER TASK
 
-[] Admin Account
+-------------
+SELLER SIDE
+-------------
 [] Uploading of Images
 	[X] Uploading the Images
 	[X] Make the web pages LInk of Uploading connected to main form
 	[X] Saving the Images Path
 	[X] Processing the forms
-	[] Adding Validation of form
 	[X] Viewing of Uploaded Items
 	[X] Saving the the other Data to Item_List
 	[] User Profile Picture
-	[] User Items
+	[] User Items Settings
+	[] Adding Validation of form in uploading
 [] Search Engine
 	[] Creating Queries
 	[] Display Result of Queries (Graphically)
-[] Viewing of items after search
+	[] Viewing of items after search
 [] Reservation of Items
+[] Chat System
+[] Messaging System
 
+----------
+ADMIN
+----------
 
 
 

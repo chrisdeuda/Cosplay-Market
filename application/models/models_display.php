@@ -1,5 +1,4 @@
 <?php
-
 class Models_Display extends CI_Model{
 
 	public function displayHome()	{
@@ -71,8 +70,6 @@ class Models_Display extends CI_Model{
             $this->load->view('user_view_item', $data);
             $this->load->view('include/site_footer');
         }
-        
-        
 }
 
 ?>
