@@ -32,9 +32,9 @@ class User extends CI_Controller {
 
 	public function registerValidation() {
 
-		$email_exist    = true;
-		$user_exist     = true;
-		$success_validation 	= true;
+		$email_exist_already    = TRUE;
+		$user_exist             = TRUE;
+		$success_validation 	= TRUE;
 		$tbl_user_info = "users_information";
 		$tbl_user = "users";
 		$error_message = "";
@@ -50,10 +50,10 @@ class User extends CI_Controller {
 		$gender 	= $this->input->post("cboGender");
 		$address 	= $this->input->post("address");
 		$contactno 	= $this->input->post("contactno"); 
-		$date_joined = $this->_getDateNow();
-		$profile_pic = "". DEFAULT_IMAGE;
+		$date_joined    = $this->_getDateNow();
+		$profile_pic    = "". DEFAULT_IMAGE;
 		$membership_type = "Regular";
-		$position = "0";
+		$position       = "0";
 
 		$data = array( "ID" => NULL,
 			"USER_ID"		=> $user_id,
@@ -76,31 +76,30 @@ class User extends CI_Controller {
 			"POSITION" => $position
 		);
                 
-
-		//$email_exist =  $this->checkDataExist( $tbl_user_info, "EMAIL_ADDRESS", $email);
-		//$user_exist =  $this->checkDataExist( $tbl_user, "USERNAME", $username);
+		$email_exist_already =  $this->checkDataExist( $tbl_user_info, "EMAIL_ADDRESS", $email);
+		$user_exist =  $this->checkDataExist( $tbl_user, "USERNAME", $username);
 
 		if ( $password != $reTypePassword ) {
-			$success_validation= false;
-			$error_message  = "Please Type your password correctly.<br>";
+			$success_validation= FALSE;
+			$error_message  = $error_message."\nPlease Type your password correctly.<br>";
 		} 
-		if ( $email_exist == false ) {
-			$success_validation = true;
-			$error_message = $error_message . "Email Already Used.<br>";
-
-		}
-		if ($user_exist == false) {
-			$success_validation = true;
-			$error_message = $error_message . "Username` Already Used.<br>";
-		}
-                
-                
-                
-
-		if ( $success_validation == FALSE ) {
+		if ( $email_exist_already == TRUE ) {
+			$success_validation = FALSE;
+			$error_message = $error_message . "\n Email Already in Used. Please use another Email. <br>";
                         
-			$data['error_message'] = $error_message;
-			echo "error". $error_message;
+		}
+		if ( $user_exist == TRUE ) {
+			$success_validation = FALSE;
+			$error_message = $error_message . "\nUsername Already Used. Please use another.<br>";
+		}
+                
+                
+		if ( $success_validation == FALSE ) {
+			$data_error['error_message'] = $error_message;
+                        
+                        $this->load->model("models_display");
+                        $this->models_display->displayRegister($data_error);
+                        
 			//redirect( base_url().'site/register');
 		} else {
                     echo "CREATING QUERY";
@@ -126,7 +125,7 @@ class User extends CI_Controller {
 	}
 
 	private function checkDataExist( $table_name = "", $table_column = "", $data ="") {
-		$SQL = "SELECT `USER_ID` FROM `{$table_name}` WHERE `$table_column` = '{$data}'";
+                $SQL = "SELECT `USER_ID` FROM `{$table_name}` WHERE `{$table_column}` = '{$data}'";
 		$query = $this->db->query( $SQL );
 		if ( $query->num_rows() <= 0) {
 			return false;
@@ -196,7 +195,7 @@ class User extends CI_Controller {
 		}	
         }
 
-	public function seller_add_item() {
+	public function seller_add_item( $message_array  = "") {
                 $this->load->model("models_display");
 		$this->load->model("models_users");
 		
@@ -204,13 +203,13 @@ class User extends CI_Controller {
 			$user_id = $this->session->userdata("user_id");
 			$this->load->model("models_users");
 			$query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
+                        $query_data['Error'] = $message_array;
 			$this->models_display->displayAddItem($query_data);
 		} else {
 			$data['error_message'] = "You must logged first to view your Profile !";
 			$this->load->model("models_display");
 			$this->models_display->displayLoginError($data);
 		}	
-
 	}
 
         
@@ -228,83 +227,77 @@ class User extends CI_Controller {
             $folder_name = $this->session->userdata("user_id");
             $save_path = DEFAULT_UPLOAD. $folder_name;
             $upload_path = UPLOAD_SIGN."/". $save_path ;
+            $validation_success = TRUE;
             
             $this->load->library("form_validation");
             
-            $this->form_validation->set_rules("Item Name", "item_name", "required");
-            $this->form_validation->set_rules("Category", "item_category", "required");
-            $this->form_validation->set_rules("Quantity", "item_quantity", "required");
-            $this->form_validation->set_rules("Price", "item_price", "required");
-            $this->form_validation->set_rules("Description", "item_description", "required");
-            
+            $this->form_validation->set_rules("item_name", "Item Name", "required");
+            $this->form_validation->set_rules("item_category", "Category", "required|");
+            $this->form_validation->set_rules("item_quantity", "Quantity", "required|numeric");
+            $this->form_validation->set_rules("item_price", "Price", "required|numeric");
+            $this->form_validation->set_rules("item_description", "Description", "required");
+            $this->form_validation->set_error_delimiters('<div class="error_message">', '</div>');
             
             if ( $this->form_validation->run() == FALSE ) {
-                $this->seller_add_item();
-            } else {
-                
-                
+                $validation_success = FALSE;   
+                $data['Error'] = "Warning:";
             }
             if ( $_FILES['userfile']['error'] == 4) {
-                echo "No choice!";
+                $validation_success = FALSE;
+                $data['ERROR'] = "Please Select a Picture to upload!";
+            }
+           
+            if  ( $validation_success == FALSE){
+                $this->seller_add_item( $data);
+            } else {
+                $config['upload_path'] = $upload_path;
+                $config['allowed_types'] = 'gif|jpg|png';
+                $config['max_size'] ='100';
+                $config['max_width'] = '1024';
+                $config['max_height'] = '768';
+                $config['encrypt_name'] = TRUE;
+            
+                if ( $this->CheckFolderExist($save_path) == FALSE ){
+                    exit("Unable to create folder Check Access Type.");
+                }
+                $this->load->library("upload", $config);
+
+                if ( $this->upload->do_upload() == FALSE ) {
+                        $error = array("error" => $this->upload->display_errors());
+                        
+                        //$this->load->view("upload_add_item_error", $error);
+                } else {
+                        $data = array('upload_data' => $this->upload->data());
+
+                        $info['ID']             = NULL;
+                        $info['ITEM_ID']        = $this->_generateId();
+                        $info['USER_ID']        = $this->session->userdata("user_id");
+                        $info['NAME']           = $this->input->post("item_name");
+                        $info['CATEGORY']       = $this->input->post("item_category");
+                        $info['PRICE']          = $this->input->post("item_price");
+                        $info['QUANTITY']       = $this->input->post("item_quantity");
+                        $info['DESCRIPTION']    = $this->input->post("item_description");
+                        $info['DATE_ADDED']     = $this->_getDateNow();
+                        $info['DATE_MODIFIED']  = $this->_getDateNow();
+                        $info['AVAILABILITY']   = 0;
+
+                        $image_info["USER_ID"]  = $info['USER_ID'];
+                        $image_info["NAME"]     = $data['upload_data']["file_name"];
+                        $image_info["ITEM_ID"]  = $info['ITEM_ID'];
+                        $image_info["LOCATION"] = $save_path;
+                        $image_info['DATE_ADDED']     = $this->_getDateNow();
+                        $image_info['DATE_MODIFIED']  = $this->_getDateNow();
+
+                        $this->_saveData( "item_list", $info);
+                        $this->_saveData( "item_image", $image_info);
+                        
+                        $this->load->model("models_console");
+                        $data = "New Item Added !";
+                        $this->seller_view_item();
+                        //$this->load->view("user_add_item_success", $data);
                 
             }
-            
-
-            
-            
-            
-            
-            $config['upload_path'] = $upload_path;
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['max_size'] ='100';
-            $config['max_width'] = '1024';
-            $config['max_height'] = '768';
-            $config['encrypt_name'] = TRUE;
-            
-            if ( $this->CheckFolderExist($save_path) == FALSE ){
-                exit("Unable to create folder Check Access Type.");
-            }
-            $this->load->library("upload", $config);
-
-            if (! $this->upload->do_upload()) {
-                    $error = array("error" => $this->upload->display_errors());
-                    print_r($error);
-                    echo "Path:". $upload_path;
-                    
-                    //$this->load->view("upload_add_item_error", $error);
-            } else {
-                    $data = array('upload_data' => $this->upload->data());
-                    
-                    $info['ID']             = NULL;
-                    $info['ITEM_ID']        = $this->_generateId();
-                    $info['USER_ID']        = $this->session->userdata("user_id");
-                    $info['NAME']           = $this->input->post("item_name");
-                    $info['CATEGORY']       = $this->input->post("item_category");
-                    $info['PRICE']          = $this->input->post("item_price");
-                    $info['QUANTITY']       = $this->input->post("item_quantity");
-                    $info['DESCRIPTION']    = $this->input->post("item_description");
-                    $info['DATE_ADDED']     = $this->_getDateNow();
-                    $info['DATE_MODIFIED']  = $this->_getDateNow();
-                    $info['AVAILABILITY']   = 0;
-                    
-                    $image_info["USER_ID"]  = $info['USER_ID'];
-                    $image_info["NAME"]     = $data['upload_data']["file_name"];
-                    $image_info["ITEM_ID"]  = $info['ITEM_ID'];
-                    $image_info["LOCATION"] = $save_path;
-                    $image_info['DATE_ADDED']     = $this->_getDateNow();
-                    $image_info['DATE_MODIFIED']  = $this->_getDateNow();
-                    
-                    echo "<pre>";
-                    print_r($info);
-                    print_r( $image_info );
-                    
-                    echo "<pre";
-                    echo "<p style='color:green;'> Save Success</p>";
-                    $this->_saveData( "item_list", $info);
-                    $this->_saveData( "item_image", $image_info);
-                    
-                   
-                    //$this->load->view("user_add_item_success", $data);
+            //no file choosen
             }
         }        
         

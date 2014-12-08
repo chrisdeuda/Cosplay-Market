@@ -11,15 +11,41 @@
 
           <div class="reg-form">
 
+
+
+
+
           <?php
             $this->load->helper("form");
 
             $attributes = array( "id" => "form1");
             $action = base_url(). 'user/registerValidation';
 
+                 $message = "";
+            if ( isset($error_message)) {
+              if ( gettype($error_message) == "array") {
+                foreach( $error_message as $row){
+                  $message = $message . $row;
+                }
+              } else {
+                $message = $error_message;
+              }
+            }
+
+
+            
+
             echo form_open( $action, $attributes);
 
           ?>
+             <div id="error" style="text-align:left" class=" <?php if ( isset($message) && !empty($message)) { echo 'error_message'; } ?>" >
+                <?php 
+
+                  echo $message;
+                  echo validation_errors();
+                    
+                 ?>
+            </div>
 
         
             <table width="100%" border="0">
@@ -27,7 +53,7 @@
                         <td width="13%" id="email"><label for="email">Email:</label></td>
                         <td width="5%" id="email">&nbsp;</td>
                         <td width="33%"><span id="sprytextfield1">
-                          <input name="email" type="text" class="reg-text-fields" id="email" value="<?php echo @$email;?>"/>
+                          <input name="email" type="text" class="reg-text-fields" id="email" value="<?php echo set_value('email'); ?>"/>
                           <span class="textfieldRequiredMsg"> Email is required</span></span></td>
                         <td width="49%"><div class="guidelines"> Please add you a valid email <br /> 
                         because it will be used to authenticate your account</div></td>
@@ -37,7 +63,7 @@
                         <td><label for="username">Username:</label></td>
                         <td>&nbsp;</td>
                         <td><span id="sprytextfield2">
-                          <input name="username" type="text" class="reg-text-fields" id="username" value="" />
+                          <input name="username" type="text" class="reg-text-fields" id="username" value="<?php echo set_value('username'); ?>" />
                           <span class="textfieldRequiredMsg">A value is required.</span></span></td>
                         <td>&nbsp;</td>
                       </tr>
@@ -73,7 +99,7 @@
                         <td><label for="fname">First Name:</label></td>
                         <td>&nbsp;</td>
                         <td><span id="sprytextfield5">
-                        <input name="fname" type="text" class="reg-text-fields" id="fname" value="<?php echo @$fname;?>" />
+                        <input name="fname" type="text" class="reg-text-fields" id="fname" value="<?php echo set_value('fname'); ?>" />
                         <span class="textfieldRequiredMsg">A value is required.</span></span></td>
                         <td>&nbsp;</td>
                       </tr>
@@ -81,7 +107,7 @@
                         <td><label for="lname">Last Name:</label></td>
                         <td>&nbsp;</td>
                         <td><span id="sprytextfield6">
-                          <input name="lname" type="text" class="reg-text-fields" id="lname" value="<?php echo @$lname;?>"/>
+                          <input name="lname" type="text" class="reg-text-fields" id="lname" value="<?php echo set_value('lname'); ?>"/>
                           <span class="textfieldRequiredMsg">A value is required.</span></span></td>
                         <td>&nbsp;</td>
                       </tr>
@@ -89,7 +115,7 @@
                         <td><label for="mi">Middle Initial:</label></td>
                         <td>&nbsp;</td>
                         <td><span id="sprytextfield7">
-                          <input name="mi" type="text" class="reg-text-fields" id="mi" value="<?php echo @$mi?>"/>
+                          <input name="mi" type="text" class="reg-text-fields" id="mi" value="<?php echo set_value('mi'); ?>"/>
                           <span class="textfieldRequiredMsg">A value is required.</span></span></td>
                         <td>&nbsp;</td>
                       </tr>
@@ -100,7 +126,6 @@
                           
                           <span id="spryselect1">
                           <select class="reg-text-fields" name="cboGender" id="cboGender" value="<?php echo @$rdoGender;?>">
-                            <option>----SELECT GENDER ----</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                           </select>
@@ -112,7 +137,7 @@
                           :</td>
                         <td>&nbsp;</td>
                         <td><span id="sprytextfield10">
-                          <input name="address" type="text" class="reg-text-fields" id="address"  value="<?php echo @$address;?>"/>
+                          <input name="address" type="text" class="reg-text-fields" id="address"  value="<?php echo set_value('address'); ?>" />
                           <span class="textfieldRequiredMsg">A value is required.</span></span></td>
                         <td>&nbsp;</td>
                       </tr>
@@ -120,7 +145,7 @@
                         <td><label for="contactno">Contact Number</label></td>
                         <td>+639</td>
                         <td><span id="sprytextfield9">
-                        <input name="contactno" type="text" class="reg-text-fields" id="contactno" value="<?php echo @$contactno;?>"/>
+                        <input name="contactno" type="text" class="reg-text-fields" id="contactno" value="<?php echo set_value('contactno'); ?>" />
                         <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldInvalidFormatMsg">Invalid format.</span><span class="textfieldMaxCharsMsg">Exceeded maximum number of characters.</span></span></td>
                         <td>&nbsp;</td>
                       </tr>
@@ -130,9 +155,7 @@
                         <td align="center"><input class="button" type="submit" name="register" id="register" value="Register Account" /></td>
                         <td>&nbsp;</td>
                       </tr>
-                      <tr>
-                          <td><p><?php $txt = "hello wordl"; echo "<br> $txt"?> </p> </td>
-                      </tr>
+                      
             </table>
 		</form>
 	</div>

@@ -10,11 +10,17 @@
                 $action = base_url().'user/do_upload';
                 $attributes = array("id" => "form1");
                 
-            echo form_open_multipart( $action, $attributes);?>
+            echo form_open_multipart( $action, $attributes); ?>
+
+            <div id="error" class=" <?php if ( isset($Error) && !empty($Error)) { echo 'error_message'; } ?>" >
+                <?php echo validation_errors();
+                    
+                 ?>
+            </div>
                 <table border="1">
                     <tr>
                         <td>Item Name </td>
-                        <td><input type="input" name="item_name" value="" id="item_name" /></td>
+                        <td><input type="input" name="item_name" value="" id="item_name" value="<?php echo set_value('item_name'); ?>"/> </td>
                     </tr>
                     <tr>
                         <td>Category</td>
@@ -29,15 +35,15 @@
                     </tr>
                       <tr>
                         <td>Quantity </td>
-                        <td><input type="input" name="item_quantity" value="" id="item_quantity" /></td>
+                        <td><input type="input" name="item_quantity" value="" id="item_quantity" value="<?php echo set_value('item_name'); ?>" /></td>
                     </tr>
                     <tr>
                         <td>Price</td>
-                        <td><input type="input" name="item_price" value="" id="item_quantity" /></td>
+                        <td><input type="input" name="item_price" value="" id="item_price" value="" /></td>
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td><input type="input" name="item_description" value="" id="item_quantity" /></td>
+                        <td><input type="input" name="item_description" value="" id="item_description"  value="<?php echo set_value('item_description'); ?>"/></td>
                     </tr>
                 </table>
                 <input type="file" name="userfile" size="20" />
@@ -60,9 +66,6 @@
             $this->load->view('user_sidebar', $data );    
           ?>
 
-
-
-      
     <!-- end #sidebar160-left -->
     <div style="clear: both;">&nbsp;</div>
 </div>

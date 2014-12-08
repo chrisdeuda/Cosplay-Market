@@ -23,7 +23,7 @@ class Models_Display extends CI_Model{
 		$this->load->view('include/site_footer');
 	}
 
-	public function displayRegister(){
+	public function displayRegister($message){
                 $base = base_url();
 
 		$data['css_ref1'] = '<link href="'. $base .'stylesheet/registration.css" rel="stylesheet" type="text/css" />';
@@ -32,9 +32,11 @@ class Models_Display extends CI_Model{
 
 		$data['js_ref1'] = '<script src="'. $base .'SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>';
 		$data['js_ref2'] = '<script src="'. $base .'SpryAssets/SpryValidationSelect.js" type="text/javascript"></script>';
-
-		$data['fuck'] = "Working files";
-
+                $data['error_message'] =  $message;
+                
+                $this->load->model("models_console");
+                $this->models_console->debugToConsole( $message);
+                
 		$this->load->view('include/site_header',$data);
 		$this->load->view('include/site_nav');
 		$this->load->view('register_content');

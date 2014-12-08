@@ -18,8 +18,9 @@ class Site extends CI_Controller {
 	}
 
 	public function register(){
+                $data = "";
 		$this->load->model("models_display");
-		$this->models_display->displayRegister();
+		$this->models_display->displayRegister($data);
 	}
 
 	public function login_error(){
