@@ -1,5 +1,5 @@
 SMALLER TASK
-[] Email Vaildation
+[] Email Validation
 [x] Login User
 [x] Registration User
 
@@ -19,7 +19,7 @@ SELLER SIDE
 	[X] Saving the the other Data to Item_List
 	[] User Profile Picture
 	[] User Items Settings
-	[] Adding Validation of form in uploading
+	[X] Adding Validation of form in uploading
 [] Search Engine
 	[] Creating Queries
 	[] Display Result of Queries (Graphically)
