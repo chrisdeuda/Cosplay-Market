@@ -11,10 +11,6 @@ class users_information extends MY_Model{
 
 	}
 
-
-
-
-
 }
 
 

@@ -20,6 +20,14 @@ class User extends CI_Controller {
 	private	$membership_type = "";
 	private	$position       = "";
         
+        function __construct(){
+            parent::__construct();
+            
+           
+            
+            
+        }
+        
 
 	private function _generateId(){
 		//sample 2013-random - seconds
@@ -164,6 +172,35 @@ class User extends CI_Controller {
 
         }
         
+        public function seller_edit_item($item_id){
+                $this->load->model("models_display");
+		$this->load->model("models_users");
+                $this->load->model("models_item");
+		
+		if ($this->session->userdata('is_logged_in') == TRUE ) {
+			$user_id = $this->session->userdata("user_id");
+			$this->load->model("models_users");
+			$query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
+                        
+                        $query_data['Item'] = $this->models_item->get( $item_id);
+                        
+                        
+                        //print_r( $query_data['Item']);
+                        
+                        
+                        
+                        
+                        
+//                        $query_data['Error'] = $message_array;
+			$this->models_display->displayEditItem($query_data);
+		} else {
+			$data['error_message'] = "You must logged first to view your Profile !";
+			$this->load->model("models_display");
+			$this->models_display->displayLoginError($data);
+		}	
+        }
+        
+        
         public function seller_view_item(){
                 $this->load->model("models_display");
 		$this->load->model("models_users");
@@ -201,8 +238,13 @@ class User extends CI_Controller {
 
         
                //ITEM CLASS
+        /**
+         * ADDED:
+         *  - clear information after uploading files
+         *  
+         * 
+         */
         
-
         public function do_upload(){   
             $folder_name = $this->session->userdata("user_id");
             $save_path = DEFAULT_UPLOAD. $folder_name;
@@ -232,23 +274,26 @@ class User extends CI_Controller {
             } else {
                 $config['upload_path'] = $upload_path;
                 $config['allowed_types'] = 'gif|jpg|png';
-                $config['max_size'] ='100';
+                $config['max_size'] ='2048';
                 $config['max_width'] = '1024';
-                $config['max_height'] = '768';
+                $config['max_height'] = '1024';
                 $config['encrypt_name'] = TRUE;
             
                 if ( $this->CheckFolderExist($save_path) == FALSE ){
                     exit("Unable to create folder Check Access Type.");
                 }
                 $this->load->library("upload", $config);
+                $upload_result = array('upload_data' => $this->upload->data());
 
                 if ( $this->upload->do_upload() == FALSE ) {
-                        $error = array("error" => $this->upload->display_errors());
+                        $data['error_in_file'] = array("error" => $this->upload->display_errors());
+                        echo $upload_result['upload_data']["file_size"];
                         
-                        //$this->load->view("upload_add_item_error", $error);
+                        print_r( $data['error_in_file']);
+                        //$this->seller_add_item( $data);
                 } else {
-                        $data = array('upload_data' => $this->upload->data());
-
+                        $upload_result = array('upload_data' => $this->upload->data());
+                        
                         $info['ID']             = NULL;
                         $info['ITEM_ID']        = $this->_generateId();
                         $info['USER_ID']        = $this->session->userdata("user_id");
@@ -262,7 +307,7 @@ class User extends CI_Controller {
                         $info['AVAILABILITY']   = 0;
 
                         $image_info["USER_ID"]  = $info['USER_ID'];
-                        $image_info["NAME"]     = $data['upload_data']["file_name"];
+                        $image_info["NAME"]     = $upload_result['upload_data']["file_name"];
                         $image_info["ITEM_ID"]  = $info['ITEM_ID'];
                         $image_info["LOCATION"] = $save_path;
                         $image_info['DATE_ADDED']     = $this->_getDateNow();
@@ -314,12 +359,8 @@ class User extends CI_Controller {
             if ( ! $query_user ) {
                    echo "Error";
             } else {
-                echo "Saving Info Success";
+                //echo "Saving Info Success";
             }
-        
         }
- 
-        
-        
 }
 ?>

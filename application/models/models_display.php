@@ -72,6 +72,13 @@ class Models_Display extends CI_Model{
             $this->load->view('user_view_item', $data);
             $this->load->view('include/site_footer');
         }
+        public function displayEditItem($data){
+            $this->load->view('include/site_header');
+            $this->load->view('include/site_nav');
+            
+            $this->load->view('user/edit_item', $data);
+            $this->load->view('include/site_footer');
+        }
 }
 
 ?>

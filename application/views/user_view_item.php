@@ -5,13 +5,22 @@
         <h3>Item Settings</h3>
         <div id="items-container">
                 <ul>
+                  <?php
+                      $this->load->helper("html");
+                  ?>
                 
                   <?php foreach( $Item as $row): 
-                    $image_path = base_url().$row->LOCATION . "/". $row->IMAGE_NAME ;
+                    
+                    $image_path = base_url().$row->LOCATION . '/'. $row->IMAGE_NAME ;
+                    $image_link = base_url(). 'user/seller_edit_item/' . $row->ITEM_ID;
+                    $image = '<img src ='. $image_path.' />';
 
                    ?>
                     <li class="one">
-                      <a href="#"><img src="<?= $image_path;?>" /></a> 
+                      <a href="<?php echo $image_link;?>"> <img src="<?php echo $image_path;?>"/> </a>
+                      
+
+                      
                       <p><span class="sp-emphasis">Name:</span > <span class="sp-text"> <?=$row->NAME; ?> </span></p>
                       <p><span class="sp-emphasis">Location:</span><span class="sp-text"> <?="Imus"; ?> </span></p>
                       <p><span class="sp-emphasis">Price:</span><span class="sp-text"> <?=$row->PRICE; ?> </span></p>

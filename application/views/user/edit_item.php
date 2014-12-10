@@ -21,12 +21,14 @@
             <div id="error" class=" <?php if ( isset($Error) && !empty($Error)) { echo 'error_message'; } ?>" >
                 <?php echo validation_errors();
                     echo $err_message;
+
+                    //echo "NAME:". $Item->NAME;
                  ?>
             </div>
                 <table border="0" style="width:500px;">
                     <tr>
                         <td>Item Name </td>
-                        <td><input type="input" name="item_name" value="" id="item_name" value="<?php echo set_value('item_name'); ?>"/> </td>
+                        <td><input type="input" name="item_name" id="item_name" value="<?php echo $Item->NAME; ?>"/> </td>
                     </tr>
                     <tr>
                         <td>Category</td>
@@ -41,26 +43,25 @@
                     </tr>
                       <tr>
                         <td>Quantity </td>
-                        <td><input type="input" name="item_quantity" value="" id="item_quantity" value="<?php echo set_value('item_name'); ?>" /></td>
+                        <td><input type="input" name="item_quantity"  id="item_quantity" value="<?php echo $Item->QUANTITY; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Price</td>
-                        <td><input type="input" name="item_price" value="" id="item_price" value="" /></td>
+                        <td><input type="input" name="item_price"  id="item_price" value="<?php echo $Item->PRICE;?>"/></td>
                     </tr>
                     <tr>
                         <td>Description</td>
                         <td>
-                            <textarea  style="width:500px; height:300px;" name="item_description" value="" id="item_description"  value="<?php echo set_value('item_description'); ?>" >
+                            <textarea  style="width:500px; height:300px;" name="item_description"  id="item_description"  value="<?php echo $Item->DESCRIPTION; ?>" >
                                 
                             </textarea>
-
                     </tr>
                 </table>
                 <input type="file" name="userfile" size="20" />
 
             <br /><br />
 
-            <input type="submit" value="upload" />
+            <input type="submit" value="Update" />
 
             </form>
 
