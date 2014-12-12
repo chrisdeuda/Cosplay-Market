@@ -6,7 +6,6 @@ class Models_Display extends CI_Model{
 		$this->load->view('include/site_nav');
 		$this->load->view('home_content');
 		$this->load->view('include/site_footer');
-                
 	}
 
 	public function displayAbout(){
@@ -77,6 +76,14 @@ class Models_Display extends CI_Model{
             $this->load->view('include/site_nav');
             
             $this->load->view('user/edit_item', $data);
+            $this->load->view('include/site_footer');
+        }
+        
+        public function displayMessage(){
+            $this->load->view('include/site_header');
+            $this->load->view('include/site_nav');
+            
+            $this->load->view('message');
             $this->load->view('include/site_footer');
         }
 }

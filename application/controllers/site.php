@@ -1,37 +1,44 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Site extends CI_Controller {
+    
+        function __construct(){
+            parent::__construct();
+            $this->load->model("models_display");
+        }
+    
+    
 
-	public function index()	{
-		$this->load->model("models_display");
-		$this->models_display->displayHome();
+	public function index()	{	
+            $this->models_display->displayHome();
 	}
 
 	public function about(){
-		$this->load->model("models_display");
-		$this->models_display->displayAbout();
+            $this->models_display->displayAbout();
 	}
 
 	public function contact_us(){
-		$this->load->model("models_display");
-		$this->models_display->displayContactUs();
+            $this->models_display->displayContactUs();
 	}
 
 	public function register(){
-                $data = "";
-		$this->load->model("models_display");
-		$this->models_display->displayRegister($data);
+            $data = "";
+            $this->models_display->displayRegister($data);
 	}
 
 	public function login_error(){
-		$this->load->model("models_display");
-		$this->models_display->displayLoginError();
+            $this->models_display->displayLoginError();
 	}
 
 	public function profile(){
-		$this->load->model("models_display");
 		$this->models_display->displayProfile();
 	}
+        
+        public function message(){
+            $this->models_display->displayMessage();
+            
+        }
+        
 }
 
 ?>

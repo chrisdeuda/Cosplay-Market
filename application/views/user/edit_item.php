@@ -17,7 +17,7 @@
                 }
 
             echo form_open_multipart( $action, $attributes); ?>
-
+            
             <div id="error" class=" <?php if ( isset($Error) && !empty($Error)) { echo 'error_message'; } ?>" >
                 <?php echo validation_errors();
                     echo $err_message;

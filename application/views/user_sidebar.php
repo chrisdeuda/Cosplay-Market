@@ -27,8 +27,11 @@
         </p>
         <p>&nbsp; </p>
         <table>
-          <tr>
+            <tr>
               <td ><a href="">Profile Settings</a></td>
+            </tr>
+            <tr>
+              <td ><a href="">Message</a></td>
             </tr>
             <tr>
               <td ><a href="<?=base_url().'user/seller_view_item';?>" >View Item</a></td>
