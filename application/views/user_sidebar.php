@@ -1,8 +1,6 @@
 <div id="sidebar160-left">
         <div id="sidebar1">
           <table class="table">
-
-          
             <tr class="">
               <td align="center"><img src="<?php echo base_url(). $PROFILE_PICTURE;?>" alt="" width="190" height="150" /></td>
             </tr>
@@ -31,7 +29,7 @@
               <td ><a href="">Profile Settings</a></td>
             </tr>
             <tr>
-              <td ><a href="">Message</a></td>
+              <td ><a href="<?=base_url().'message/view_conversation';?>""">Message</a></td>
             </tr>
             <tr>
               <td ><a href="<?=base_url().'user/seller_view_item';?>" >View Item</a></td>

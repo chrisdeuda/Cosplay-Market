@@ -11,15 +11,12 @@
 
           <div class="reg-form">
 
-
-
-
-
           <?php
             $this->load->helper("form");
 
             $attributes = array( "id" => "form1");
             $action = base_url(). 'user/registerValidation';
+            
 
                  $message = "";
             if ( isset($error_message)) {
@@ -36,6 +33,7 @@
             
 
             echo form_open( $action, $attributes);
+            
 
           ?>
              <div id="error" style="text-align:left" class=" <?php if ( isset($message) && !empty($message)) { echo 'error_message'; } ?>" >

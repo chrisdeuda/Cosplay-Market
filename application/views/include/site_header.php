@@ -30,7 +30,6 @@
 
 		 $site = base_url();
 	?>
-
 <link href="<?php echo base_url().'stylesheet/style.css'; ?>" rel="stylesheet" type="text/css" media="screen" />
 <link href="<?php echo base_url().'stylesheet/search_style.css'; ?>" rel="stylesheet" type="text/css" media="screen" />
 

@@ -6,8 +6,6 @@ class Site extends CI_Controller {
             parent::__construct();
             $this->load->model("models_display");
         }
-    
-    
 
 	public function index()	{	
             $this->models_display->displayHome();
@@ -38,7 +36,7 @@ class Site extends CI_Controller {
             $this->models_display->displayMessage();
             
         }
-        
+       
 }
 
 ?>

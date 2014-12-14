@@ -4,7 +4,6 @@
   $contactUs = base_url().'site/contact_us';
 ?>
 
-
 <div id="footer">
     	<center>
     	<table >

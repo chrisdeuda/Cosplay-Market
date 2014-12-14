@@ -1,7 +1,15 @@
 <?php
 
-class Models_Users extends CI_Model{
-
+class Models_Users extends MY_Model{
+        function __construct(){
+            parent::__construct();
+            $this->_table = TBL_USER_PROFILE;
+            $this->primary_key = 'USER_ID';
+            $this->primaryFilter = 'htmlentities';
+            $this->order_by = '';
+            
+        }
+    
 	public function saveUserSession($username = "", $user_id = ""){
 		$data = array(
 			"username" => $username,

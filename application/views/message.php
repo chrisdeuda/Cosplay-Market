@@ -11,10 +11,20 @@
 
                 </div>
 
-                  <tr>
-                      <td rowspan="2"width="60px" align="center"> <img width="50" height="50px" src="<?php echo base_url()."images/akira.jpg"?>"/> </td>
-                      <td style="color:blue; font-family:arial; size:14px;">Test1</td>
+                 <?php foreach ($message as $row): ?>
+               
+                    <tr>
+                        <td rowspan="2"width="60px" align="center"> <img width="50" height="50px" src="<?php echo base_url()."images/akira.jpg"?>"/> </td>
+                        <td style="color:blue; font-family:arial; size:14px;"> <?php echo $row['Sender']; ?> </td>
+                    </tr>
+                       <tr>
+                      <td> <?php echo $row['Message']; ?></td>
                   </tr>
+                <?php endforeach;?>
+
+
+<!--
+ 
                   <tr>
                       <td>The Message Test</td>
                   </tr>
@@ -24,7 +34,7 @@
                   </tr>
                   <tr>
                       <td>The Message. The Message. The Message.</td>
-                  </tr>
+                  </tr>-->
 
                 </table>
 
@@ -34,17 +44,28 @@
             
         </ul>
 
-         <form>
+        <div style="clear: both;">&nbsp;</div>
 
-         <table border="0" style="">
-          <tr>
-            <td>  </td>
-            <td> <textarea style="width:500px; height:120px;"> </textarea> </td>
-            <td> <input type="button" name="" value="Send" /> </td>
-          <tr>
+        <?php 
+                $this->load->helper("form");
+                $action = base_url().'message/insert_new_message';
+                $attributes = array("id" => "form1");
+                $err_message = "";
 
-        </table>
+            echo form_open_multipart( $action, $attributes); ?>
 
+        
+           <table border="0" style="">
+            <tr>
+              <td>  </td>
+              <td> <textarea  style="width:500px; height:120px;" name="txtMessage" id="message"/> </textarea></td>
+              <td> <input type="submit" name="btnSend" value="Send" /></td>
+            <tr>
+            <div id="error_message">
+                <?php echo validation_errors(); ?>
+            </div>
+
+          </table>
 
         </form>
         </center>
