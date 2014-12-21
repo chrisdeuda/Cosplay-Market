@@ -7,13 +7,38 @@ class Message extends CI_Controller {
         private $_arr_conversation = array();
         private $_conversation_id = "";
         
-        
        function __construct(){
             parent::__construct();
             $this->load->model("models_message");
             $this->load->model("models_message_reply");
             $this->load->model("models_users");
             $this->load->model("models_display");
+        }
+        
+        public function new_message(){
+            
+            $message = mysql_real_escape_string($this->input->post("message"));
+            
+             if( $message == "" ) {
+                //return to view page
+                $this->view_conversation();
+            } else {
+                $user_id = "2";
+                $ip = "2";
+                $time = 123;
+                $c_id = $this->_get_conversation_id();
+                $reply = $message;
+                $arr_message = array(
+                    "user_id_fk" => $user_id,
+                    "reply" =>  $reply,
+                    "ip" => $ip,
+                    "time" => $time,
+                    "c_id_fk" => $c_id
+                );      
+                $this->models_message_reply->insert( $arr_message );
+                echo "Success";
+                //$this->view_conversation();
+            }
         }
         
         public function view_conversation( ){
@@ -93,6 +118,7 @@ class Message extends CI_Controller {
          * inser_new_message
          * get the values from the form and process it into the database
          */
+        
         
         
         public function insert_new_message(){

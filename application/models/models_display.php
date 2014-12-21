@@ -80,7 +80,11 @@ class Models_Display extends CI_Model{
         }
         
         public function displayMessage($data_message){
-            $this->load->view('include/site_header');
+            
+            $data['css_ref1'] = '<link href="'. base_url() .'public/css/message-style.css" rel="stylesheet" type="text/css" />';
+            
+            
+            $this->load->view('include/site_header',$data);
             $this->load->view('include/site_nav');
             
             $this->load->view('message', $data_message);

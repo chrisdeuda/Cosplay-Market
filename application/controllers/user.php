@@ -185,12 +185,7 @@ class User extends CI_Controller {
                         $query_data['Item'] = $this->models_item->get( $item_id);
                         
                         
-                        //print_r( $query_data['Item']);
-                        
-                        
-                        
-                        
-                        
+                        //print_r( $query_data['Item']);   
 //                        $query_data['Error'] = $message_array;
 			$this->models_display->displayEditItem($query_data);
 		} else {
