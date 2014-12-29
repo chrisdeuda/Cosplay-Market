@@ -28,8 +28,6 @@ class Models_Users extends MY_Model{
 
 	public function get_user_data( $table_name = "" , $user_id = "") {
 		$SQL = "SELECT * FROM `{$table_name}` WHERE `USER_ID` = '{$user_id}'";
-
-
 		echo $SQL;
 		
 		/*
@@ -63,7 +61,14 @@ class Models_Users extends MY_Model{
         }
         
         
-
+        /**
+         * this is the information header to be used upon the development
+         * @description retrieve information from the table and format it
+         *      accordingly 
+         * @param string $table_name - the table to be modified
+         * @param string $user_id - used for specific user
+         * @return array
+         */
 	public function get_user_profile( $table_name = "", $user_id = "") {
 		$SQL = "SELECT * FROM `{$table_name}` WHERE `USER_ID` = '{$user_id}'";
 		$data =  array();
@@ -73,6 +78,7 @@ class Models_Users extends MY_Model{
 		} else {
 			return $query->row();
 		}
+                
 	}
 
 	

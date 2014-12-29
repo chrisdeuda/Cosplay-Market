@@ -1,73 +1,62 @@
-
   <div id="page">
 	  <div id="whole-content">
       <h2> Message Testing</h2>
-      <div id="message" style="height:500px; width:700px; border:1px solid black;">
 
-        <script src="<?php echo base_url() . 'public/js/jquery-2.1.3.min.js'; ?> "> </script>
-        <script src="<?php echo base_url() . 'public/js/jquery-message.js'; ?> "> </script>
+      <script src="<?php echo base_url() . 'public/js/jquery-2.1.3.min.js'; ?> "> </script>
+      <script src="<?php echo base_url() . 'public/js/jquery-message.js'; ?> "> </script>
+
+        <script>
+          var loggedIn = "<?php echo  $this->session->userdata('is_logged_in'); ?>";
+          var id = "<?php echo  $this->session->userdata('user_id'); ?>";
+
+
+          setConversationUrl( "<?php echo base_url(). 'message/get_all_conversation'; ?>" );
+          getUserId( id  );
+          set_new_message_url( "<?php echo base_url(). 'message/get_new_message'; ?>" );
+
+
+          //setInterval(function(){$messageForm.checkNewMessage();}, 1000);
+          
+        </script>
+    
+        
         <?php
           $message_url = base_url() .'message/new_message';
         ?>
 
-        <div id="message-container" class="message-container">
-          <h1> Message </h1>
-          <p> Just type your username and message</p>
-          <p> If there is no Username type the application will generate random username</p>
-          <p> Your Username <input id="username" type="text"  name="username" value="" / ></p>
+          <div id="message-container" class="message-container">
+              <h1> Message </h1>
+              <p> Just type your username and message</p>
+              <p> If there is no Username type the application will generate random username</p>
+              <p> Your Username <input id="username" type="text"  name="username" value="" / ></p>
 
-          <div style="clear:both"> </div>
-            <div id="template_default" class="message_display">
-              <ul class="message_display ul-message">
-                <li class ='message-image'><img src="<?php echo base_url(). 'images/default.jpg' ; ?>" class="message-image"/></li>
-                <span class="message-text">
-                  <li class="message-name" >sample_name</li> <!--name here-->
-                  <li  >sample message </li> <!--message here-->
-                </span>
-                <li class='message-date'>sample_date</li> <!--date here-->
-              </ul>
-            </div>
-          </div> <!--end:div: template_default-->
+              
+              <div id="template_default" class="message_display">
+                <ul class="message_display ul-message">
+                  <li class ='message-image'><img class="message-image" src="<?php echo base_url()."images/akira.jpg"?>"/> </li>
+                  <li> 
+                    <ul id="bitch" class="message-text">
+                      <li> <span class="message-name" > Name  </span> <span class="message-date"> Date </span></li>
+                      <li id="message_display" class="message-data" > Mesdfsdsdffsdfsdfs asdfklj adfaasdadsf adsf adfasd asdf asd asfdasdfasdasdfasdfasdfasdfasdasdf;asdflkjasdf ;lsdf ;lajjdsf;lkjadsf l;kjasdf ;lkjajdf ;lkjasdf ;ljakdf l;jksdf ;lkjasdf ;lkjasdf ;lkjasdf ;ljkasdf ;lkjasd;lkjjadf dfsdfsdsfsdfsdfsdfsdsdfsdfssage</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
 
-          <div id="messages">
-             <?php foreach ($message as $row): ?>
-              <div id="messageC0" class="message_display" >
-                  <div style="clear:both"> </div>
-                  <div style="clear:both"> </div>
-                  <ul class="message_display ul-message">
-                    <li class ='message-image'><img class="message-image" src="<?php echo base_url()."images/akira.jpg"?>"/> </li>
-                    <span class="message-text">
-                    <li class="message-name" ><?php echo $row['Sender']; ?> </li>
-                    <li  >message </li>
-                    </span>
-                    <li class='message-date'>date </li> 
-                  </ul>
-              </div><!--end:div messageC0-->
-               <?php endforeach;?>
+              <div id="messages">
+              
+              </div><!--end:div messages-->
+              <div id="message-box" class="">
+                <textarea id="message_data"></textarea>
+                <button id="message_button" onClick="saveUrlMessage('<?php echo $message_url; ?>')"> Send </button>
+              </div> <!--end:div message-box-->
+        </div> <!--end:div message-container-->
+        <div id="debug">
+          <p> </p>
+
+        </div>
 
 
-                <div id="messageC0" class="message_display" style="display:none">
-                  <div style="clear:both"> </div>
-                  <div style="clear:both"> </div>
-                  <ul class="message_display ul-message">
-                    <li ><img width="50" height="50" src=""/> </li>
-                    <span class="message-text">
-                    <li style="color:blue; font-family:arial; size:14px;" >Name </li>
-                    <li  ><?php echo $row['Message']; ?> </li>
-                    </span>
-                    <li class='message-date'>date </li> 
-                  </ul>
-              </div><!--end:div messageC0-->
-          
-             </div> <!--message-->
-
-          
-          <div id="message-box" class="">
-            <textarea id="message_data"></textarea>
-            <button id="message_button" onClick="saveUrlMessage('<?php echo $message_url; ?>')"> Send </button>
-          </div> <!--end:div message-box-->
-       
-      </div> <!--end:div message-container-->
 	  </div><!-- end #content -->
 		<div style="clear: both;">&nbsp;</div>
 	</div>

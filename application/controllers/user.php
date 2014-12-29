@@ -1,235 +1,243 @@
+
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class User extends CI_Controller {
 
-	private $DEFAULT_PROFILE = 'image/fuck.jpg';
-	private $error_message = "";
-        private $user_id 	= "";
-	private	$email 		= "";
-	private	$username 	= "";
-	private	$password 	= "";
-	private	$reTypePassword = "";
-	private	$fname 		= "";
-	private	$lname 		= "";
-	private	$mi 		= "";
-	private	$gender 	= "";
-	private	$address 	= "";
-	private	$contactno 	= "";
-	private	$date_joined    = "";
-	private	$profile_pic    = "";
-	private	$membership_type = "";
-	private	$position       = "";
+    private $DEFAULT_PROFILE = 'image/fuck.jpg';
+    private $error_message = "";
+    private $user_id    = "";
+
+    private $email      = "";
+    private $username   = "";
+    private $password   = "";
+    private $reTypePassword = "";
+    private $fname      = "";
+    private $lname      = "";
+    private $mi         = "";
+    private $gender     = "";
+    private $address    = "";
+    private $contactno  = "";
+    private $date_joined    = "";
+    private $profile_pic    = "";
+    private $membership_type = "";
+    private $position       = "";
         
-        function __construct(){
-            parent::__construct();
-            
-           
-            
-            
-        }
+    function __construct(){
+        parent::__construct();
+
+    }
+
+    function testTabs(){
+        echo "world";
+        echo "there is something I wish that I would know earlier";
         
 
-	private function _generateId(){
-		//sample 2013-random - seconds
-		$time = time();
-		$year =  date('Y', $time);
-		//$actual_time = date('s', $time); 
-		
-		//$random = rand(1, 500);
-		$user_id = $year. '-'. $this->_getTimeNow();
-		
-		return $user_id;
-	}
-	
-	private function _getDateNow(){
-		$date = date ('Y-m-d');
-		return $date;
-	}
 
-	private function _getTimeNow(){
-		$time = time();
-		$actual_time = date('his', $time);
-		
-		return $actual_time;
-	
-	}
+    }
+        
 
-        private function _processRegForm(){
-            	$this->user_id 	= $this->_generateId();
-		$this->email 		= $this->input->post("email");
-		$this->username 	= $this->input->post("username");
-		$this->password 	= $this->input->post("password");
-		$this->reTypePassword = $this->input->post("reTypePassword");
-		$this->fname 		= $this->input->post("fname");
-		$this->lname 		= $this->input->post("lname");
-		$this->mi 		= $this->input->post("mi");
-		$this->gender 	= $this->input->post("cboGender");
-		$this->address 	= $this->input->post("address");
-		$this->contactno 	= $this->input->post("contactno"); 
-		$this->date_joined    = $this->_getDateNow();
-		$this->profile_pic    = "". DEFAULT_IMAGE;
-		$this->membership_type = "Regular";
-		$this->position       = "0";
+    private function _generateId(){
+        //sample 2013-random - seconds
+        $time = time();
+        $year =  date('Y', $time);
+        //$actual_time = date('s', $time); 
 
-		$data['form'] = array( "ID" => NULL,
-			"USER_ID"		=> $this->user_id,
-			"EMAIL_ADDRESS"	=> $this->email,
-			"FIRST_NAME"   	=> $this->fname,
-			"LAST_NAME"		=> $this->lname,
-			"MI"			=> $this->mi,
-			"GENDER"		=> $this->gender,
-			"ADDRESS"		=> $this->address,
-			"CONTACT_NO"	=> $this->contactno,
-			"DATE_JOINED"	=> $this->date_joined,
-			"PROFILE_PICTURE"	=> $this->profile_pic,
-			"MEMBERSHIP_TYPE"	=> $this->membership_type
-		);
+        //$random = rand(1, 500);
+        $user_id = $year. '-'. $this->_getTimeNow();
+
+        return $user_id;
+    }
+    
+    private function _getDateNow(){
+        $date = date ('Y-m-d');
+        return $date;
+
+    }
+
+    private function _getTimeNow(){
+        $time = time();
+        $actual_time = date('his', $time);
+        
+        return $actual_time;
+    
+    }
+
+    private function _processRegForm(){
+        $this->user_id  = $this->_generateId();
+        $this->email        = $this->input->post("email");
+        $this->username     = $this->input->post("username");
+        $this->password     = $this->input->post("password");
+        $this->reTypePassword = $this->input->post("reTypePassword");
+        $this->fname        = $this->input->post("fname");
+        $this->lname        = $this->input->post("lname");
+        $this->mi       = $this->input->post("mi");
+        $this->gender   = $this->input->post("cboGender");
+        $this->address  = $this->input->post("address");
+        $this->contactno    = $this->input->post("contactno"); 
+        $this->date_joined    = $this->_getDateNow();
+        $this->profile_pic    = "". DEFAULT_IMAGE;
+        $this->membership_type = "Regular";
+        $this->position       = "0";
+
+        $data['form'] = array( "ID" => NULL,
+            "USER_ID"       => $this->user_id,
+            "EMAIL_ADDRESS" => $this->email,
+            "FIRST_NAME"    => $this->fname,
+            "LAST_NAME"     => $this->lname,
+            "MI"            => $this->mi,
+            "GENDER"        => $this->gender,
+            "ADDRESS"       => $this->address,
+            "CONTACT_NO"    => $this->contactno,
+            "DATE_JOINED"   => $this->date_joined,
+            "PROFILE_PICTURE"   => $this->profile_pic,
+            "MEMBERSHIP_TYPE"   => $this->membership_type
+        );
                 
-                $data['user'] =	array("ID" => NULL,
-			"USER_ID" => $this->user_id,
-			"USERNAME" => $this->username,
-			"PASSWORD" => md5($this->password),
-			"POSITION" => $this->position
-		);
+                $data['user'] = array("ID" => NULL,
+            "USER_ID" => $this->user_id,
+            "USERNAME" => $this->username,
+            "PASSWORD" => md5($this->password),
+            "POSITION" => $this->position
+        );
                 
                 return $data;
         }
         
         public function registerValidation() {
-		$email_exist_already    = TRUE;
-		$user_exist             = TRUE;
-		$success_validation 	= TRUE;
-		$tbl_user_info = "users_information";
-		$tbl_user = "users";
-		$error_message = "";
+        $email_exist_already    = TRUE;
+        $user_exist             = TRUE;
+        $success_validation     = TRUE;
+        $tbl_user_info = "users_information";
+        $tbl_user = "users";
+        $error_message = "";
 
                 $data = $this->_processRegForm();
                 
-		$email_exist_already    =  $this->checkDataExist( $tbl_user_info, "EMAIL_ADDRESS", $this->email);
-		$user_exist             =  $this->checkDataExist( $tbl_user, "USERNAME", $this->username);
+        $email_exist_already    =  $this->checkDataExist( $tbl_user_info, "EMAIL_ADDRESS", $this->email);
+        $user_exist             =  $this->checkDataExist( $tbl_user, "USERNAME", $this->username);
 
-		if ( $this->password != $this->reTypePassword ) {
-			$success_validation= FALSE;
-			$error_message  = $error_message."\nPlease Type your password correctly.<br>";
-		} 
-		if ( $email_exist_already == TRUE ) {
-			$success_validation = FALSE;
-			$error_message = $error_message . "\n Email Already in Used. Please use another Email. <br>";
-		}
-		if ( $user_exist == TRUE ) {
-			$success_validation = FALSE;
-			$error_message = $error_message . "\nUsername Already Used. Please use another.<br>";
-		}
-		if ( $success_validation == FALSE ) {
-			$data_error['error_message'] = $error_message;
+        if ( $this->password != $this->reTypePassword ) {
+            $success_validation= FALSE;
+            $error_message  = $error_message."\nPlease Type your password correctly.<br>";
+        } 
+        if ( $email_exist_already == TRUE ) {
+            $success_validation = FALSE;
+            $error_message = $error_message . "\n Email Already in Used. Please use another Email. <br>";
+        }
+        if ( $user_exist == TRUE ) {
+            $success_validation = FALSE;
+            $error_message = $error_message . "\nUsername Already Used. Please use another.<br>";
+        }
+        if ( $success_validation == FALSE ) {
+            $data_error['error_message'] = $error_message;
                         $this->load->model("models_display");
                         $this->models_display->displayRegister($data_error);
-		} else {
+        } else {
                     $this->load->model("models_users");
                     $this->models_users->insert_new_user($data['form'],$data['user'], $this->username, $this->user_id );
-		}
-	}
-
-	private function checkDataExist( $table_name = "", $table_column = "", $data ="") {
-                $SQL = "SELECT `USER_ID` FROM `{$table_name}` WHERE `{$table_column}` = '{$data}'";
-		$query = $this->db->query( $SQL );
-		if ( $query->num_rows() <= 0) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	public function newUser(){
-
-
-	}
-
-	public function logout(){
-
-
-
-	}
-	
-        public function seller_profile() {
-		$this->load->model("models_display");
-		$this->load->model("models_users");
-		
-		if ($this->session->userdata('is_logged_in') == TRUE ) {
-			$user_id = $this->session->userdata("user_id");
-			$this->load->model("models_users");
-			$query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
-			$this->models_display->displayProfile($query_data);
-		} else {
-			$data['error_message'] = "You must logged first to view your Profile !";
-			$this->load->model("models_display");
-			$this->models_display->displayLoginError($data);
-		}	
-	}
-        
-        public function getItemInfo( $table_name, $user_id ){
-
-
         }
+    }
+
+    private function checkDataExist( $table_name = "", $table_column = "", $data ="") {
+        $SQL = "SELECT `USER_ID` FROM `{$table_name}` WHERE `{$table_column}` = '{$data}'";
+        $query = $this->db->query( $SQL );
+        if ( $query->num_rows() <= 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function newUser(){
+
+
+    }
+
+    public function logout(){
+
+
+
+    }
+    
+    public function seller_profile() {
+        $this->load->model("models_display");
+        $this->load->model("models_users");
         
-        public function seller_edit_item($item_id){
+        if ($this->session->userdata('is_logged_in') == TRUE ) {
+            $user_id = $this->session->userdata("user_id");
+            $this->load->model("models_users");
+            $query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
+            $this->models_display->displayProfile($query_data);
+        } else {
+            $data['error_message'] = "You must logged first to view your Profile !";
+            $this->load->model("models_display");
+            $this->models_display->displayLoginError($data);
+        }   
+    }
+        
+    public function getItemInfo( $table_name, $user_id ){
+
+
+    }
+        
+    public function seller_edit_item($item_id){
                 $this->load->model("models_display");
-		$this->load->model("models_users");
+        $this->load->model("models_users");
                 $this->load->model("models_item");
-		
-		if ($this->session->userdata('is_logged_in') == TRUE ) {
-			$user_id = $this->session->userdata("user_id");
-			$this->load->model("models_users");
-			$query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
+        
+        if ($this->session->userdata('is_logged_in') == TRUE ) {
+            $user_id = $this->session->userdata("user_id");
+            $this->load->model("models_users");
+            $query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
                         
                         $query_data['Item'] = $this->models_item->get( $item_id);
                         
                         
                         //print_r( $query_data['Item']);   
 //                        $query_data['Error'] = $message_array;
-			$this->models_display->displayEditItem($query_data);
-		} else {
-			$data['error_message'] = "You must logged first to view your Profile !";
-			$this->load->model("models_display");
-			$this->models_display->displayLoginError($data);
-		}	
-        }
+            $this->models_display->displayEditItem($query_data);
+        } else {
+            $data['error_message'] = "You must logged first to view your Profile !";
+            $this->load->model("models_display");
+            $this->models_display->displayLoginError($data);
+        }   
+    }
         
         
-        public function seller_view_item(){
+    public function seller_view_item(){
                 $this->load->model("models_display");
-		$this->load->model("models_users");
+        $this->load->model("models_users");
                 $this->load->model("models_item");
-		
-		if ($this->session->userdata('is_logged_in') == TRUE ) {
-			$user_id = $this->session->userdata("user_id");
-			$this->load->model("models_users");
-			$query_data['User'] = $this->models_users->get_user_profile( TBL_USER_PROFILE, $user_id);
+        
+        if ($this->session->userdata('is_logged_in') == TRUE ) {
+            $user_id = $this->session->userdata("user_id");
+            $this->load->model("models_users");
+            $query_data['User'] = $this->models_users->get_user_profile( TBL_USER_PROFILE, $user_id);
                         $query_data['Item'] = $this->models_item->get_item_info( TBL_ITEM_LIST, $user_id);
-			$this->models_display->displayViewItem($query_data);
-		} else {
-			$data['error_message'] = "You must logged first to view your Profile !";
-			$this->load->model("models_display");
-			$this->models_display->displayLoginError($data);
-		}	
+            $this->models_display->displayViewItem($query_data);
+        } else {
+            $data['error_message'] = "You must logged first to view your Profile !";
+            $this->load->model("models_display");
+            $this->models_display->displayLoginError($data);
+        }   
         }
 
-	public function seller_add_item( $message_array  = "") {
+    public function seller_add_item( $message_array  = "") {
                 $this->load->model("models_display");
-		$this->load->model("models_users");
-		
-		if ($this->session->userdata('is_logged_in') == TRUE ) {
-			$user_id = $this->session->userdata("user_id");
-			$this->load->model("models_users");
-			$query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
+        $this->load->model("models_users");
+        
+        if ($this->session->userdata('is_logged_in') == TRUE ) {
+            $user_id = $this->session->userdata("user_id");
+            $this->load->model("models_users");
+            $query_data['User'] = $this->models_users->get_user_profile(TBL_USER_PROFILE, $user_id);
                         $query_data['Error'] = $message_array;
-			$this->models_display->displayAddItem($query_data);
-		} else {
-			$data['error_message'] = "You must logged first to view your Profile !";
-			$this->load->model("models_display");
-			$this->models_display->displayLoginError($data);
-		}	
-	}
+            $this->models_display->displayAddItem($query_data);
+        } else {
+            $data['error_message'] = "You must logged first to view your Profile !";
+            $this->load->model("models_display");
+            $this->models_display->displayLoginError($data);
+        }           
+    }
 
         
                //ITEM CLASS
@@ -239,8 +247,7 @@ class User extends CI_Controller {
          *  
          * 
          */
-        
-        public function do_upload(){   
+    public function do_upload(){   
             $folder_name = $this->session->userdata("user_id");
             $save_path = DEFAULT_UPLOAD. $folder_name;
             $upload_path = UPLOAD_SIGN."/". $save_path ;

@@ -83,11 +83,26 @@ class Models_Display extends CI_Model{
             
             $data['css_ref1'] = '<link href="'. base_url() .'public/css/message-style.css" rel="stylesheet" type="text/css" />';
             
-            
             $this->load->view('include/site_header',$data);
             $this->load->view('include/site_nav');
             
             $this->load->view('message', $data_message);
+            $this->load->view('include/site_footer');
+        }
+        /**
+         * @desc a custom template for displaying the messages from the user
+         *      conversation.
+         * @param type $data_message = the information regarding the users
+         * @return void
+         */
+        public function displayMessage_v2($data_message){
+            
+            $data['css_ref1'] = '<link href="'. base_url() .'public/css/message-style.css" rel="stylesheet" type="text/css" />';
+            
+            $this->load->view('include/site_header',$data);
+            $this->load->view('include/site_nav');
+            
+            $this->load->view('message_v2', $data_message);
             $this->load->view('include/site_footer');
         }
 }

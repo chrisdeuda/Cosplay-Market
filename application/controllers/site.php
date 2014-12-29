@@ -34,7 +34,14 @@ class Site extends CI_Controller {
         
         public function message(){
             $this->models_display->displayMessage();
-            
+        }
+        
+        public function message_v2(){
+            $this->models_display->displayMessage_v2( "");
+        }
+        
+        public function message_panel(){
+            $this->load->view('message-controller');
         }
        
 }

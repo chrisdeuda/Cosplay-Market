@@ -1,0 +1,40 @@
+-----------------------------------------------------------------------
+GETTING ALL MESSAGE CONVERSATION
+-----------------------------------------------------------------------
+
+SELECT R.cr_id as ID , R.user_id_fk as Sender, R.reply as Message , R.time as Time
+FROM conversation C, users U, conversation_reply R
+WHERE
+CASE 
+WHEN C.user_one = '2014-032335' THEN C.user_two = U.USER_ID
+WHEN c.user_two = '2014-032335' THEN C.user_one = U.USER_ID
+END
+AND
+C.c_id = R.c_id_fk
+AND
+(C.user_one = '2014-032335' OR C.user_two= '2014-032335' )  ORDER BY R.cr_id ASC
+
+-----------------------------------------------------------------------
+GETTING NEW MESSAGE CONVERSATION
+-----------------------------------------------------------------------
+
+SELECT R.cr_id AS ID, R.user_id_fk AS Sender, R.reply AS Message, R.time AS TIME
+FROM conversation C, users U, conversation_reply R
+WHERE 
+CASE 
+WHEN C.user_one =  '2014-032335'
+THEN C.user_two = U.USER_ID
+WHEN c.user_two =  '2014-032335'
+THEN C.user_one = U.USER_ID
+END 
+AND C.c_id = R.c_id_fk
+AND (
+C.user_one =  '2014-032335'
+OR C.user_two =  '2014-032335'
+)
+AND STATUS =0
+ORDER BY R.cr_id ASC 
+LIMIT 1
+
+
+
