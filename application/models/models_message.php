@@ -64,6 +64,30 @@ class Models_Message extends My_Model{
             return null;
         }
     }
+    /**
+     * 
+     * @param string $user_id - the one whom currently using the web
+     * @param int $con_id - current conversatin. it must must exist already.
+     * @return string( "user_one" OR "user_two ")
+     */
+    public function get_user_conversation_type($user_id, $con_id){
+        $sql_user_one  = "SELECT * FROM `conversation` "
+                . " WHERE `user_one` = '$user_id' AND `c_id` = $con_id";
+        
+        $sql_user_two  = "SELECT * FROM `conversation` "
+                . " WHERE `user_two` = '$user_id' AND `c_id` = $con_id";
+        
+        $query = $this->db->query( $sql_user_one );
+        $query_two = $this->db->query( $sql_user_two );
+        
+        if ( $query->num_rows() >=1 ) {
+            return "user_one";
+        }else if($query_two->num_rows() >=1 ) {
+            return "user_two";
+        } else {
+            return "user_one";
+        }
+    }
     
 }
 ?>

@@ -6,6 +6,8 @@ class Message extends CI_Controller {
         private $_user_two_data = array();
         private $_arr_conversation = array();
         private $_conversation_id = "";
+        private $_conversation_name = "";
+        private $_user_con_type = ""; //"user_one/user_two";
         
        function __construct(){
             parent::__construct();
@@ -16,6 +18,36 @@ class Message extends CI_Controller {
             $this->load->model("models_console");
             
         }
+        /**
+         * Initiliaze converation from specified user base on the user_id.
+         * It also start the session of two people exchanging messages to
+         * each other
+         * 
+         */
+        function init_conversation() {
+            $user_id = '2'; //base on user_log
+            $user_two = '2014-032335' ;
+            $con_name = "";
+            $old_conversation =  $this->models_message->oldConversationExists( $user_id, $user_two );
+            if ( $old_conversation == 0) {
+                // who among them start the conversation autmatically serve as 
+                //start  of the conversation
+                $this->models_message->createNewConversation( $user_id, $user_two );  
+            } else {
+                $this->_view_conversation( $user_id, $user_two );   
+            }
+            //$con_name =get_conversation_name( $user_id , $this->$_conversation_id );
+            //$this->$_user_con_type = $this->get_user_conversation_type( $user_id, $this->$_conversation_id);
+            //$this->set_conversation_id( $user_id, $this->$_user_con_type );
+            //echo "con_id" . $this->session->userdata($this->$_conversation_id);
+            
+        }
+        
+        function get_user_conversation_type($user_id, $conversation_id){
+            return $this->models_message->get_user_conversation_type( $user_id, $conversation_id);
+        }
+        
+        
         
         public function new_message(){
             $message = mysql_real_escape_string($this->input->post("message"));
@@ -60,33 +92,32 @@ class Message extends CI_Controller {
                 
                 $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
                 
-                $this->set_conversation_id( $this->models_message->get_conversation_id( $user_id, $user_two));
+                $this->set_conversation_id( $user_id, $user_two );
                 $modify_message = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
                 
                echo json_encode($modify_message);  
             }
         }
         
-        public function view_conversation( ){
+        /**
+         * @param type $user_id - login user
+         * @param type $user_two - user whom connecting to
+         * @return void
+         */
+        private function _view_conversation( $user_id, $user_two ){
+            
             $data_message = array();
-            $user_id = '2';
-            $user_two = '2014-032335';
-            $result =  $this->models_message->oldConversationExists( $user_id, $user_two );
             $message = array();
             
-            if ( $result == 0) {
-                $this->models_message->createNewConversation( $user_id, $user_two );
-                 echo "new message created";
-            } else {
-                $this->set_user_one( $this->models_users->get( $user_id ));
-                $this->set_user_two( $this->models_users->get( '2014-032335' ));             
-                
-                $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
-                $this->set_conversation_id( $this->models_message->get_conversation_id( $user_id, $user_two));
-                $data_message['message'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
-                
-                $this->models_display->displayMessage($data_message);
-            }
+            $this->set_user_one( $this->models_users->get( $user_id ));
+            $this->set_user_two( $this->models_users->get( $user_two ));             
+
+            $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
+            $this->set_conversation_id( $user_id, $user_two);
+            $data_message['message'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
+            
+           //$this->models_console->debugArray( $data_message['message'] ) ;
+           //$this->models_display->displayMessage($data_message);
         }
         /**
          * _format_message
@@ -113,7 +144,7 @@ class Message extends CI_Controller {
             } else {
                 $this->set_user_one( $this->models_users->get( $user_one_id ));
                 $this->set_user_two( $this->models_users->get( $user_two_id ));
-                $this->set_conversation_id( $this->models_message->get_conversation_id( $user_one_id, $user_two_id));
+                $this->set_conversation_id( $user_one_id, $user_two_id );
                 $data_message['message'] = $this->_get_formatted_message( $result, $this->get_user_one(), $this->get_user_two() );
                 
                 $con_id =  $data_message['message'][0]["ID"] ;
@@ -207,15 +238,36 @@ class Message extends CI_Controller {
             
         }
         /**
-         *  set_conversation_id
-         * get the id of of two users convesation
-         * @param $c_id string - conversation_id
+         * Retrieve the conversation _id from databse and save it to the 
+         * session variable.
+         * @param $user_id - currently login user
+         * @param $user_two -  person who'm he try to contact
          */
-        
-        public function set_conversation_id( $c_id){
-            $data = array("c_id" => $c_id);
-            $this->_conversation_id = $c_id;
+        public function set_conversation_id( $user_id, $user_two){
+            
+            $con_id = $this->models_message->get_conversation_id( $user_id, $user_two);
+            $this->format_conversation_name($user_id, $con_id);
+            
+            $sess_name =$this->get_conversation_id( $user_id, $con_id);
+            $data = array( $sess_name => $con_id);
+            $this->_conversation_id = $con_id;
             $this->session->set_userdata( $data);
+        }
+        
+        private function format_conversation_name( $user_id, $conversation_id ){
+            $this->$_conversation_name =  "con" . "_" . $user_id . "_" . $conversation_id;
+        }
+        /**
+         * get the convesation id from the session variable
+         * @return string
+         */
+        private function get_conversation_name( $user_id , $conversation_id ){
+            if ( $this->$_conversation_name == "") {
+                $name = "con" . "_" . $user_id . "_" . $conversation_id;
+                return $this->session->userdata( $name);
+            } else {
+                return $this->$_conversation_name;
+            }
         }
         /**
          * @description add the message into the database and format accordingly
@@ -225,7 +277,6 @@ class Message extends CI_Controller {
          */
         public function insert_new_message(){
             
-           
             $this->load->library("form_validation");
             
             $this->form_validation->set_rules("txtMessage", "Message", "required");

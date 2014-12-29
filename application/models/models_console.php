@@ -38,6 +38,22 @@ class Models_Console extends CI_Model{
         echo "window.alert('{$message}')";
         echo "</script>";
     }
+    
+    public function debugArray( $data ) {
+        $message = "";
+        $data_type = gettype($data);
+        
+        if ( $data_type == "string" ){
+            echo $data;
+        } else if ( $data_type == "array" || $data_type =="object" ){
+              echo "<pre>";
+              print_r($data);
+              echo "</pre>";
+        } else {
+            $message = $data;
+        }
+        
+    }
 }
 
 ?>
