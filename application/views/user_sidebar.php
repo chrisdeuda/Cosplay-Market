@@ -29,7 +29,7 @@
               <td ><a href="">Profile Settings</a></td>
             </tr>
             <tr>
-              <td ><a href="<?=base_url().'message/view_conversation';?>""">Message</a></td>
+              <td ><a href="<?=base_url().'message/init_conversation';?>">Message</a></td>
             </tr>
             <tr>
               <td ><a href="<?=base_url().'user/seller_view_item';?>" >View Item</a></td>

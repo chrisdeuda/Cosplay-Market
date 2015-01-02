@@ -1,6 +1,31 @@
   <div id="page">
 	  <div id="whole-content">
-      <h2> Message Testing</h2>
+    <style>
+
+      .common{
+        width:50px;
+        height:20px;
+        color:white;
+      }
+
+
+      .stop{
+        background-color:red;
+        
+      }
+      .start{
+        background-color:green;
+      }
+      .not-init{
+        background-color:black;
+
+      }
+
+
+    </style>
+
+
+      <h2 class="red"> Message Testing</h2>
 
       <script src="<?php echo base_url() . 'public/js/jquery-2.1.3.min.js'; ?> "> </script>
       <script src="<?php echo base_url() . 'public/js/jquery-message.js'; ?> "> </script>
@@ -11,11 +36,10 @@
 
 
           setConversationUrl( "<?php echo base_url(). 'message/get_all_conversation'; ?>" );
-          getUserId( id  );
+          getUserId( ''+id  );
           set_new_message_url( "<?php echo base_url(). 'message/get_new_message'; ?>" );
 
 
-          //setInterval(function(){$messageForm.checkNewMessage();}, 1000);
           
         </script>
     
@@ -52,8 +76,10 @@
               </div> <!--end:div message-box-->
         </div> <!--end:div message-container-->
         <div id="debug">
-          <p> </p>
-
+          <p class="common">0</p>
+          <button id="startTimer"> Start</button>
+          <button id="stopTimer"> Stop</button>
+          <br>
         </div>
 
 

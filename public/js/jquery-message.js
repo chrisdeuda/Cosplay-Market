@@ -1,9 +1,16 @@
-var test_url = "";
+	var test_url = "";
 var old_conversation_url = "";
 var user_id = "";
 var new_messsage_url = "";
 var message_controller_status;
 var msg_timer;
+
+var isReadMessageAllowed = false;
+
+var start = new Date().getTime(),
+    time = 0,
+    elapsed = '0.0';
+
 $(document).ready( function() {
 		
 		default_name = ["Crystal Maiden", "Lina Inverse", "Tide Hunter", 'Jakiro', 'Earth Shaker', 'Blood Seeker', 'Storm Spirit'];
@@ -19,7 +26,6 @@ $(document).ready( function() {
 
 		processForm: function(){
             $('#message_button').click( function (){
-            	console.log("id number" + loggedIn );
                 $messageForm.getName();
                 var $message = $('#message_data');
                 var $message_val = $message.val() + "";
@@ -33,8 +39,17 @@ $(document).ready( function() {
 
                     $messageForm.displayMessage( username, message, date_now);
                     $message.val('');
+                    $messageForm.saveMessage( message);
                 }
             });
+
+            $('#startTimer').click( function(){
+				startTimer();
+			});
+
+			$('#stopTimer').click( function(){
+				stopTimer();
+			});
 		},
 
 		displayMessage: function( username, message, date_now, image_path) {
@@ -66,13 +81,31 @@ $(document).ready( function() {
 			$template.hide();
 			$template.fadeIn(1000);
 
-			$messageForm.saveMessage( message);
+			
 
 			//$template.show();
 		},
 
 		debug: function ( message ){
-			$('#debug p').before(message);
+			text = "";
+			$count =  0;
+			$debug = $('#debug p');
+
+			$debug.removeClass('stop');
+			$debug.removeClass('start');
+			$debug.removeClass('not-init');
+			text = parseInt( $debug.text() ) + 1;
+			if ( parseInt(message)==  0 ) {
+				$debug.addClass('stop');
+
+            } else if ( parseInt(message) == 1) {
+            	$debug.addClass('start');
+
+            } else if ( message == false) {
+            	$debug.addClass('not-init');
+            	
+            }
+            $debug.text( text + "" );
 		},
 
 		getMessageCount: function () {
@@ -126,6 +159,8 @@ $(document).ready( function() {
          */
 
 		saveMessage: function( message ){
+			stopTimer();
+			
 			 $.ajax({
          		type: "POST",
          		url: test_url,
@@ -134,7 +169,13 @@ $(document).ready( function() {
          		cache:false,
          		success: 
               		function(data){
-                		
+              			var $result = JSON.parse(data);
+
+              			if ( $result.success == false) {
+              				startTimer();
+              			} else {
+              				startTimer();	
+              			}
               		},
 
           	});// you have missed this bracket
@@ -142,7 +183,6 @@ $(document).ready( function() {
 		},
 
 		getMessage: function( user_id){
-
 			 $.ajax({
          		type: "POST",
          		url: old_conversation_url ,
@@ -163,12 +203,10 @@ $(document).ready( function() {
               				image =  $result[index].Image + " ";
               				time =  $result[index].Time + " ";
 
-              				//console.log( "Message " + message );
-
               				$messageForm.displayMessage( sender, message, time);
-
               				message = "";
               			}
+              			
               		},
 
           	});// you have missed this bracket
@@ -177,11 +215,11 @@ $(document).ready( function() {
 
 		checkNewMessage: function(){
 			$messageForm.getMessageStatus();	//update the session value
-
+			
 			if (message_controller_status == 1 ){
 				//new_messsage_url = ""
-				clearInterval( msg_timer );
-				 $.ajax({
+				
+				$.ajax({
          		type: "POST",
          		url: new_messsage_url,
          		data: { user_id: user_id },
@@ -189,43 +227,42 @@ $(document).ready( function() {
          		cache:false,
          		success: 
               		function(data){
-              			//alert( "receive" + data);
               			var $result = JSON.parse(data);
 
-              			if ( $result['status']== "-1") {
-              				//alert("No Message found");
+              			if ( $result['status']== -1) {
+              				console.log('No Message Found');
+              				startTimer();
               			} else {
             				var message = "";
+            				
+            				alert( $result);
+            				//stopTimer();
 
               				for(index = 0; index < $result.length; index++ ){
 	              				// = message + $result[index].ID + " ";
-	              				sender =  $result[index].Sender + " ";
+	              				sender 	=  $result[index].Sender + " ";
 	              				message =  $result[index].Message + " ";
-	              				image =  $result[index].Image + " ";
-	              				time =  $result[index].Time + " ";
+	              				image 	=  $result[index].Image + " ";
+	              				time 	=  $result[index].Time + " ";
 
-	              				alert('got new message');
+	              				//alert('got new message');
 
+	              				setTimeout(function(){startTimer()}, 1);		//create a delay everything must be process first
 	              				$messageForm.displayMessage( sender, message, time);
-
 	              				message = "";
 
               				}
               			}
 
-              			msg_timer = setInterval(function(){$messageForm.checkNewMessage()}, 2000);
-              			
-              			//check if there is new message
-              		//	if true get the value
-              		//	if not ignore
-              			
               		},
 
           		});
 				console.log( "connected :D");
-			} else if (message_controller_status == 0 ){
+			} else if ( parseInt(message_controller_status) == 0 ){
 				console.log( "not connected");
 
+			} else if (message_controller_status == false){ //not init
+				console.log( "not init");
 			}
 			return false;
 		},
@@ -245,38 +282,70 @@ $(document).ready( function() {
          		cache:false,
          		success: 
               		function(data){
-              			message_controller_status = data;
-
-              			//console.log("status:" + message_controller_status );
-              			$messageForm.debug( "status:" + message_controller_status );
-
-              			if (data == "") {
-              				alert("No result");
-
-              			} else {
-              				if ( status == 1 || status == 0) {
-              					//alert("STATUS" +  status );
-              					//displayStatus(status);
-              				} else {
-              					
-              				
-              				}
-              			}
+              			$result = JSON.parse(data);
+              			message_controller_status = $result.status;
               		},
 
           		});// you h
           		return false;
-			}
+			},
 
+		timerTest: function(){
+			//clearInterval( msg_timer );
+			
+			//msg_timer = setInterval(function(){$messageForm.timerTest()}, 2000);
+			return false;
+		}
+
+	
 	};
+
+	function instance()
+	{
+    	time += 100;
+
+    	elapsed = Math.floor(time / 1000) / 100;
+    	if(Math.round(elapsed) == elapsed) { elapsed += '.0'; }
+
+    	//	document.title = elapsed;
+
+    	var diff = (new Date().getTime() - start) - time;
+    	window.setTimeout(instance, (1000 - diff));
+	}
+
+	function testTimer(){
+		if (isReadMessageAllowed == true){
+			$messageForm.debug(1);
+			$messageForm.checkNewMessage();
+
+		} else if ( isReadMessageAllowed == false){
+
+
+		} 
+		setTimeout( testTimer, 2000);
+	}
+
+	function startTimer(){
+		isReadMessageAllowed = true;
+	}
+
+	function stopTimer(){
+		isReadMessageAllowed = false;
+	}
+
+
 	
 	$messageForm.init();
-	msg_timer = setInterval(function(){$messageForm.checkNewMessage()}, 2000);
-	//setInterval($messageForm.checkNewMessage(), 1000);
 
-//	clearInterval(function(){$messageForm.checkNewMessage()});
-
+	//msg_timer = setTimeout(instance, 100);
+	//msg_timer = setInterval(function(){$messageForm.checkNewMessage()}, 2000);
+	//msg_timer = setInterval(function(){$messageForm.timerTest()}, 2000);
+	startTimer();
+	msg_timer = setTimeout(function(){testTimer()}, 2000);
+	
+	
 });
+
 
 
 	function saveUrlMessage( str_url_message ){
@@ -290,13 +359,10 @@ $(document).ready( function() {
 	*/
 	function getUserId( the_id ){
 		user_id = the_id;
-		console.log("userId" + user_id);
-
 	}
 
 	function setConversationUrl( the_url ){
 		old_conversation_url  = the_url;
-		console.log("con_url" +  old_conversation_url);
 	}
 
 	function set_new_message_url( the_url ){

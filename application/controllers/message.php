@@ -8,6 +8,10 @@ class Message extends CI_Controller {
         private $_conversation_id = "";
         private $_conversation_name = "";
         private $_user_con_type = ""; //"user_one/user_two";
+        private $_is_init_con_session = false;
+        private $_is_init_con = false;       //flag for initialize conversation
+        
+        
         
        function __construct(){
             parent::__construct();
@@ -25,21 +29,21 @@ class Message extends CI_Controller {
          * 
          */
         function init_conversation() {
-            $user_id = '2'; //base on user_log
-            $user_two = '2014-032335' ;
+            $user_id = $this->session->userdata('user_id');
+            if (  $user_id == '2') {
+                $user_two = '2014-032335' ;
+            } else {
+                $user_two = '2' ;
+            }
             $con_name = "";
             $old_conversation =  $this->models_message->oldConversationExists( $user_id, $user_two );
             if ( $old_conversation == 0) {
                 // who among them start the conversation autmatically serve as 
                 //start  of the conversation
                 $this->models_message->createNewConversation( $user_id, $user_two );  
-            } else {
-                $this->_view_conversation( $user_id, $user_two );   
-            }
-            //$con_name =get_conversation_name( $user_id , $this->$_conversation_id );
-            //$this->$_user_con_type = $this->get_user_conversation_type( $user_id, $this->$_conversation_id);
-            //$this->set_conversation_id( $user_id, $this->$_user_con_type );
-            //echo "con_id" . $this->session->userdata($this->$_conversation_id);
+            } 
+            $this->init_conversation_id( $user_id, $user_two );
+            $this->_view_conversation( $user_id, $user_two );   
             
         }
         
@@ -47,29 +51,47 @@ class Message extends CI_Controller {
             return $this->models_message->get_user_conversation_type( $user_id, $conversation_id);
         }
         
-        
-        
         public function new_message(){
             $message = mysql_real_escape_string($this->input->post("message"));
             
-             if( $message == "" ) {
-                //return to view page
-                $this->view_conversation();
+            /** Remove later
+             */
+            $user_one_id= $this->session->userdata('user_id');
+            if (  $user_one_id == '2') {
+                $user_two_id = '2014-032335' ;
             } else {
-                $user_id = $this->input->post("user_id");
+                $user_two_id = '2' ;
+            }
+             if( $message == "" ) {
+                 echo json_encode(array("success" =>false));
+                //$this->_view_conversation();
+            } else {
+                $this->init_conversation_id( $user_one_id, $user_two_id );
+                $user_id = $this->session->userdata('user_id');
                 $ip = "2";
                 $time = time();
-                $c_id = $this->_get_conversation_id();
+                $c_id = 1;
                 $reply = $message;
+                $arr_message = array();
                 $arr_message = array(
                     "user_id_fk" => $user_id,
                     "reply" =>  $reply,
-                    "ip" => $ip,
-                    "time" => $time,
+                    "ip" => $ip,"time" => $time,
                     "c_id_fk" => $c_id
                 );      
+                
+                  //default user_one_will be updated                
+                 if ( $this->_user_con_type == "user_two") {
+                    $arr_message['user_two_status']= 1;
+                    $arr_message['user_one_status']= 0;
+                } else  if ( $this->_user_con_type == "user_one") {
+                    $arr_message['user_one_status']= 1; 
+                    $arr_message['user_two_status']= 0;
+                }
+                
+                //$this->models_console->debugToAlert( $arr_message);
                 $this->models_message_reply->insert( $arr_message );
-                echo "Success";
+                echo json_encode(array("success" =>true));
                 //$this->view_conversation();
             }
         }
@@ -92,7 +114,7 @@ class Message extends CI_Controller {
                 
                 $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
                 
-                $this->set_conversation_id( $user_id, $user_two );
+                $this->init_conversation_id( $user_id, $user_two );
                 $modify_message = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
                 
                echo json_encode($modify_message);  
@@ -104,8 +126,12 @@ class Message extends CI_Controller {
          * @param type $user_two - user whom connecting to
          * @return void
          */
-        private function _view_conversation( $user_id, $user_two ){
+        public function _view_conversation( $user_id, $user_two ){
             
+            if ( $this->_is_init_con_session == FALSE) {
+                $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
+                $this->init_conversation_id( $user_id, $user_two);
+            } 
             $data_message = array();
             $message = array();
             
@@ -113,11 +139,10 @@ class Message extends CI_Controller {
             $this->set_user_two( $this->models_users->get( $user_two ));             
 
             $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
-            $this->set_conversation_id( $user_id, $user_two);
             $data_message['message'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
-            
-           //$this->models_console->debugArray( $data_message['message'] ) ;
-           //$this->models_display->displayMessage($data_message);
+            $this->models_display->displayMessage( $data_message['message']);
+
+           //$this->models_console->debugArray( $data_message['message'] ) ;            
         }
         /**
          * _format_message
@@ -134,33 +159,43 @@ class Message extends CI_Controller {
          * @return string conversation_id / -1 for false result
          */
         public function get_new_message(){
-            $user_one_id = "2";
-            $user_two_id = "2014-032335";
-            $con_id = "";
+            $user_one_id= $this->session->userdata('user_id');
+            $message_id;
+            if (  $user_one_id == '2') {
+                $user_two_id = '2014-032335' ;
+            } else {
+                $user_two_id = '2' ;
+            }
             
-            $result = $this->models_message_reply->get_unread_reply($user_one_id, $user_two_id);
+            $con_id = "";
+            $this->init_conversation_id( $user_one_id, $user_two_id );
+            $result = $this->models_message_reply->get_unread_reply($user_one_id, $user_two_id, $this->_user_con_type); //user_one
+            
             if ( $result == "-1") {
                 echo json_encode( array("status" => -1 ));
             } else {
                 $this->set_user_one( $this->models_users->get( $user_one_id ));
                 $this->set_user_two( $this->models_users->get( $user_two_id ));
-                $this->set_conversation_id( $user_one_id, $user_two_id );
                 $data_message['message'] = $this->_get_formatted_message( $result, $this->get_user_one(), $this->get_user_two() );
-                
-                $con_id =  $data_message['message'][0]["ID"] ;
-                $this->update_read_message_status($con_id);
-                
+
+                $message_id =  $data_message['message'][0]["ID"] ;
+                $this->update_read_message_status($message_id);
+                //echo json_encode( array("status" => -1 ));
+                //echo json_encode( array("status" => 1 ));
                 echo json_encode($data_message['message']);
             }
         }
         /**
          * @description it is used after the messgae is being read by the client
          * so that it would not appear in the query again.
-         * @param type $conversation_id
+         * @param type $conversation_id - it must be existing id.
          * @return void
          */
-        public function update_read_message_status( $conversation_id ){
-            $update_val = array( "status"=> 1);
+        public function update_read_message_status( $conversation_id, $user_con_type = ""){
+            //if ( $user_con_type = "user_two") {
+                $update_val = array( "user_one_status"=>1,
+                    "user_two_status"=> 1);
+            //} 
             $this->models_message_reply->update($conversation_id, $update_val );
         }
         
@@ -213,15 +248,8 @@ class Message extends CI_Controller {
         }
         
         public function getMessageStatus(){
-            $session_message = $this->session->userdata('active_message');
-            if ( empty($session_message)){
-                //$this->session->set_userdata('active_message', 1);
-                //$this->models_console->debugToConsole( "Server: Created Message Session". $this->session->userdata('active_message') );
-                echo 0;
-                //echo "not set so created";
-            }
-            echo $this->session->userdata('active_message');
-
+            $data = $this->session->userdata('active_message');       
+            echo json_encode( array("status"=>$data));
         }
         
         public function clearMessageStatus(){
@@ -234,8 +262,7 @@ class Message extends CI_Controller {
         }
         
         public function _get_conversation_id(){
-            return $this->session->userdata("c_id");
-            
+            return $this->session->userdata("c_id");  
         }
         /**
          * Retrieve the conversation _id from databse and save it to the 
@@ -243,30 +270,34 @@ class Message extends CI_Controller {
          * @param $user_id - currently login user
          * @param $user_two -  person who'm he try to contact
          */
-        public function set_conversation_id( $user_id, $user_two){
-            
+        public function init_conversation_id( $user_id, $user_two){
             $con_id = $this->models_message->get_conversation_id( $user_id, $user_two);
-            $this->format_conversation_name($user_id, $con_id);
+            $this->_conversation_name = $this->format_conversation_name($user_id, $con_id);
             
-            $sess_name =$this->get_conversation_id( $user_id, $con_id);
-            $data = array( $sess_name => $con_id);
+            $this->_user_con_type = $this->get_user_conversation_type( $user_id, $con_id);
+            
+            $sess_name = $this->_get_conversation_name( $user_id, $con_id);
+            $data = array( $sess_name => $this->_user_con_type);
             $this->_conversation_id = $con_id;
             $this->session->set_userdata( $data);
+            
+            $_is_init_con_session = true;
+            
         }
         
         private function format_conversation_name( $user_id, $conversation_id ){
-            $this->$_conversation_name =  "con" . "_" . $user_id . "_" . $conversation_id;
+            return "con" . "_" . $user_id . "_" . $conversation_id;
         }
         /**
          * get the convesation id from the session variable
          * @return string
          */
-        private function get_conversation_name( $user_id , $conversation_id ){
-            if ( $this->$_conversation_name == "") {
+        private function _get_conversation_name( $user_id , $conversation_id ){
+            if ( $this->_conversation_name == "") {
                 $name = "con" . "_" . $user_id . "_" . $conversation_id;
-                return $this->session->userdata( $name);
-            } else {
-                return $this->$_conversation_name;
+                return $name;
+           } else {
+                return $this->_conversation_name;
             }
         }
         /**

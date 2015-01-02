@@ -45,7 +45,7 @@ class Models_Message_Reply extends My_Model{
      */
     public function check_new_message( $user_id_to_check ){
         $SQL = "SELECT `cr_id` as ID FROM `conversation_reply` "
-               . " WHERE `c_id_fk` = '$user_id_to_check' AND `status` = 0 "
+               . " WHERE `c_id_fk` = '$user_id_to_check' AND `user_one_status` = 0 "
                . " ORDER BY cr_id ASC"
                . " LIMIT 1";
                
@@ -58,13 +58,20 @@ class Models_Message_Reply extends My_Model{
         }
     }
     /**
-     * @desc  get the message from conversation which is still not read.
+     * @desc  get the message from conversation which is still not read coming
+     * form other user.
      * @param string $user_one_id
-     * @param string $user_two_id
-     * @return array
+     * @param string $user_two_id 
+     * @param string $user_con_type - for checking user if user_one/ user_two
+     * @return array/ "-1" if no new message found
      */
-     public function get_unread_reply($user_one_id, $user_two_id){
+     public function get_unread_reply($user_one_id = "", $user_two_id = "", $user_con_type = "" ){
         /*trying to get who I have a conversation before*/
+         $status_condition = "R.user_one_status = 0";
+         if ( $user_con_type == "user_two") {
+             $status_condition = "R.user_two_status = 0";
+         }
+         
         $SQL = "SELECT R.cr_id as ID , C.user_one as Sender, C.user_two as Receiver, R.reply as Message , R.time as Time"
                 . " FROM conversation C, users U, conversation_reply R"
                 . " WHERE"
@@ -76,19 +83,23 @@ class Models_Message_Reply extends My_Model{
                 . " C.c_id = R.c_id_fk"
                 . " AND"
                 . " (C.user_one = '{$user_two_id}' OR C.user_two= '{$user_two_id}' )"
-                . " AND"
-                . " R.status = 0"
+                . " AND (R.user_id_fk = '{$user_two_id}')" 
+                . " AND "
+                . " ". $status_condition  //condition
                 . " ORDER BY R.cr_id ASC"
                 . " LIMIT 1";
         $query = $this->db->query( $SQL );
                 
         if ( $query->num_rows >= 1) {
             $result = $query->result_array();
+            
             return $result;
         } else {
             return "-1";
         }
     }
+    
+
     
     public function insert_message( $arr_message ){
         

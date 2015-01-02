@@ -16,21 +16,8 @@ class Models_Message extends My_Model{
      * @return true/false 
      * /
      */
-    function oldConversationExists( $user_id = "", $contact_user_id = "" ){
-        $SQL = "SELECT C.c_id
-                FROM conversation C
-                WHERE
-                (C.user_one = '{$user_id}' AND C.user_two = '{$contact_user_id}')
-                OR
-                (C.user_two = '{$user_id}' AND  C.user_one = '{$contact_user_id}')";
-                
-        $query = $this->db->query($SQL);
-        
-        if ( $query->num_rows() >=1 ) {
-            return $query->num_rows();
-        } else {
-            return 0;
-        }
+    public function oldConversationExists( $user_id = "", $contact_user_id = "" ){
+        return $this->get_conversation_id($user_id, $contact_user_id);
     }
     /**
      * createNewConversation
@@ -39,7 +26,7 @@ class Models_Message extends My_Model{
      * @param type $user_one
      * @param type $user_two
      */
-    function createNewConversation( $user_one, $user_two ){
+    public function createNewConversation( $user_one, $user_two ){
         $data = array( "user_one" => $user_one,
             "user_two" => $user_two
             );
@@ -53,15 +40,20 @@ class Models_Message extends My_Model{
      * @return $id
      */
     
-    function get_conversation_id( $user_one_id, $user_two_id){
-        $array = array( "user_one" => $user_one_id,
-            "user_two" => $user_two_id );
-        $id = $this->get_by( $array);
+    public function get_conversation_id( $user_one_id ="2", $user_two_id = "2014-032335"){
+         $SQL = "SELECT C.c_id
+                FROM conversation C
+                WHERE
+                (C.user_one = '{$user_one_id}' AND C.user_two = '{$user_two_id}')
+                OR
+                (C.user_two = '{$user_one_id}' AND  C.user_one = '{$user_two_id}')";
         
-        if ( count($id) != 0) {
-            return $id->c_id;
+         $query = $this->db->query($SQL);
+        
+        if ( $query->num_rows() >=1 ) {
+            return $query->num_rows();
         } else {
-            return null;
+            return 0;
         }
     }
     /**

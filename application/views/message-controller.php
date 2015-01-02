@@ -101,12 +101,10 @@
 					$('#status').find('p').html(  "<b>" + "OFF" + "</b>").css('color','red');
 				} else if ( status == -1) {
 					$('#status').find('p').html(  "<b>" + "Not Set" + "</b>").css('color','black');
-
 				}
 			}
 
 			function init(){
-//				alert('calling the status');
 				getMessageStatus();
 		
 			}

@@ -27,6 +27,16 @@ SELLER SIDE
 [] Reservation of Items
 [] Chat System
 [] Messaging System
+	[] Add Ajax Search for Friends
+		[] GUI
+		[] Functionalities (Working Links for connecting conversation)
+	[] Conversation
+	[] Exchanging Messages Through Network
+	[] Timer for Updating Incoming Messages
+	[] Display The Messages after user typed
+	[] Create a Temporary storage for Messages(Dummy Table) for Queue
+	[] Successfully exchange message
+	[] Modifify the table for database for user_one and user_two status (read/unread)
 
 ----------
 ADMIN
@@ -36,3 +46,4 @@ ADMIN
 
 
 BUGS
+[] #1. Incoming Messages coming infinitely because of uncontrolled behaviour of timer

@@ -32,7 +32,8 @@ AND (
 C.user_one =  '2014-032335'
 OR C.user_two =  '2014-032335'
 )
-AND STATUS =0
+AND (R.user_id_fk = 2014-032335)
+AND (R.user_one_status  = 0)
 ORDER BY R.cr_id ASC 
 LIMIT 1
 
