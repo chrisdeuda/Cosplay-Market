@@ -6,6 +6,8 @@ var message_controller_status;
 var msg_timer;
 
 var isReadMessageAllowed = false;
+var isAllowedToScroll = false;
+var current_page_row = 0;
 
 var start = new Date().getTime(),
     time = 0,
@@ -24,6 +26,7 @@ $(document).ready( function() {
 
 		},
 
+		// Event Handler
 		processForm: function(){
             $('#message_button').click( function (){
                 $messageForm.getName();
@@ -50,6 +53,84 @@ $(document).ready( function() {
 			$('#stopTimer').click( function(){
 				stopTimer();
 			});
+
+			$('#message-scroll-box').scroll(function(){
+				var scrolltop= this.scrollTop;
+				var scrollheight= this.scrollHeight;
+				var windowheight= this.clientHeight;
+				var scrolloffset=20;
+				var dif = scrollheight - (windowheight + scrolloffset) ;
+
+				//Reach Bottom
+				if ( scrolltop == dif) {
+					console.log('you reach the buttom');
+					var test_url = "scroll-value.php";
+
+
+					//alert( "Current Val" + $messageForm.get_page_row());
+					
+					/*
+					$('#scrollbox').off('scroll');
+	 				$.ajax({
+	         			type: "POST",
+	         			url: test_url,
+	         			data: { message: "test"},
+	         			dataType: "text",  
+	         			cache:false,
+	         			success: 
+	              		function(data){
+	              			$("#content").append(data);
+	              			$('#scrollbox').on('scroll');
+	              			
+	              		},
+						*/
+	          		//});// you have missed this bracket
+	     			return false;
+				}
+				//Top Scrolling
+				if (scrolltop == scrolloffset) {
+					$row = 	$messageForm.get_page_row();
+					$final_row = 0;
+
+
+					if ( $row == 0) {
+						alert('No convesation left');
+
+					} else {
+						$final_row = ($row -1 );
+						$messageForm.set_page_row( $final_row);
+						$messageForm.scrollFocusToBottom();
+
+						alert( "Row" + $final_row );
+					}
+					//console.log('you reach the top. try loading values here');
+				}
+				
+			});
+		},
+
+		scrollFocusToBottom: function (){
+			$scroll_box =  $('#message-scroll-box');
+			$max_scroll= $scroll_box.prop('clientHeight');
+
+			$scroll_box.scrollTop( $max_scroll);
+
+		},
+
+		generatePage: function( $page_count ) {
+			var row = $page_count;
+			var str = "";
+			var $page_row = $('#page-row');
+
+			var anchor_text = " ";
+
+				for(index = 0; index < row; index++){
+					anchor_text = " " + (index + 1);
+					str = "<a href='#' id='test"+( index+1)+"'>"+ anchor_text + "</a>";
+					$page_row.append(str);
+					anchor_text =  "";
+				}
+				//alert("found " + $('#test2').text());
 		},
 
 		displayMessage: function( username, message, date_now, image_path) {
@@ -182,7 +263,9 @@ $(document).ready( function() {
      		return false;
 		},
 
+		//Creating a request in server to retreive all messages
 		getMessage: function( user_id){
+			//old_conversation_url = "";
 			 $.ajax({
          		type: "POST",
          		url: old_conversation_url ,
@@ -191,21 +274,26 @@ $(document).ready( function() {
          		cache:false,
          		success: 
               		function(data){
-              			//var $result = JSON.parse(data);
               			var $result = JSON.parse(data);
               			
               			var message = "";
 
-              			for(index = 0; index < $result.length; index++ ){
-              				// = message + $result[index].ID + " ";
-              				sender =  $result[index].Sender + " ";
-              				message =  $result[index].Message + " ";
-              				image =  $result[index].Image + " ";
-              				time =  $result[index].Time + " ";
+              			for(index = 0; index < $result.messages.length; index++ ){
+              				sender =  $result.messages[index].Sender + " ";
+              				//alert("Sender" + sender);
+              				message =  $result.messages[index].Message + " ";
+              				image =  $result.messages[index].Image + " ";
+              				time =  $result.messages[index].Time + " ";
 
               				$messageForm.displayMessage( sender, message, time);
               				message = "";
               			}
+              			//alert($messageForm.generatePage($result.page.rows));
+
+              			$messageForm.generatePage( $result.page.rows);
+              			$messageForm.set_page_row($result.page.rows);
+
+              			$messageForm.scrollFocusToBottom();
               			
               		},
 
@@ -295,9 +383,16 @@ $(document).ready( function() {
 			
 			//msg_timer = setInterval(function(){$messageForm.timerTest()}, 2000);
 			return false;
+		},
+
+		set_page_row: function($the_page_row){
+			current_page_row = $the_page_row;
+		},
+
+		get_page_row: function (){
+			return current_page_row;
 		}
 
-	
 	};
 
 	function instance()

@@ -27,16 +27,19 @@ SELLER SIDE
 [] Reservation of Items
 [] Chat System
 [] Messaging System
+	)
+	[X] Conversation
+	[X] Exchanging Messages Through Network
+	[X] Timer for Updating Incoming Messages
+	[X] Display The Messages after user typed
+	[X] Successfully exchange message
+	[X] Modifify the table for database for user_one and user_two status (read/unread)
 	[] Add Ajax Search for Friends
 		[] GUI
 		[] Functionalities (Working Links for connecting conversation)
-	[] Conversation
-	[] Exchanging Messages Through Network
-	[] Timer for Updating Incoming Messages
-	[] Display The Messages after user typed
+	[] Scrollbox for messages
+	[] Division of longer messages(Pagena
 	[] Create a Temporary storage for Messages(Dummy Table) for Queue
-	[] Successfully exchange message
-	[] Modifify the table for database for user_one and user_two status (read/unread)
 
 ----------
 ADMIN

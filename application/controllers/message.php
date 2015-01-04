@@ -10,8 +10,8 @@ class Message extends CI_Controller {
         private $_user_con_type = ""; //"user_one/user_two";
         private $_is_init_con_session = false;
         private $_is_init_con = false;       //flag for initialize conversation
-        
-        
+        private $_message_count = 0;        //for distribution of pages
+        private $_messsage_row_limit = 10;
         
        function __construct(){
             parent::__construct();
@@ -50,6 +50,19 @@ class Message extends CI_Controller {
         function get_user_conversation_type($user_id, $conversation_id){
             return $this->models_message->get_user_conversation_type( $user_id, $conversation_id);
         }
+        
+        
+        /**
+         * For Generating a division of messages.
+         * @param type $the_message_count
+         * @return void
+         */
+        
+        private function set_message_count($the_message_count){
+            $this->$_message_count = 0;
+               
+        }
+        
         
         public function new_message(){
             $message = mysql_real_escape_string($this->input->post("message"));
@@ -95,30 +108,73 @@ class Message extends CI_Controller {
                 //$this->view_conversation();
             }
         }
-        
+        /**
+         * Retrieve all conversation information base on AJAX Request
+         * @return json array
+         */
         public function get_all_conversation(){
             //$id = $this->input->post("user_id");
             $data_message = array();
-            $user_id = $this->input->post("user_id");
+            $user_id = $this->session->userdata('user_id');
             $user_two = '2014-032335';
             $result =  $this->models_message->oldConversationExists( $user_id, $user_two );
             $message = array();
+            
             
             if ( $result == 0) {
                 $this->models_message->createNewConversation( $user_id, $user_two );
                  echo "new message created";
             } else {
-                //format the retrieve message with appropriate information
+                $data_message = array();
+                $message = array();
+            
+                $this->set_user_one( $this->models_users->get( $user_id ));
+                $this->set_user_two( $this->models_users->get( $user_two ));             
+
+                $message_count = $this->models_message_reply->get_message_count($user_id, $user_two );
+            
+                $page = $this->process_messsage_page( $message_count);
+                $message = $this->models_message_reply->get_conversatation($user_id, $user_two, $page['start'], $page['limit'] );
+                
+                $data_message['page'] = $page;
+                $data_message['messages'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
+            
+                echo json_encode($data_message);  
+            }
+        }
+        
+        public function get_previous_conversation(){
+            $data_message = array();
+            $user_id = $this->session->userdata('user_id');
+            $user_two = '2014-032335';
+            $result =  $this->models_message->oldConversationExists( $user_id, $user_two );
+            $message = array();
+            
+            $limit = $this->_messsage_row_limit;
+            
+            $page = 0;
+            if ( $result == 0) {
+                $this->models_message->createNewConversation( $user_id, $user_two );
+                 echo "new message created";
+            } else {
+                $data_message = array();
+                $message = array();
+            
                 $this->set_user_one( $this->models_users->get( $user_id ));
                 $this->set_user_two( $this->models_users->get( $user_two ));             
                 
-                $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
-                
-                $this->init_conversation_id( $user_id, $user_two );
-                $modify_message = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
-                
-               echo json_encode($modify_message);  
+                $start = $this->_process_page_request( $page ,$limit);
+                    
+                $message = $this->models_message_reply->get_conversatation($user_id, $user_two, $start, $limit );
+                $data_message['messages'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
+            
+                echo json_encode($data_message);  
             }
+        }
+        
+        public function prevTest(){
+            
+            
         }
         
         /**
@@ -138,11 +194,58 @@ class Message extends CI_Controller {
             $this->set_user_one( $this->models_users->get( $user_id ));
             $this->set_user_two( $this->models_users->get( $user_two ));             
 
-            $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
+            //$message = $this->models_message_reply->get_conversatation($user_id, $user_two );
+            
+            $message_count = $this->models_message_reply->get_message_count($user_id, $user_two );
+            
+            $page = $this->process_messsage_page( $message_count);
+            $message = $this->models_message_reply->get_conversatation($user_id, $user_two, $page['start'], $page['limit'] );
+            
+            
             $data_message['message'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
+            
+            
+            //$this->models_console->debugArray( $data_message['message']);
+            
             $this->models_display->displayMessage( $data_message['message']);
 
-           //$this->models_console->debugArray( $data_message['message'] ) ;            
+        }
+        
+     
+        /**
+         * Manipulate the page number being request by the client base on the
+         * actual division in database.
+         * @param int $current_page
+         * @param int $limit - maximum value to be retrieve
+         */
+        private  function _process_page_request( $page_request = 0, $limit = 10){
+            $page = $page_request;
+            if ( $page == 0 || $page == null) {
+                $page = 1;
+            }
+            $start = ($page - 1) * $limit;
+            
+            
+            return $start;
+        }
+        
+        /**
+         * Getting the total count of messages to be display and process
+         * it into manageable chunk like page 1, 2, 3,4 and so on.
+         * @param int $total_row - all records need to be display
+         * @return array(start, limit, row);
+         */
+        function process_messsage_page( $total_row ){
+            $message_count = $total_row;
+            $limit = 10;
+            $rows = ceil( $message_count / $limit);
+            
+            $start = $this->_process_page_request( 0, $limit);
+            
+            $result = array( "start" => $start, "limit" => $limit,
+                "rows" => $rows
+                );
+            return $result;
         }
         /**
          * _format_message
@@ -152,6 +255,7 @@ class Message extends CI_Controller {
             
             
         }
+        
         /**
          * @desc - create a query that would check if there is new message
          *          users depending on user_id being passed. -1 id defines as no
@@ -185,6 +289,7 @@ class Message extends CI_Controller {
                 echo json_encode($data_message['message']);
             }
         }
+        
         /**
          * @description it is used after the messgae is being read by the client
          * so that it would not appear in the query again.
@@ -200,26 +305,32 @@ class Message extends CI_Controller {
         }
         
         private function _get_formatted_message( $object_array_message , $user_one, $user_two ){
+            $message_count = count($object_array_message);
             $formatted_message = array();
             $count = 0;
- 
-            foreach( $object_array_message as $message ){
-                if ( $message['Sender'] == $user_one->USER_ID  ){
-                    $Sender =  $user_one->FIRST_NAME. ' ' .  $user_one->LAST_NAME;   
-                    $image_path = base_url(). $user_one->PROFILE_PICTURE;
-                    
-                } else if ( $message['Sender'] == $user_two->USER_ID  ){
-                    $Sender =  $user_two->LAST_NAME. ' ' .  $user_two->LAST_NAME;   
-                    $image_path = base_url(). $user_two->PROFILE_PICTURE;
+            
+            if ($message_count == 0) {
+               return null;
+            } else {
+                 foreach( $object_array_message as $message ){
+                    if ( $message['Sender'] == $user_one->USER_ID  ){
+                        $Sender =  $user_one->FIRST_NAME. ' ' .  $user_one->LAST_NAME;   
+                        $image_path = base_url(). $user_one->PROFILE_PICTURE;
+
+                    } else if ( $message['Sender'] == $user_two->USER_ID  ){
+                        $Sender =  $user_two->LAST_NAME. ' ' .  $user_two->LAST_NAME;   
+                        $image_path = base_url(). $user_two->PROFILE_PICTURE;
+                    }
+                    $formatted_message[$count]['ID']     = $message['ID'] ;
+                    $formatted_message[$count]['Sender'] = $Sender;
+                    $formatted_message[$count]['Image'] = $image_path;
+                    $formatted_message[$count]['Message'] = $message['Message'];
+                    $formatted_message[$count]['Time'] = date("m/d/y h:i:s a", $message['Time']);
+
+                    $count++;   
                 }
-                $formatted_message[$count]['ID']     = $message['ID'] ;
-                $formatted_message[$count]['Sender'] = $Sender;
-                $formatted_message[$count]['Image'] = $image_path;
-                $formatted_message[$count]['Message'] = $message['Message'];
-                $formatted_message[$count]['Time'] = date("m/d/y h:i:s a", $message['Time']);
-                
-                $count++;   
             }
+            
             return $formatted_message;
         }
         

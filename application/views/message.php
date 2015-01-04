@@ -67,9 +67,25 @@
                 </ul>
               </div>
 
-              <div id="messages">
+
+              <div id="message-scroll-box">
+                <div id="messages">
+
+                </div><!--end:div messages-->
+
+
+              </div>  <!---end:div=scroll-box-message-->
               
-              </div><!--end:div messages-->
+                <div id="page-row">
+
+
+                </div>
+
+
+
+              
+              
+      
               <div id="message-box" class="">
                 <textarea id="message_data"></textarea>
                 <button id="message_button" onClick="saveUrlMessage('<?php echo $message_url; ?>')"> Send </button>

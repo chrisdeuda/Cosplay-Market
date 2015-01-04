@@ -10,11 +10,13 @@ class Models_Message_Reply extends My_Model{
     }
     /**
      * get_conversataton
-     * @param type $user_one - the current user
-     * @param type $user_two - the perso who
+     * @param string $user_one - the current user
+     * @param string $user_two - the person whom they are addressing
+     * @param int $start    - starting number of message
+     * @param int $limit    - maximum count the should be retrieve;
      * @return Object Array if have result / if no returns NULL
      */
-    public function get_conversatation($user_one_id, $user_two_id){
+    public function get_conversatation($user_one_id, $user_two_id, $start = -1, $limit = -1){
         /*trying to get who I have a conversation before*/
         $sql = "SELECT R.cr_id as ID , R.user_id_fk as Sender, R.reply as Message , R.time as Time"
             . " FROM conversation C, users U, conversation_reply R"
@@ -26,7 +28,13 @@ class Models_Message_Reply extends My_Model{
             . " AND"
             . " C.c_id = R.c_id_fk"
             . " AND"
-            . " (C.user_one = '$user_two_id' OR C.user_two= '$user_two_id' ) ORDER BY R.cr_id ASC";
+            . " (C.user_one = '$user_two_id' OR C.user_two= '$user_two_id' ) ORDER BY R.cr_id ASC ";
+        
+        // add query with limit if specify star and end
+        if ($start != -1 && $limit != -1) {
+            $sql = $sql . " LIMIT $start, $limit";
+        }
+        
         
         $query = $this->db->query( $sql );
         
@@ -60,8 +68,8 @@ class Models_Message_Reply extends My_Model{
     /**
      * @desc  get the message from conversation which is still not read coming
      * form other user.
-     * @param string $user_one_id
-     * @param string $user_two_id 
+     * @param string $user_one_id - current log in user
+     * @param string $user_two_id - the person whom they are addressing
      * @param string $user_con_type - for checking user if user_one/ user_two
      * @return array/ "-1" if no new message found
      */
@@ -99,7 +107,20 @@ class Models_Message_Reply extends My_Model{
         }
     }
     
-
+    /**
+     * @desc get the count of messages for creating divisition of display
+     * @param string $user_one_id - current log in user
+     * @param string $user_two_id - the person whom they are addressing
+     */
+    public function get_message_count($user_one_id, $user_two_id) {
+        $row = $this->get_conversatation( $user_one_id, $user_two_id);
+        if ( $row == NULL ) {
+            $row = 0;
+            return $row;
+        } else {
+            return count($row);
+        }
+    }
     
     public function insert_message( $arr_message ){
         
