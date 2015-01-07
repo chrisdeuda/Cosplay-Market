@@ -37,8 +37,8 @@ SELLER SIDE
 	[] Add Ajax Search for Friends
 		[] GUI
 		[] Functionalities (Working Links for connecting conversation)
-	[] Scrollbox for messages
-	[] Division of longer messages(Pagenation)
+	[X] Scrollbox for messages
+	[X] Division of longer messages(Pagenation)
 	[] Create a Temporary storage for Messages(Dummy Table) for Queue
 
 ----------
