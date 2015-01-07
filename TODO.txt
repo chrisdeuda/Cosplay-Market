@@ -50,3 +50,4 @@ ADMIN
 
 BUGS
 [X] #1. Incoming Messages coming infinitely because of uncontrolled behaviour of timer
+[X] #2. Focusing of scrolling when there is new message comning and user post new messages

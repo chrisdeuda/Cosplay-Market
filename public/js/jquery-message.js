@@ -75,17 +75,12 @@ $(document).ready( function() {
 				if (scrolltop <= scrolloffset) {
 					$row = 	$messageForm.get_page_row();
 					$final_row = 0;
-
-
 					if ( $row == 0) {
 						console.log("No Conversation Left");
-						$messageForm.scrollFocusToBottom();
 					} else {
 						$final_row = ($row -1 );
 						$messageForm.set_page_row( $final_row);
-						
 						$messageForm.getPreviousMessage( this, $final_row);
-						$messageForm.scrollFocusToBottom();
 					}
 				}
 				
@@ -94,7 +89,6 @@ $(document).ready( function() {
 			$('#message_data').keypress(function(event){
 				var keycode = (event.keyCode ? event.keyCode : event.which);
 				if(keycode == '13'){
-					//alert('You pressed a "enter" key in somewhere');	
 					$('#message_button').trigger('click');
 				}
 			});
@@ -104,6 +98,21 @@ $(document).ready( function() {
 			$scroll_box =  $('#message-scroll-box');
 			$max_scroll= $scroll_box.prop('scrollHeight');
 			$scroll_box.scrollTop( $max_scroll);
+
+		},
+
+		scrollTopAdjust:function(){
+			$scroll_box =  $('#message-scroll-box');
+			$max_scroll= $scroll_box.prop('scrollHeight');
+
+			//alert("sdfsdf" + $scroll_box.scrollTop);
+
+			var scroll_top = ( $scroll_box.scrollTop()   + ($max_scroll / 5)  );
+
+			alert( scroll_top);
+
+			$scroll_box.scrollTop(  scroll_top );
+
 
 		},
 		/**
@@ -142,7 +151,8 @@ $(document).ready( function() {
               				$messageForm.displayMessage( sender, message, time, "" ,display_location );
               				message = "";
               			}
-              			$messageForm.scrollFocusToBottom();
+              			$messageForm.scrollTopAdjust();
+              			
               			startTimer();
               		},
 
@@ -352,7 +362,8 @@ $(document).ready( function() {
               			$messageForm.set_page_row( $result.page.rows.count -1 );
 
               			$messageForm.scrollFocusToBottom();
-              			
+
+              		
               		},
 
           	});// you have missed this bracket
@@ -389,7 +400,6 @@ $(document).ready( function() {
 	              				setTimeout(function(){startTimer()}, 1);		//create a delay everything must be process first
 	              				$messageForm.displayMessage( sender, message, time);
 	              				message = "";
-
               				}
               				$messageForm.scrollFocusToBottom();
               			}
