@@ -49,4 +49,4 @@ ADMIN
 
 
 BUGS
-[] #1. Incoming Messages coming infinitely because of uncontrolled behaviour of timer
+[X] #1. Incoming Messages coming infinitely because of uncontrolled behaviour of timer

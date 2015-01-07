@@ -43,7 +43,8 @@ $(document).ready( function() {
                     date_now = $messageForm.getDate();
 
                     $messageForm.displayMessage( username, message, date_now);
-                    $message.val('');
+                    $message.val("");
+                    $message.val("");
                     $messageForm.saveMessage( message);
                 }
             });
@@ -54,21 +55,6 @@ $(document).ready( function() {
 
 			$('#stopTimer').click( function(){
 				stopTimer();
-			});
-
-			$('#testbefore').click(function(){
-				stopTimer();
-				//$messageForm.displayMessage( "test", "test", 12323123, "", "before");
-
-				  $( "#testLink" ).trigger( "click" );
-  					
-			});
-
-			$('#testLink').on("click", function(e){
-				e.preventDefault();
-  				alert("tring to display");
-  				return false;
-  				
 			});
 
 
@@ -83,8 +69,6 @@ $(document).ready( function() {
 				if ( scrolltop == dif) {
 					console.log('you reach the buttom');
 					var test_url = "scroll-value.php";
-
-//					$messageForm.displayMessage( sender, message, time, "what the fuck");
 	     			return false;
 				}
 				//Top Scrolling
@@ -95,6 +79,7 @@ $(document).ready( function() {
 
 					if ( $row == 0) {
 						console.log("No Conversation Left");
+						$messageForm.scrollFocusToBottom();
 					} else {
 						$final_row = ($row -1 );
 						$messageForm.set_page_row( $final_row);
@@ -102,28 +87,22 @@ $(document).ready( function() {
 						$messageForm.getPreviousMessage( this, $final_row);
 						$messageForm.scrollFocusToBottom();
 					}
-					//console.log('you reach the top. try loading values here');
 				}
 				
 			});
 
 			$('#message_data').keypress(function(event){
- 
 				var keycode = (event.keyCode ? event.keyCode : event.which);
-					if(keycode == '13'){
-						//alert('You pressed a "enter" key in somewhere');	
-						$('#message_button').trigger('click');
-					}
-		 
+				if(keycode == '13'){
+					//alert('You pressed a "enter" key in somewhere');	
+					$('#message_button').trigger('click');
+				}
 			});
-
-
 		},
 
 		scrollFocusToBottom: function (){
 			$scroll_box =  $('#message-scroll-box');
-			$max_scroll= $scroll_box.prop('clientHeight');
-
+			$max_scroll= $scroll_box.prop('scrollHeight');
 			$scroll_box.scrollTop( $max_scroll);
 
 		},
@@ -183,8 +162,6 @@ $(document).ready( function() {
 			var link = "";
 
 			var ctr = 1;
-
-
 			alert( "first" + $page_count[2]['start']);
 				for(index = (page.rows.count -1 ); index <= 2; index--){
 					link= "start=" + $page_count[index]['start'];
@@ -195,8 +172,7 @@ $(document).ready( function() {
 					$page_row.append(str);
 					anchor_text =  "";
 					ctr++;
-				}
-				//alert("found " + $('#test2').text());
+				}				
 		},
 		/**
 		* @param username
@@ -233,39 +209,17 @@ $(document).ready( function() {
 			 		
 			$template.attr('id', template_name + ($current_message_count + 1 ) );			
 
-		
-		
 			if ( display_location == "after" || display_location == "" || display_location == undefined) {
 				$template.appendTo( $current_message );
 			} else if (display_location == "before"){
-				//$template.appendTo( $(current_message).children().eq(0).before());
-
 				$($current_message).children().eq(0).before( $template);
 				first_message_id = $('#messages').children().eq(0).attr('id') ;
 
 				$(first_message_id).before( $template);
-
-				console.log( first_message_id );
-
-				//alert($('#messages:last-child').attr('id'));
-				//$template.appendTo(first_message_id);
-				//$template.appendTo( $current_message );
-
-
-
-				console.log("tst" + ($messageForm.getMessageCount() - 1));
-
-				 
-
-				 //$page.children().eq(0).before($new_item);
 			}
 
-			
 			$template.hide();
 			$template.fadeIn(1000);
-
-			
-
 			//$template.show();
 		},
 
@@ -286,7 +240,6 @@ $(document).ready( function() {
 
             } else if ( message == false) {
             	$debug.addClass('not-init');
-            	
             }
             $debug.text( text + "" );
 		},
@@ -359,6 +312,7 @@ $(document).ready( function() {
               			} else {
               				startTimer();	
               			}
+              			$messageForm.scrollFocusToBottom();
               		},
 
           	});// you have missed this bracket
@@ -409,8 +363,6 @@ $(document).ready( function() {
 			$messageForm.getMessageStatus();	//update the session value
 			
 			if (message_controller_status == 1 ){
-				//new_messsage_url = ""
-				
 				$.ajax({
          		type: "POST",
          		url: new_messsage_url,
