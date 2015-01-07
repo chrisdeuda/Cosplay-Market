@@ -13,6 +13,8 @@ var start = new Date().getTime(),
     time = 0,
     elapsed = '0.0';
 
+var $message_page;
+
 $(document).ready( function() {
 		
 		default_name = ["Crystal Maiden", "Lina Inverse", "Tide Hunter", 'Jakiro', 'Earth Shaker', 'Blood Seeker', 'Storm Spirit'];
@@ -54,6 +56,22 @@ $(document).ready( function() {
 				stopTimer();
 			});
 
+			$('#testbefore').click(function(){
+				stopTimer();
+				//$messageForm.displayMessage( "test", "test", 12323123, "", "before");
+
+				  $( "#testLink" ).trigger( "click" );
+  					
+			});
+
+			$('#testLink').on("click", function(e){
+				e.preventDefault();
+  				alert("tring to display");
+  				return false;
+  				
+			});
+
+
 			$('#message-scroll-box').scroll(function(){
 				var scrolltop= this.scrollTop;
 				var scrollheight= this.scrollHeight;
@@ -66,47 +84,40 @@ $(document).ready( function() {
 					console.log('you reach the buttom');
 					var test_url = "scroll-value.php";
 
-
-					//alert( "Current Val" + $messageForm.get_page_row());
-					
-					/*
-					$('#scrollbox').off('scroll');
-	 				$.ajax({
-	         			type: "POST",
-	         			url: test_url,
-	         			data: { message: "test"},
-	         			dataType: "text",  
-	         			cache:false,
-	         			success: 
-	              		function(data){
-	              			$("#content").append(data);
-	              			$('#scrollbox').on('scroll');
-	              			
-	              		},
-						*/
-	          		//});// you have missed this bracket
+//					$messageForm.displayMessage( sender, message, time, "what the fuck");
 	     			return false;
 				}
 				//Top Scrolling
-				if (scrolltop == scrolloffset) {
+				if (scrolltop <= scrolloffset) {
 					$row = 	$messageForm.get_page_row();
 					$final_row = 0;
 
 
 					if ( $row == 0) {
-						alert('No convesation left');
-
+						console.log("No Conversation Left");
 					} else {
 						$final_row = ($row -1 );
 						$messageForm.set_page_row( $final_row);
+						
+						$messageForm.getPreviousMessage( this, $final_row);
 						$messageForm.scrollFocusToBottom();
-
-						alert( "Row" + $final_row );
 					}
 					//console.log('you reach the top. try loading values here');
 				}
 				
 			});
+
+			$('#message_data').keypress(function(event){
+ 
+				var keycode = (event.keyCode ? event.keyCode : event.which);
+					if(keycode == '13'){
+						//alert('You pressed a "enter" key in somewhere');	
+						$('#message_button').trigger('click');
+					}
+		 
+			});
+
+
 		},
 
 		scrollFocusToBottom: function (){
@@ -116,24 +127,86 @@ $(document).ready( function() {
 			$scroll_box.scrollTop( $max_scroll);
 
 		},
+		/**
+		* @param object ScrollObject - Scrollbar Object that triggers the event
+		* @param int row_count - current counter of the scroll_box
+		*/
+		getPreviousMessage: function( ScrollObject, scroll_row_count){
+			//alert( "proceessing ajax");
+			var page_request = scroll_row_count;
+			var old_con = "http://localhost/CosplayMarket/message/get_previous_conversation";
+			stopTimer();
+			var start = $message_page[scroll_row_count].start;
+			var limit = $message_page[scroll_row_count].limit;
+
+			$.ajax({
+         		type: "POST",
+         		url: old_con,
+         		data: { start: start, limit: limit },
+         		dataType: "text",  
+         		cache:false,
+         		success: 
+              		function(data){
+              			var $result = JSON.parse(data);
+              			var display_location = "before";
+
+              			$new_message_count =  $result.messages.length;
+              		
+              			for(index = ($new_message_count -1 ); index >= 0; index--){
+
+              				sender =  $result.messages[index].Sender + " ";
+              				
+              				message =  $result.messages[index].Message + " ";
+              				image =  $result.messages[index].Image + " ";
+              				time =  $result.messages[index].Time + " ";
+
+              				$messageForm.displayMessage( sender, message, time, "" ,display_location );
+              				message = "";
+              			}
+              			$messageForm.scrollFocusToBottom();
+              			startTimer();
+              		},
+
+          	});// you have missed this bracket
+     		return false;
+
+
+		},
 
 		generatePage: function( $page_count ) {
-			var row = $page_count;
+			var page = $page_count;
+
 			var str = "";
 			var $page_row = $('#page-row');
 
 			var anchor_text = " ";
+			var link = "";
 
-				for(index = 0; index < row; index++){
+			var ctr = 1;
+
+
+			alert( "first" + $page_count[2]['start']);
+				for(index = (page.rows.count -1 ); index <= 2; index--){
+					link= "start=" + $page_count[index]['start'];
+
+
 					anchor_text = " " + (index + 1);
-					str = "<a href='#' id='test"+( index+1)+"'>"+ anchor_text + "</a>";
+					str = "<a href='?"+link+"' id='test"+( index+1)+"'>"+ anchor_text + "</a>";
 					$page_row.append(str);
 					anchor_text =  "";
+					ctr++;
 				}
 				//alert("found " + $('#test2').text());
 		},
+		/**
+		* @param username
+		* @param message
+		* @param image_path
+		* @param location use for where are the part of message container message will be
+				display (before/after)
+		*/
 
-		displayMessage: function( username, message, date_now, image_path) {
+		displayMessage: function( username, message, date_now, image_path, display_location) {
 			//to clone the template message and modify its content
 			// do something about clone
 			template_name = "messageC";
@@ -141,6 +214,7 @@ $(document).ready( function() {
 			var $tag_name 		= 'span.message-name';
 			var $tag_date 		= 'span.message-date';
 			var $tag_message 	= 'li.message-data';
+			var first_message_id 	= "";
 
 			$current_message_count = $messageForm.getMessageCount() - 1;
 
@@ -153,12 +227,40 @@ $(document).ready( function() {
 			 		  .find($tag_date ).text( date_now)
 			 		  		.end()
 			 		  .find($tag_message).text( message)
-			 		  		.end()
-			 		  .find( $tag_image).text( image_path ) 
 			 		  		.end();
+			 		//  .find( $tag_image).text( image_path ) 
+			 		  		//.end();
 			 		
 			$template.attr('id', template_name + ($current_message_count + 1 ) );			
-			$template.appendTo( $current_message );
+
+		
+		
+			if ( display_location == "after" || display_location == "" || display_location == undefined) {
+				$template.appendTo( $current_message );
+			} else if (display_location == "before"){
+				//$template.appendTo( $(current_message).children().eq(0).before());
+
+				$($current_message).children().eq(0).before( $template);
+				first_message_id = $('#messages').children().eq(0).attr('id') ;
+
+				$(first_message_id).before( $template);
+
+				console.log( first_message_id );
+
+				//alert($('#messages:last-child').attr('id'));
+				//$template.appendTo(first_message_id);
+				//$template.appendTo( $current_message );
+
+
+
+				console.log("tst" + ($messageForm.getMessageCount() - 1));
+
+				 
+
+				 //$page.children().eq(0).before($new_item);
+			}
+
+			
 			$template.hide();
 			$template.fadeIn(1000);
 
@@ -288,10 +390,12 @@ $(document).ready( function() {
               				$messageForm.displayMessage( sender, message, time);
               				message = "";
               			}
+              			
               			//alert($messageForm.generatePage($result.page.rows));
 
-              			$messageForm.generatePage( $result.page.rows);
-              			$messageForm.set_page_row($result.page.rows);
+              			$message_page =  $result.page;
+              			//alert("sta"+ ($result.page.rows.count -1 ));
+              			$messageForm.set_page_row( $result.page.rows.count -1 );
 
               			$messageForm.scrollFocusToBottom();
               			
@@ -322,8 +426,6 @@ $(document).ready( function() {
               				startTimer();
               			} else {
             				var message = "";
-            				
-            				alert( $result);
             				//stopTimer();
 
               				for(index = 0; index < $result.length; index++ ){
@@ -332,16 +434,13 @@ $(document).ready( function() {
 	              				message =  $result[index].Message + " ";
 	              				image 	=  $result[index].Image + " ";
 	              				time 	=  $result[index].Time + " ";
-
-	              				//alert('got new message');
-
 	              				setTimeout(function(){startTimer()}, 1);		//create a delay everything must be process first
 	              				$messageForm.displayMessage( sender, message, time);
 	              				message = "";
 
               				}
+              				$messageForm.scrollFocusToBottom();
               			}
-
               		},
 
           		});

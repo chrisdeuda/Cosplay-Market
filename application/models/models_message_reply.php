@@ -31,10 +31,10 @@ class Models_Message_Reply extends My_Model{
             . " (C.user_one = '$user_two_id' OR C.user_two= '$user_two_id' ) ORDER BY R.cr_id ASC ";
         
         // add query with limit if specify star and end
+        
         if ($start != -1 && $limit != -1) {
             $sql = $sql . " LIMIT $start, $limit";
         }
-        
         
         $query = $this->db->query( $sql );
         

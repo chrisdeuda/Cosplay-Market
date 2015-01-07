@@ -11,7 +11,7 @@ class Message extends CI_Controller {
         private $_is_init_con_session = false;
         private $_is_init_con = false;       //flag for initialize conversation
         private $_message_count = 0;        //for distribution of pages
-        private $_messsage_row_limit = 10;
+        private $_message_row_limit = 10;
         
        function __construct(){
             parent::__construct();
@@ -121,6 +121,10 @@ class Message extends CI_Controller {
             $message = array();
             
             
+            $display_start = 0; /** for query in database */
+            $display_limit = 0;
+            $row_count = 0;
+            
             if ( $result == 0) {
                 $this->models_message->createNewConversation( $user_id, $user_two );
                  echo "new message created";
@@ -133,12 +137,17 @@ class Message extends CI_Controller {
 
                 $message_count = $this->models_message_reply->get_message_count($user_id, $user_two );
             
-                $page = $this->process_messsage_page( $message_count);
-                $message = $this->models_message_reply->get_conversatation($user_id, $user_two, $page['start'], $page['limit'] );
+                $page = $this->process_message_page( $message_count -1);
+                $row_count = $page['rows']['count'];
+                $display_start = $page[$row_count -1]['start'];
+                $display_limit = $page[$row_count -1]['limit'];
+                
+                $message = $this->models_message_reply->get_conversatation($user_id, $user_two, $display_start, $display_limit );
                 
                 $data_message['page'] = $page;
                 $data_message['messages'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
             
+                //$this->models_console->debugArray($data_message['page']);
                 echo json_encode($data_message);  
             }
         }
@@ -150,30 +159,37 @@ class Message extends CI_Controller {
             $result =  $this->models_message->oldConversationExists( $user_id, $user_two );
             $message = array();
             
-            $limit = $this->_messsage_row_limit;
+            $limit = $this->input->post('limit');
+            $start = $this->input->post('start');
             
-            $page = 0;
+            /*
+            if ( !isset($page) || $page == 0){
+                //echo "not set";
+                $page = 0;
+            } */
+              
             if ( $result == 0) {
                 $this->models_message->createNewConversation( $user_id, $user_two );
-                 echo "new message created";
-            } else {
+                echo "new message created";
+           } else {
                 $data_message = array();
                 $message = array();
-            
+
                 $this->set_user_one( $this->models_users->get( $user_id ));
                 $this->set_user_two( $this->models_users->get( $user_two ));             
-                
-                $start = $this->_process_page_request( $page ,$limit);
-                    
+               
                 $message = $this->models_message_reply->get_conversatation($user_id, $user_two, $start, $limit );
                 $data_message['messages'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
-            
+
                 echo json_encode($data_message);  
             }
         }
         
         public function prevTest(){
+            $page = $this->input->post('page_request');
+            $data =  array("result"=>("PHP RETURN " + $page));
             
+            echo json_encode($data);
             
         }
         
@@ -185,7 +201,7 @@ class Message extends CI_Controller {
         public function _view_conversation( $user_id, $user_two ){
             
             if ( $this->_is_init_con_session == FALSE) {
-                $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
+//                $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
                 $this->init_conversation_id( $user_id, $user_two);
             } 
             $data_message = array();
@@ -198,12 +214,11 @@ class Message extends CI_Controller {
             
             $message_count = $this->models_message_reply->get_message_count($user_id, $user_two );
             
-            $page = $this->process_messsage_page( $message_count);
-            $message = $this->models_message_reply->get_conversatation($user_id, $user_two, $page['start'], $page['limit'] );
+            $page = $this->process_message_page( $message_count);
+            //$message = $this->models_message_reply->get_conversatation($user_id, $user_two, $page['start'], $page['limit'] );
             
             
             $data_message['message'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
-            
             
             //$this->models_console->debugArray( $data_message['message']);
             
@@ -214,19 +229,36 @@ class Message extends CI_Controller {
      
         /**
          * Manipulate the page number being request by the client base on the
-         * actual division in database.
-         * @param int $current_page
+         * actual division in database. Whenever it reaches the last row it will
+         * try to figure out what is the modulo of the maximum row.
+         * 
+         * @param int $page_request - the current number being request
          * @param int $limit - maximum value to be retrieve
+         * @param int $total_row - total number of messages retrive from db
+         * @return array("start", "limit");
          */
-        private  function _process_page_request( $page_request = 0, $limit = 10){
+        public  function _process_page_request( $page_request = 0, $limit = 10, $total_row){
             $page = $page_request;
-            if ( $page == 0 || $page == null) {
+            $final_limit = $limit;
+            if ( $page == 0 || $page == null ) {
                 $page = 1;
             }
-            $start = ($page - 1) * $limit;
             
+            if ($page == 1) {
+                $mod = ($total_row % $limit);         //3
+                $temp_start = (($limit - $mod) -1 );    //20-3
+                $start = (($page - 1) * $final_limit);
+                $final_limit = ($final_limit - $temp_start )- 1;
+            } else {
+                $mod = ($total_row % $limit);         //3
+                $temp_start = (($limit - $mod) -1 );    //20-3
+                //$final_limit = ($total_row % $limit) -1;   //last result 0 index
+                $start = (($page - 1) * $final_limit) - $temp_start;
+            }
             
-            return $start;
+            $data = array("start"=> $start , "limit"=> $final_limit);
+            
+            return $data;
         }
         
         /**
@@ -235,27 +267,41 @@ class Message extends CI_Controller {
          * @param int $total_row - all records need to be display
          * @return array(start, limit, row);
          */
-        function process_messsage_page( $total_row ){
+        function process_message_page( $total_row ){
             $message_count = $total_row;
             $limit = 10;
+            $index = 0;
+            
             $rows = ceil( $message_count / $limit);
             
-            $start = $this->_process_page_request( 0, $limit);
             
-            $result = array( "start" => $start, "limit" => $limit,
-                "rows" => $rows
+            //only one row
+            if ($rows == 1 || $rows ==0) {
+                $data[0]= array(
+                    "start" => 0,
+                    "limit" => $message_count
                 );
-            return $result;
-        }
-        /**
-         * _format_message
-         * @param type $object_array - the message to be format
-         */
-        public function display_conversation(){
+            } else {
+                for($index = 1; $index <= $rows; $index++){
+                    $page = $this->_process_page_request( $index, $limit, $total_row);
+                    
+                    $data[($index -1)] = array("start" => $page['start'],
+                        "limit"=> $page['limit']
+                    );
+                }
+            }
+            
+            $data['rows'] = array('count'=>$rows);
             
             
+            //$page = $this->_process_page_request( 3, $limit, $total_row);
+            
+            /*$result = array( "start" => $page['start'], "limit" => $page['limit'],
+                "rows" => $rows
+                );*/
+           return $data;
         }
-        
+      
         /**
          * @desc - create a query that would check if there is new message
          *          users depending on user_id being passed. -1 id defines as no

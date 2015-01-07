@@ -26,6 +26,7 @@
 
 
       <h2 class="red"> Message Testing</h2>
+      <a href="test" id="testLink" > Automated Link </a>
 
       <script src="<?php echo base_url() . 'public/js/jquery-2.1.3.min.js'; ?> "> </script>
       <script src="<?php echo base_url() . 'public/js/jquery-message.js'; ?> "> </script>
@@ -33,21 +34,16 @@
         <script>
           var loggedIn = "<?php echo  $this->session->userdata('is_logged_in'); ?>";
           var id = "<?php echo  $this->session->userdata('user_id'); ?>";
-
-
           setConversationUrl( "<?php echo base_url(). 'message/get_all_conversation'; ?>" );
           getUserId( ''+id  );
           set_new_message_url( "<?php echo base_url(). 'message/get_new_message'; ?>" );
-
-
-          
         </script>
     
         
         <?php
           $message_url = base_url() .'message/new_message';
         ?>
-
+          <button id="testbefore"> TestBefore</button>
           <div id="message-container" class="message-container">
               <h1> Message </h1>
               <p> Just type your username and message</p>
@@ -55,7 +51,7 @@
               <p> Your Username <input id="username" type="text"  name="username" value="" / ></p>
 
               
-              <div id="template_default" class="message_display">
+              <div id="template_default" class="message_display" style="clear:both">
                 <ul class="message_display ul-message">
                   <li class ='message-image'><img class="message-image" src="<?php echo base_url()."images/akira.jpg"?>"/> </li>
                   <li> 
@@ -75,7 +71,7 @@
 
 
               </div>  <!---end:div=scroll-box-message-->
-              
+
                 <div id="page-row">
 
 

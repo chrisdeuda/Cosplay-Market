@@ -14,7 +14,7 @@
           </tr>
 		</table>
     	<p>Copyright (c) 2013 COSPLAY MARKET</p>
-        </center>
+      </center>
 		<p>&nbsp;</p>
 	</div>
 	<!-- end #footer -->

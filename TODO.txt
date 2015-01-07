@@ -27,7 +27,7 @@ SELLER SIDE
 [] Reservation of Items
 [] Chat System
 [] Messaging System
-	)
+	
 	[X] Conversation
 	[X] Exchanging Messages Through Network
 	[X] Timer for Updating Incoming Messages
@@ -38,7 +38,7 @@ SELLER SIDE
 		[] GUI
 		[] Functionalities (Working Links for connecting conversation)
 	[] Scrollbox for messages
-	[] Division of longer messages(Pagena
+	[] Division of longer messages(Pagenation)
 	[] Create a Temporary storage for Messages(Dummy Table) for Queue
 
 ----------
