@@ -104,16 +104,8 @@ $(document).ready( function() {
 		scrollTopAdjust:function(){
 			$scroll_box =  $('#message-scroll-box');
 			$max_scroll= $scroll_box.prop('scrollHeight');
-
-			//alert("sdfsdf" + $scroll_box.scrollTop);
-
-			var scroll_top = ( $scroll_box.scrollTop()   + ($max_scroll / 5)  );
-
-			alert( scroll_top);
-
+			var scroll_top = ( $scroll_box.scrollTop()   + ($max_scroll / 10)  );
 			$scroll_box.scrollTop(  scroll_top );
-
-
 		},
 		/**
 		* @param object ScrollObject - Scrollbar Object that triggers the event

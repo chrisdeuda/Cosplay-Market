@@ -1,4 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * 
+ * @Author: Christopher Deuda
+ * @Date Created: December 23, 2014
+ * @Last Modified: January 07, 2015
+ * @Description - this is a server scripts that controls the different transaction
+ * of messages coming and and coming out from client into the database.
+ */
 
 class Message extends CI_Controller {
     
@@ -43,31 +51,35 @@ class Message extends CI_Controller {
                 $this->models_message->createNewConversation( $user_id, $user_two );  
             } 
             $this->init_conversation_id( $user_id, $user_two );
-            $this->_view_conversation( $user_id, $user_two );   
+            $this->models_display->displayMessage( "");
             
         }
         
         function get_user_conversation_type($user_id, $conversation_id){
             return $this->models_message->get_user_conversation_type( $user_id, $conversation_id);
         }
-        
-        
         /**
          * For Generating a division of messages.
          * @param type $the_message_count
          * @return void
          */
-        
         private function set_message_count($the_message_count){
             $this->$_message_count = 0;
                
         }
         
-        
+         /**
+         * Add the message into the database and format accordingly
+         *    it uses the form as validation
+         *    get the values from the form and process it into the database
+         * @return void
+         */
         public function new_message(){
             $message = mysql_real_escape_string($this->input->post("message"));
             
-            /** Remove later
+            /** @remove later
+             * It should be automatically detected after user click the link pointing
+             * to whom he want to create a conversation.
              */
             $user_one_id= $this->session->userdata('user_id');
             if (  $user_one_id == '2') {
@@ -77,7 +89,6 @@ class Message extends CI_Controller {
             }
              if( $message == "" ) {
                  echo json_encode(array("success" =>false));
-                //$this->_view_conversation();
             } else {
                 $this->init_conversation_id( $user_one_id, $user_two_id );
                 $user_id = $this->session->userdata('user_id');
@@ -102,10 +113,8 @@ class Message extends CI_Controller {
                     $arr_message['user_two_status']= 0;
                 }
                 
-                //$this->models_console->debugToAlert( $arr_message);
                 $this->models_message_reply->insert( $arr_message );
                 echo json_encode(array("success" =>true));
-                //$this->view_conversation();
             }
         }
         /**
@@ -119,7 +128,6 @@ class Message extends CI_Controller {
             $user_two = '2014-032335';
             $result =  $this->models_message->oldConversationExists( $user_id, $user_two );
             $message = array();
-            
             
             $display_start = 0; /** for query in database */
             $display_limit = 0;
@@ -147,11 +155,13 @@ class Message extends CI_Controller {
                 $data_message['page'] = $page;
                 $data_message['messages'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
             
-                //$this->models_console->debugArray($data_message['page']);
                 echo json_encode($data_message);  
             }
         }
-        
+        /**
+         * Getting the previous conversation base on the AJAX request fromt the user
+         * @return json_encode $data_message - the result of request from the base
+         */
         public function get_previous_conversation(){
             $data_message = array();
             $user_id = $this->session->userdata('user_id');
@@ -161,17 +171,13 @@ class Message extends CI_Controller {
             
             $limit = $this->input->post('limit');
             $start = $this->input->post('start');
-            
-            /*
-            if ( !isset($page) || $page == 0){
-                //echo "not set";
-                $page = 0;
-            } */
-              
+            /**
+             * @ADD - checking if the system already divide the messages history
+             */
             if ( $result == 0) {
                 $this->models_message->createNewConversation( $user_id, $user_two );
                 echo "new message created";
-           } else {
+            } else {
                 $data_message = array();
                 $message = array();
 
@@ -185,48 +191,6 @@ class Message extends CI_Controller {
             }
         }
         
-        public function prevTest(){
-            $page = $this->input->post('page_request');
-            $data =  array("result"=>("PHP RETURN " + $page));
-            
-            echo json_encode($data);
-            
-        }
-        
-        /**
-         * @param type $user_id - login user
-         * @param type $user_two - user whom connecting to
-         * @return void
-         */
-        public function _view_conversation( $user_id, $user_two ){
-            
-            if ( $this->_is_init_con_session == FALSE) {
-//                $message = $this->models_message_reply->get_conversatation($user_id, $user_two );
-                $this->init_conversation_id( $user_id, $user_two);
-            } 
-            $data_message = array();
-            $message = array();
-            
-            $this->set_user_one( $this->models_users->get( $user_id ));
-            $this->set_user_two( $this->models_users->get( $user_two ));             
-
-            //$message = $this->models_message_reply->get_conversatation($user_id, $user_two );
-            
-            $message_count = $this->models_message_reply->get_message_count($user_id, $user_two );
-            
-            $page = $this->process_message_page( $message_count);
-            //$message = $this->models_message_reply->get_conversatation($user_id, $user_two, $page['start'], $page['limit'] );
-            
-            
-            $data_message['message'] = $this->_get_formatted_message( $message, $this->get_user_one(), $this->get_user_two() );
-            
-            //$this->models_console->debugArray( $data_message['message']);
-            
-            $this->models_display->displayMessage( $data_message['message']);
-
-        }
-        
-     
         /**
          * Manipulate the page number being request by the client base on the
          * actual division in database. Whenever it reaches the last row it will
@@ -243,16 +207,14 @@ class Message extends CI_Controller {
             if ( $page == 0 || $page == null ) {
                 $page = 1;
             }
-            
             if ($page == 1) {
-                $mod = ($total_row % $limit);         //3
-                $temp_start = (($limit - $mod) -1 );    //20-3
+                $mod = ($total_row % $limit);         
+                $temp_start = (($limit - $mod) -1 );    
                 $start = (($page - 1) * $final_limit);
                 $final_limit = ($final_limit - $temp_start )- 1;
             } else {
                 $mod = ($total_row % $limit);         //3
                 $temp_start = (($limit - $mod) -1 );    //20-3
-                //$final_limit = ($total_row % $limit) -1;   //last result 0 index
                 $start = (($page - 1) * $final_limit) - $temp_start;
             }
             
@@ -273,8 +235,6 @@ class Message extends CI_Controller {
             $index = 0;
             
             $rows = ceil( $message_count / $limit);
-            
-            
             //only one row
             if ($rows == 1 || $rows ==0) {
                 $data[0]= array(
@@ -290,15 +250,8 @@ class Message extends CI_Controller {
                     );
                 }
             }
-            
             $data['rows'] = array('count'=>$rows);
-            
-            
-            //$page = $this->_process_page_request( 3, $limit, $total_row);
-            
-            /*$result = array( "start" => $page['start'], "limit" => $page['limit'],
-                "rows" => $rows
-                );*/
+
            return $data;
         }
       
@@ -337,24 +290,33 @@ class Message extends CI_Controller {
         }
         
         /**
-         * @description it is used after the messgae is being read by the client
+         * It is used after the messgae is being read by the client
          * so that it would not appear in the query again.
          * @param type $conversation_id - it must be existing id.
          * @return void
          */
         public function update_read_message_status( $conversation_id, $user_con_type = ""){
-            //if ( $user_con_type = "user_two") {
-                $update_val = array( "user_one_status"=>1,
-                    "user_two_status"=> 1);
-            //} 
+            $update_val = array( "user_one_status"=>1,
+                "user_two_status"=> 1);
+
             $this->models_message_reply->update($conversation_id, $update_val );
         }
-        
+        /**
+         * format the messages into manageable pieces depending on the necessity 
+         * of the javascript set up
+         * @param type $object_array_message
+         * @param type $user_one
+         * @param type $user_two
+         * @return type
+         */
         private function _get_formatted_message( $object_array_message , $user_one, $user_two ){
             $message_count = count($object_array_message);
             $formatted_message = array();
             $count = 0;
-            
+            /**
+             * @add - error handler if the parameter doesn't match the criteria because it cause
+             * a fatal error later on when not pass a proper paramater.
+             */
             if ($message_count == 0) {
                return null;
             } else {
@@ -379,31 +341,10 @@ class Message extends CI_Controller {
             
             return $formatted_message;
         }
-        
-        public function isMessageActive(){
-            
-            
-            
-            
-            
-        }
-        
-        public function toggelMessage(){
-            
-            $status = mysql_real_escape_string($this->input->post('status'));
-            $data = array();
-            
-            if ( !isset($status)) {
-                $status = 0;
-            }
-            $session_message = $this->session->userdata('active_message');
-            if ( empty($session_message)){
-                $this->session->set_userdata('active_message', 1);
-            } 
-            $this->session->set_userdata('active_message', $status);           
-            echo $status;
-        }
-        
+        /**
+         * Update everything user having a conversation
+         * @return json_encode(status) 1 / 0 / -1
+         */
         public function getMessageStatus(){
             $data = $this->session->userdata('active_message');       
             echo json_encode( array("status"=>$data));
@@ -458,46 +399,18 @@ class Message extends CI_Controller {
             }
         }
         /**
-         * @description add the message into the database and format accordingly
+         * Add the message into the database and format accordingly
          *    it uses the form as validation
          *    get the values from the form and process it into the database
          * @return void
          */
-        public function insert_new_message(){
-            
-            $this->load->library("form_validation");
-            
-            $this->form_validation->set_rules("txtMessage", "Message", "required");
-
-            if( $this->form_validation->run() == FALSE) {
-                //return to view page
-                $this->view_conversation();
-            } else {
-                $user_id = "2";
-                $ip = "2";
-                $time = 123;
-                $c_id = $this->_get_conversation_id();
-                $reply = $this->input->post("txtMessage");
-                $arr_message = array(
-                    "user_id_fk" => $user_id,
-                    "reply" =>  $reply,
-                    "ip" => $ip,
-                    "time" => $time,
-                    "c_id_fk" => $c_id
-                );      
-                $this->models_message_reply->insert( $arr_message );
-                $this->view_conversation();
-                
-            }
-        }
+ 
 
         public function clear_conversation_id(){
             $this->session->unset_userdata( "c_id");
         }
         
         private function _add_conversation( $row_message ){
-            // get the count of array
-            // array_count + 1 = assign value
             echo "COUNT" . count($row_message);
             
         }
